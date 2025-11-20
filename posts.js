@@ -26,7 +26,7 @@ const posts = [
         image: "images/ILoveMyComputer.jpg",
         textAboveImage: true,
         textSize: "1em",
-        imageWidth: "30%",
+        imageWidth: "50%",
         audio: "audio/Delete - Ninajirachi.mp3"
     },
 ];
