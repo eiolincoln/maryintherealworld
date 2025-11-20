@@ -16,6 +16,12 @@ header, main {
     text-align: left;
 }
 
+h1, h2, p {
+    background: white;
+    display: inline-block;
+    padding: 0.2em 0.4em;
+}
+
 nav {
     display: block;
 }
@@ -27,9 +33,33 @@ nav a {
     margin-bottom: 0.3em;
 }
 
-h1, h2, p {
+nav a:hover {
+    opacity: 0.7;
+}
+
+.post-container {
+    position: relative;
+    margin-bottom: 4em;
+}
+
+.post-container img {
+    width: 100%;
+    position: sticky;
+    top: 0;
+    z-index: 0;
+}
+
+.post-content {
+    position: relative;
+    z-index: 10;
+}
+
+.post-content p,
+.post-content audio {
     background: white;
     display: inline-block;
+    margin: 0.5em 0;
+    padding: 0.2em 0.4em;
 }
 
 .datetime {
@@ -37,34 +67,6 @@ h1, h2, p {
     margin-top: 0.2em;
     color: #555;
     font-size: 0.9em;
-}
-
-#posts-container img:first-of-type {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    z-index: 1;
-}
-
-#posts-container img {
-    display: block;
-    margin-top: 1em;
-}
-
-#posts-container img:nth-of-type(2) { position: sticky; top: 0; z-index: 2; }
-#posts-container img:nth-of-type(3) { position: sticky; top: 0; z-index: 3; }
-#posts-container img:nth-of-type(4) { position: sticky; top: 0; z-index: 4; }
-#posts-container img:nth-of-type(5) { position: sticky; top: 0; z-index: 5; }
-#posts-container img:nth-of-type(6) { position: sticky; top: 0; z-index: 6; }
-#posts-container img:nth-of-type(7) { position: sticky; top: 0; z-index: 7; }
-#posts-container img:nth-of-type(8) { position: sticky; top: 0; z-index: 8; }
-#posts-container img:nth-of-type(9) { position: sticky; top: 0; z-index: 9; }
-#posts-container img:nth-of-type(10) { position: sticky; top: 0; z-index: 10; }
-
-audio {
-    display: block;
-    margin: 0.5em 0;
 }
 
 #pagination a {
