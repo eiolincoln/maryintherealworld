@@ -1,1 +1,56 @@
+/* Basic styling */
+body {
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    background-color: #f9f9f9;
+    color: #111;
+    margin: 0;
+    padding: 0;
+}
 
+/* Header */
+header {
+    text-align: center;
+    padding: 2em;
+    background: #fff;
+    border-bottom: 1px solid #ccc;
+}
+
+header h1 {
+    margin: 0;
+    font-size: 2em;
+}
+
+nav a {
+    margin: 0 1em;
+    text-decoration: none;
+    color: #333;
+}
+
+/* Main posts */
+main {
+    width: 60%;
+    margin: 2em auto;
+}
+
+.post {
+    margin-bottom: 4em;
+    position: relative;
+}
+
+.post img {
+    max-width: 100%;
+    display: block;
+    margin: 1em 0;
+}
+
+.datetime {
+    font-size: 0.8em;
+    color: #666;
+}
+
+/* Footer */
+footer {
+    text-align: center;
+    padding: 2em;
+    border-top: 1px solid #ccc;
+}
