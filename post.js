@@ -14,7 +14,8 @@ const posts = [
         title: "",
         date: "20/11/2025 9:14",
         content: [
-            { type: "text", value: "eating time", size: "5em" }
+            { type: "text", value: "eating time", size: "5em" },
+            { type: "text", value: "update: this was about dinner", size: "1em" }
         ]
     },
     {
