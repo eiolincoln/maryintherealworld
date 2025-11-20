@@ -65,6 +65,10 @@ const postsPerPage = 10;
 let currentPage = 1;
 const totalPages = Math.ceil(posts.length / postsPerPage);
 
+const stickyImage = document.createElement("img");
+stickyImage.className = "sticky-image";
+document.body.appendChild(stickyImage);
+
 function renderPosts() {
     const container = document.getElementById("posts-container");
     container.innerHTML = "";
@@ -85,13 +89,6 @@ function renderPosts() {
         date.className = "datetime";
         date.textContent = post.date;
         postWrapper.appendChild(date);
-
-        if (post.image) {
-            const img = document.createElement("img");
-            img.src = post.image;
-            img.style.width = post.imageWidth;
-            postWrapper.appendChild(img);
-        }
 
         const contentWrapper = document.createElement("div");
         contentWrapper.className = "post-content";
@@ -146,5 +143,21 @@ function renderPagination() {
         pagination.appendChild(next);
     }
 }
+
+window.addEventListener("scroll", () => {
+    const postsDivs = document.querySelectorAll(".post-container");
+    for (let post of postsDivs) {
+        const imgSrc = post.querySelector("img")?.src;
+        if (!imgSrc) continue;
+
+        const rect = post.getBoundingClientRect();
+        if (rect.top <= 0 && rect.bottom >= 0) {
+            stickyImage.src = imgSrc;
+            stickyImage.style.display = "block";
+            return;
+        }
+    }
+    stickyImage.style.display = "none";
+});
 
 renderPosts();
