@@ -1,5 +1,15 @@
 const posts = [
     {
+        title: "",
+        date: "20/11/2025 9:14",
+        text: "eating time",
+        image: "",
+        textAboveImage: true,
+        textSize: "5em",
+        imageWidth: "100%",
+        audio: ""
+    },
+    {
         title: "inventions and ideas",
         date: "19/11/2025 7:24",
         text: "New bread i think it would be a good idea like most people eat bread in the mornings and i people might not like it after 5000000000000 Times of eating the same bread so imagine if there were new Bread.",
