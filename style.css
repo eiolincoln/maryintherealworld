@@ -1,7 +1,7 @@
 /* Reset body */
 body {
     font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-    background-color: #ffffff; /* full white background */
+    background-color: #ffffff;
     color: #111;
     margin: 0;
     padding: 0;
@@ -31,7 +31,7 @@ nav {
 }
 
 nav a {
-    display: block; /* vertical stack */
+    display: block;
     text-decoration: underline;
     text-transform: lowercase;
     color: #333;
@@ -40,10 +40,10 @@ nav a {
 }
 
 nav a:hover {
-    color: #0077cc; /* hover color */
+    color: #0077cc;
 }
 
-/* Main posts */
+/* Main content / posts */
 main {
     width: 60%;
     margin: 2em auto;
@@ -54,65 +54,43 @@ main {
     margin-bottom: 4em;
 }
 
-.post img {
-    max-width: 100%;
-    display: block;
-    margin: 1em 0;
+.post-content {
+    flex: 1;
 }
 
+.post img.dynamic-img {
+    max-width: 100%;
+    height: auto;
+    display: block;
+    margin: 0.5em 0;
+}
+
+/* datetime */
 .datetime {
     font-size: 0.8em;
     color: #666;
 }
 
-/* Pagination */
+/* Pagination links */
 .pagination {
     margin-top: 2em;
+    display: flex;
+    gap: 0.5em;
+    flex-wrap: wrap;
 }
 
 .pagination a {
-    text-decoration: none;
+    text-decoration: underline;
     color: #0077cc;
     font-weight: bold;
-    margin-right: 1em;
+    padding: 0.2em 0.5em;
 }
 
-
-/* Timeline container for posts */
-#posts-container {
-    position: relative;
-    padding-left: 40px; /* space for the vertical line */
-    border-left: 2px solid #ccc; /* vertical timeline line */
-    margin-left: 20px;
+.pagination a:hover {
+    color: #ff5500;
 }
 
-/* Individual post styling */
-.post {
-    position: relative;
-    margin-bottom: 4em;
-}
-
-/* Circle marker on the timeline */
-.post::before {
-    content: '';
-    position: absolute;
-    left: -11px; /* centers the circle on the line */
-    top: 0;
-    width: 20px;
-    height: 20px;
-    background: #0077cc; /* marker color */
-    border-radius: 50%;
-    border: 2px solid #fff;
-}
-
-/* Adjust post image and text layout */
-.post img {
-    display: block;
-    max-width: 90%; /* you can adjust */
-    margin: 1em 0;
-}
-
-/* Optional: add slight shadow or separation */
-.post {
-    padding-left: 10px;
+.pagination a.current-page {
+    text-decoration: none;
+    font-weight: bold;
 }
