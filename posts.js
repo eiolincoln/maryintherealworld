@@ -40,6 +40,7 @@ const posts = [
         textSize: "1.1em",
         imageWidth: "50%",
         audio: "audio/sample.mp3" // optional audio
+    },
     // ... add more posts here
 ];
 
