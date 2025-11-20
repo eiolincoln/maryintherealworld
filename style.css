@@ -1,22 +1,16 @@
-/* Reset body */
+/* Reset & base */
 body {
     font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-    background-color: #ffffff; /* full white background */
+    background-color: #ffffff;
     color: #111;
     margin: 0;
     padding: 0;
 }
 
-/* Remove default list styles */
-ul, li {
-    list-style: none;
-    margin: 0;
-    padding: 0;
-}
-
+/* Header & nav */
 header {
-    text-align: left;      /* aligns content to the left */
-    padding: 2em;          /* spacing from top and left of page */
+    text-align: left;
+    padding: 2em;
     background: #fff;
 }
 
@@ -25,32 +19,35 @@ header h1 {
     font-size: 2em;
 }
 
+header h1 span {
+    display: inline-block;
+    margin: 0 0.2em;
+}
+
 nav {
-    margin-top: 0.5em;     /* small spacing under the title */
+    margin-top: 0.5em;
 }
 
 nav a {
-    display: block;        /* makes links stack vertically */
+    display: block;
     text-decoration: underline;
     text-transform: lowercase;
     color: #333;
     font-weight: bold;
-    margin-bottom: 0.5em;  /* spacing between links */
+    margin-bottom: 0.5em;
 }
 
 nav a:hover {
-    color: #0077cc;        /* hover color */
+    color: #0077cc;
 }
 
-/* Main posts container */
+/* Posts container */
 #posts-container {
-    width: 60%;           /* or change to auto if you want full width */
-    margin: 2em 0 2em 2em; /* top, right, bottom, left */
+    margin-left: 2em; /* same as header padding */
     text-align: left;
 }
 
-
-/* Individual post */
+/* Individual posts */
 .post {
     margin-bottom: 4em;
 }
@@ -65,24 +62,24 @@ nav a:hover {
     color: #666;
 }
 
-/* Pagination links */
+/* Pagination */
 .pagination {
-    margin-top: 2em;
-    text-align: left;
+    margin-left: 2em;
+    margin-bottom: 2em;
 }
 
 .pagination a {
+    margin-right: 0.5em;
     text-decoration: underline;
     color: #0077cc;
     font-weight: bold;
-    margin-right: 0.5em;
-    cursor: pointer;
 }
 
 .pagination a.current {
     text-decoration: none;
+    font-weight: bold;
 }
 
 .pagination a:hover {
-    color: #ff6600; /* hover color */
+    color: #ff5500;
 }
