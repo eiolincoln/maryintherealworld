@@ -11,7 +11,7 @@ const posts = [
     { title: "Post 4", date: "2025-11-14 09:00", text: "Text for Post 4", image: "images/image4.jpg" },
     { title: "Post 3", date: "2025-11-13 15:00", text: "Text for Post 3", image: "images/image3.jpg" },
     { title: "Post 2", date: "2025-11-12 08:00", text: "Text for Post 2", image: "images/image2.jpg" },
-    { title: "Post 1", date: "2025-11-11 11:00", text: "Text for Post 1", image: "images/image1.jpg" },
+    { title: "Post 1", date: "2025-11-11 11:00", text: "Text for Post 1", image: "images/image1.jpg" }
 ];
 
 const postsPerPage = 5;
