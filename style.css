@@ -16,15 +16,9 @@ header, main {
     text-align: left;
 }
 
-h1, h2 {
+h1, h2, p {
     background: white;
     display: inline-block;
-    padding: 0.2em 0.4em;
-}
-
-p {
-    display: inline-block;
-    background: white;
     padding: 0.2em 0.4em;
 }
 
@@ -46,6 +40,7 @@ nav a:hover {
 .post-container {
     position: relative;
     margin-bottom: 4em;
+    z-index: 1;
 }
 
 .post-content {
@@ -82,9 +77,9 @@ nav a:hover {
 .sticky-image {
     position: fixed;
     top: 0;
-    left: 2em;        /* align with posts */
+    left: 0;
     width: auto;
-    max-width: 40%;   /* optional max width */
+    max-width: 40%;
     z-index: 0;
     pointer-events: none;
 }
