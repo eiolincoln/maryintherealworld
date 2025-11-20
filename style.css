@@ -1,18 +1,17 @@
-/* Reset & base */
-body {
-    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-    background-color: #ffffff;
-    color: #111;
-    margin: 0;
-    padding: 0;
-}
-
-/* Header & nav */
-/* Header & nav */
+/* Header & nav flush left */
 header {
     text-align: left;
-    padding: 2em 0 2em 2em; /* top, right, bottom, left */
-    background: #fff;
+    padding: 0; /* remove padding to stick to the left wall */
+}
+
+header h1 {
+    margin: 0;
+    font-size: 2em;
+}
+
+header h1 span {
+    display: inline-block;
+    margin: 0 0.2em; /* optional spacing between words */
 }
 
 nav {
@@ -28,52 +27,22 @@ nav a {
     margin-bottom: 0.5em;
 }
 
-nav a:hover {
-    color: #0077cc;
+/* Main content flush left */
+main {
+    margin: 0;
+    padding: 0;
+    text-align: left;
 }
 
-/* Posts container: flush left like header/nav */
+/* Posts container flush left */
 #posts-container {
-    margin: 0;            /* no extra margin */
-    padding-left: 2em;    /* optional: same as header left padding */
+    margin: 0;
+    padding: 0;
     text-align: left;
-    width: auto;          /* let it fill horizontally */
 }
 
 /* Individual posts */
 .post {
-    margin-bottom: 2em;   /* spacing between posts */
+    margin-bottom: 4em;
     text-align: left;
-}
-
-.post img {
-    display: block;
-    margin: 0.5em 0;
-}
-
-.datetime {
-    font-size: 0.8em;
-    color: #666;
-}
-
-/* Pagination */
-.pagination {
-    margin-left: 2em;
-    margin-bottom: 2em;
-}
-
-.pagination a {
-    margin-right: 0.5em;
-    text-decoration: underline;
-    color: #111;         /* change number color to black */
-    font-weight: bold;
-}
-
-.pagination a.current {
-    text-decoration: none;
-    font-weight: bold;
-}
-
-.pagination a:hover {
-    color: #0077cc; /* hover effect */
 }
