@@ -14,10 +14,9 @@ ul, li {
     padding: 0;
 }
 
-/* Header */
 header {
-    text-align: left;
-    padding: 2em;
+    text-align: left;      /* aligns content to the left */
+    padding: 2em;          /* spacing from top and left of page */
     background: #fff;
 }
 
@@ -26,23 +25,21 @@ header h1 {
     font-size: 2em;
 }
 
-header h1 span {
-    display: inline-block;
-    margin: 0 0.2em;
+nav {
+    margin-top: 0.5em;     /* small spacing under the title */
 }
 
-/* Navigation links */
 nav a {
-    display: block;
+    display: block;        /* makes links stack vertically */
     text-decoration: underline;
     text-transform: lowercase;
     color: #333;
     font-weight: bold;
-    margin-bottom: 0.5em;
+    margin-bottom: 0.5em;  /* spacing between links */
 }
 
 nav a:hover {
-    color: #0077cc;
+    color: #0077cc;        /* hover color */
 }
 
 /* Main posts container */
