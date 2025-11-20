@@ -48,16 +48,6 @@ nav a:hover {
     margin-bottom: 4em;
 }
 
-.sticky-wrapper {
-    position: relative;
-}
-
-.sticky-image {
-    position: sticky;
-    top: 0;
-    z-index: 0;
-}
-
 .post-content {
     position: relative;
     z-index: 10;
@@ -69,10 +59,6 @@ nav a:hover {
     display: inline-block;
     margin: 0.5em 0;
     padding: 0.2em 0.4em;
-}
-
-.post img {
-    display: block;
 }
 
 .datetime {
@@ -91,4 +77,14 @@ nav a:hover {
 #pagination .current {
     font-weight: bold;
     text-decoration: none;
+}
+
+.sticky-image {
+    position: fixed;
+    top: 0;
+    left: 2em;        /* align with posts */
+    width: auto;
+    max-width: 40%;   /* optional max width */
+    z-index: 0;
+    pointer-events: none;
 }
