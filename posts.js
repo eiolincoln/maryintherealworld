@@ -64,6 +64,7 @@ const posts = [
 
 const postsPerPage = 10;
 let currentPage = 1;
+
 const totalPages = Math.ceil(posts.length / postsPerPage);
 
 function renderPosts() {
@@ -75,45 +76,51 @@ function renderPosts() {
     const pagePosts = posts.slice(start, end);
 
     pagePosts.forEach(post => {
-        const section = document.createElement("section");
-        section.className = "post";
+        const title = document.createElement("h2");
+        title.textContent = post.title;
+        container.appendChild(title);
 
-        let firstImageUsed = false;
-        let contentHTML = "";
+        const date = document.createElement("p");
+        date.className = "datetime";
+        date.textContent = post.date;
+        container.appendChild(date);
 
-        // Handle text + image positioning
         if (post.textAboveImage) {
-            contentHTML += `<p style="font-size:${post.textSize}">${post.text}</p>`;
+            addText(container, post);
+            addImage(container, post);
+        } else {
+            addImage(container, post);
+            addText(container, post);
         }
 
-        if (post.image) {
-            if (!firstImageUsed) {
-                contentHTML += `<img src="${post.image}" class="sticky-top" style="width:${post.imageWidth}" alt="${post.title}">`;
-                firstImageUsed = true;
-            } else {
-                contentHTML += `<img src="${post.image}" class="overlay-img" style="width:${post.imageWidth}" alt="${post.title}">`;
-            }
-        }
-
-        if (!post.textAboveImage) {
-            contentHTML += `<p style="font-size:${post.textSize}">${post.text}</p>`;
-        }
-
-        // Optional audio
         if (post.audio) {
-            contentHTML += `<audio controls src="${post.audio}" style="margin:0.5em 0;"></audio>`;
+            const audio = document.createElement("audio");
+            audio.controls = true;
+            audio.src = post.audio;
+            container.appendChild(audio);
         }
 
-        section.innerHTML = `
-            <h2>${post.title}</h2>
-            <p class="datetime">${post.date}</p>
-            ${contentHTML}
-        `;
-
-        container.appendChild(section);
+        const spacer = document.createElement("div");
+        spacer.style.height = "4em";
+        container.appendChild(spacer);
     });
 
     renderPagination();
+}
+
+function addText(container, post) {
+    const p = document.createElement("p");
+    p.innerHTML = post.text;
+    p.style.fontSize = post.textSize;
+    container.appendChild(p);
+}
+
+function addImage(container, post) {
+    if (!post.image) return;
+    const img = document.createElement("img");
+    img.src = post.image;
+    img.style.width = post.imageWidth;
+    container.appendChild(img);
 }
 
 function renderPagination() {
@@ -124,7 +131,7 @@ function renderPagination() {
         const prev = document.createElement("a");
         prev.href = "#";
         prev.textContent = "<";
-        prev.onclick = (e) => { e.preventDefault(); currentPage--; renderPosts(); };
+        prev.onclick = e => { e.preventDefault(); currentPage--; renderPosts(); };
         pagination.appendChild(prev);
     }
 
@@ -133,10 +140,7 @@ function renderPagination() {
         pageLink.href = "#";
         pageLink.textContent = i;
         pageLink.className = i === currentPage ? "current" : "";
-        pageLink.style.color = "black";
-        pageLink.style.textDecoration = i === currentPage ? "none" : "underline";
-        pageLink.style.fontWeight = i === currentPage ? "bold" : "normal";
-        pageLink.onclick = (e) => { e.preventDefault(); currentPage = i; renderPosts(); };
+        pageLink.onclick = e => { e.preventDefault(); currentPage = i; renderPosts(); };
         pagination.appendChild(pageLink);
     }
 
@@ -144,7 +148,7 @@ function renderPagination() {
         const next = document.createElement("a");
         next.href = "#";
         next.textContent = ">";
-        next.onclick = (e) => { e.preventDefault(); currentPage++; renderPosts(); };
+        next.onclick = e => { e.preventDefault(); currentPage++; renderPosts(); };
         pagination.appendChild(next);
     }
 }
