@@ -29,36 +29,6 @@ const posts = [
         imageWidth: "30%",
         audio: "audio/Delete - Ninajirachi.mp3"
     },
-    {
-        title: "Second Post",
-        date: "2025-11-19 14:00",
-        text: "Text-only post example. No image here.",
-        image: "",
-        textAboveImage: true,
-        textSize: "1.1em",
-        imageWidth: "50%",
-        audio: ""
-    },
-    {
-        title: "Third Post",
-        date: "2025-11-19 14:00",
-        text: "This one has audio only.",
-        image: "",
-        textAboveImage: true,
-        textSize: "1.1em",
-        imageWidth: "50%",
-        audio: "audio/sample.mp3"
-    },
-    {
-        title: "Fourth Post",
-        date: "2025-11-19 14:00",
-        text: "Another text-only post example.",
-        image: "",
-        textAboveImage: true,
-        textSize: "1.1em",
-        imageWidth: "50%",
-        audio: ""
-    }
 ];
 
 const postsPerPage = 5;
