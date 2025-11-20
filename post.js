@@ -1,6 +1,6 @@
 // All posts: newest first
 const posts = [
-    { title: "Post 10", date: "2025-11-20 12:00", text: "Text for Post 10", image: "images/ILoveMyComputer.jpg" },
+    { title: "Hello", date: "2025-11-20 12:00", text: "Been listening to I Love My Computer by Ninajirachi. Favourite: Delete", image: "images/ILoveMyComputer.jpg" },
     { title: "Post 9", date: "2025-11-19 14:00", text: "Text for Post 9", image: "images/image9.jpg" },
     { title: "Post 8", date: "2025-11-18 09:30", text: "Text for Post 8", image: "images/image8.jpg" },
     { title: "Post 7", date: "2025-11-17 20:00", text: "Text for Post 7", image: "images/image7.jpg" },
