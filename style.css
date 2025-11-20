@@ -1,3 +1,6 @@
+/* style.css */
+
+/* 1. RESET & BASICS */
 * {
     margin: 0;
     padding: 0;
@@ -5,68 +8,98 @@
 }
 
 body {
-    font-family: Arial, sans-serif;
-    background: #fff;
-    color: #000;
-    line-height: 1.5;
+    /* The classic Tumblr serif font stack */
+    font-family: "Times New Roman", Times, serif; 
+    background-color: #fcfcfc; /* Off-white background */
+    color: #333;
+    line-height: 1.4;
+    overflow-x: hidden; /* Prevents scrollbar flickering */
 }
 
-header, main {
-    padding: 1.5em 2em;
-    text-align: left;
+/* 2. LAYOUT CONTAINER */
+/* This aligns everything to the left with specific width like the video */
+header, main, #posts-container {
+    width: 540px;       /* Fixed width for the column */
+    margin-left: 100px; /* Pushes content away from left edge */
+    padding: 0;         /* Remove default padding */
 }
 
-h1, h2, p {
-    background: white;
-    display: inline-block;
-    padding: 0.2em 0.4em;
+/* 3. HEADER & NAV */
+header {
+    margin-top: 60px;
+    margin-bottom: 50px;
+}
+
+h1 {
+    font-size: 28px; /* Smaller, cleaner title */
+    font-weight: normal;
+    letter-spacing: -1px;
+    margin-bottom: 15px;
+    background: transparent; /* Removes your old white background */
+    padding: 0;
 }
 
 nav a {
-    display: block;
-    text-decoration: underline;
-    color: black;
-    margin-bottom: 0.3em;
+    display: inline-block; /* Puts links next to each other */
+    margin-right: 15px;
+    color: #999;
+    text-decoration: none; /* Removes underline */
+    font-size: 14px;
+    font-style: italic;
 }
 
 nav a:hover {
-    opacity: 0.7;
+    color: #000;
 }
 
+/* 4. POSTS STYLING */
 .post-container {
+    margin-bottom: 80px; /* Big space between posts */
     position: relative;
-    margin-bottom: 4em;
+    z-index: 10; /* Keeps text above the background image */
 }
 
-.post-content {
-    position: relative;
-    z-index: 10;
-}
-
-.post-content p,
-.audio-container {
-    background: white;
-    display: block;
-    margin: 0.5em 0;
-    padding: 0.2em 0.4em;
+h2 {
+    font-size: 18px;
+    font-weight: bold;
+    background: transparent;
+    padding: 0;
+    margin-bottom: 5px;
 }
 
 .datetime {
-    display: block;
-    margin-top: 0.2em;
-    color: #555;
-    font-size: 0.9em;
+    font-size: 11px;
+    color: #bbb; /* Very light grey date */
+    margin-bottom: 15px;
+    font-family: Arial, sans-serif; /* Dates often look better in sans */
+    letter-spacing: 1px;
+}
+
+/* 5. CONTENT & IMAGES */
+.post-content p {
+    font-size: 16px;
+    background: transparent; /* Removes white background */
+    padding: 0;
+    margin-bottom: 15px;
 }
 
 .post-image {
     display: block;
-    z-index: 0;
+    max-width: 100%;
+    height: auto;
+    margin-bottom: 15px;
 }
 
+/* 6. BACKGROUND IMAGE LOGIC (From your JS) */
+/* We make sure this sits behind everything */
 .fixed-image {
     position: fixed;
     top: 0;
     left: 0;
-    z-index: 0;
+    width: 100%;     /* Cover full screen */
+    height: 100%;    /* Cover full screen */
+    object-fit: cover; /* Crop to fit */
+    z-index: -1;     /* Send to back */
+    opacity: 0.2;    /* OPTIONAL: Fades the background so text is readable */
     pointer-events: none;
 }
