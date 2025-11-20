@@ -1,64 +1,15 @@
+// All posts: newest first
 const posts = [
-    {
-        title: "Post 10",
-        date: "2025-11-20 10:00",
-        text: "Text for Post 10",
-        image: "images/image10.jpg"
-    },
-    {
-        title: "Post 9",
-        date: "2025-11-19 14:00",
-        text: "Text for Post 9",
-        image: "images/image9.jpg"
-    },
-    {
-        title: "Post 8",
-        date: "2025-11-18 09:30",
-        text: "Text for Post 8",
-        image: "images/image8.jpg"
-    },
-    {
-        title: "Post 7",
-        date: "2025-11-17 20:00",
-        text: "Text for Post 7",
-        image: "images/image7.jpg"
-    },
-    {
-        title: "Post 6",
-        date: "2025-11-16 18:00",
-        text: "Text for Post 6",
-        image: "images/image6.jpg"
-    },
-    {
-        title: "Post 5",
-        date: "2025-11-15 12:00",
-        text: "Text for Post 5",
-        image: "images/image5.jpg"
-    },
-    {
-        title: "Post 4",
-        date: "2025-11-14 09:00",
-        text: "Text for Post 4",
-        image: "images/image4.jpg"
-    },
-    {
-        title: "Post 3",
-        date: "2025-11-13 15:00",
-        text: "Text for Post 3",
-        image: "images/image3.jpg"
-    },
-    {
-        title: "Post 2",
-        date: "2025-11-12 08:00",
-        text: "Text for Post 2",
-        image: "images/image2.jpg"
-    },
-    {
-        title: "Post 1",
-        date: "2025-11-11 11:00",
-        text: "Text for Post 1",
-        image: "images/image1.jpg"
-    }
+    { title: "Post 10", date: "2025-11-20 10:00", text: "Text for Post 10", image: "images/image10.jpg" },
+    { title: "Post 9", date: "2025-11-19 14:00", text: "Text for Post 9", image: "images/image9.jpg" },
+    { title: "Post 8", date: "2025-11-18 09:30", text: "Text for Post 8", image: "images/image8.jpg" },
+    { title: "Post 7", date: "2025-11-17 20:00", text: "Text for Post 7", image: "images/image7.jpg" },
+    { title: "Post 6", date: "2025-11-16 18:00", text: "Text for Post 6", image: "images/image6.jpg" },
+    { title: "Post 5", date: "2025-11-15 12:00", text: "Text for Post 5", image: "images/image5.jpg" },
+    { title: "Post 4", date: "2025-11-14 09:00", text: "Text for Post 4", image: "images/image4.jpg" },
+    { title: "Post 3", date: "2025-11-13 15:00", text: "Text for Post 3", image: "images/image3.jpg" },
+    { title: "Post 2", date: "2025-11-12 08:00", text: "Text for Post 2", image: "images/image2.jpg" },
+    { title: "Post 1", date: "2025-11-11 11:00", text: "Text for Post 1", image: "images/image1.jpg" }
 ];
 
 const postsPerPage = 5;
@@ -108,5 +59,4 @@ function renderPagination() {
     }
 }
 
-// Initialize
 renderPosts();
