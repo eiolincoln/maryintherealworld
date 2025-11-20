@@ -1,20 +1,17 @@
-/* Reset body */
 body {
     font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-    background-color: #ffffff; /* full white background */
+    background-color: #ffffff;
     color: #111;
     margin: 0;
     padding: 0;
 }
 
-/* Header */
 header {
-    text-align: left; /* align everything to left */
+    text-align: left;
     padding: 2em;
-    background: #fff; /* remove grey */
+    background: #fff;
 }
 
-/* Site title */
 header h1 {
     margin: 0;
     font-size: 2em;
@@ -25,34 +22,31 @@ header h1 span {
     margin: 0 0.2em;
 }
 
-/* Navigation */
 nav {
     margin-top: 1em;
 }
 
 nav a {
-    display: block; /* stack links vertically */
+    display: block;
     text-decoration: underline;
     text-transform: lowercase;
     color: #333;
     font-weight: bold;
-    margin-bottom: 0.5em; /* spacing between links */
+    margin-bottom: 0.5em;
 }
 
 nav a:hover {
-    color: #0077cc; /* change color on hover */
+    color: #0077cc;
 }
 
-/* Main content / posts */
 main {
     width: 60%;
     margin: 2em auto;
-    text-align: left; /* posts text aligned left */
+    text-align: left;
 }
 
 .post {
     margin-bottom: 4em;
-    text-align: left;
 }
 
 .post img {
@@ -66,7 +60,6 @@ main {
     color: #666;
 }
 
-/* Pagination links */
 .pagination {
     margin-top: 2em;
 }
@@ -75,4 +68,5 @@ main {
     text-decoration: none;
     color: #0077cc;
     font-weight: bold;
+    margin-right: 1em;
 }
