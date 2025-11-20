@@ -21,14 +21,14 @@ const posts = [
         title: "inventions and ideas",
         date: "19/11/2025 7:24",
         content: [
-            { type: "text", value: "New bread i think it would be a good idea...", size: "1.1em" }
+            { type: "text", value: "New bread i think it would be a good idea like most people eat bread in the mornings and i people might not like it after 5000000000000 Times of eating the same bread so imagine if there were new Bread", size: "1.1em" }
         ]
     },
     {
         title: "first post evarrrrrrrrrrrr",
         date: "20/11/2025 5:39",
         content: [
-            { type: "text", value: "Been listening to I Love My Computer...", size: "1em" },
+            { type: "text", value: "Been listening to I Love My Computer by Ninajirachi.<br>Favourite: Delete<br><br>i like this album i like how all the songs converge together like i think every song works as a interlude to the next CSIRAC to delete<br>is great cat paws up to All I Am is epic i havent gone into the second half of the album that much (aka after All I Am) except for maybe like It's You nice song great album hypoppy", size: "1em" },
             { type: "image", value: "images/ILoveMyComputer.jpg", width: "50%" },
             { type: "audio", value: "audio/Delete - Ninajirachi.mp3" }
         ]
