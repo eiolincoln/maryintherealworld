@@ -1,8 +1,15 @@
 /* Reset body */
 body {
     font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-    background-color: #ffffff;
+    background-color: #ffffff; /* full white background */
     color: #111;
+    margin: 0;
+    padding: 0;
+}
+
+/* Remove default list styles */
+ul, li {
+    list-style: none;
     margin: 0;
     padding: 0;
 }
@@ -14,7 +21,6 @@ header {
     background: #fff;
 }
 
-/* Site title */
 header h1 {
     margin: 0;
     font-size: 2em;
@@ -25,11 +31,7 @@ header h1 span {
     margin: 0 0.2em;
 }
 
-/* Navigation */
-nav {
-    margin-top: 1em;
-}
-
+/* Navigation links */
 nav a {
     display: block;
     text-decoration: underline;
@@ -43,29 +45,23 @@ nav a:hover {
     color: #0077cc;
 }
 
-/* Main content / posts */
-main {
+/* Main posts container */
+#posts-container {
     width: 60%;
     margin: 2em auto;
     text-align: left;
 }
 
+/* Individual post */
 .post {
     margin-bottom: 4em;
 }
 
-.post-content {
-    flex: 1;
-}
-
-.post img.dynamic-img {
-    max-width: 100%;
-    height: auto;
+.post img {
     display: block;
-    margin: 0.5em 0;
+    margin: 1em 0;
 }
 
-/* datetime */
 .datetime {
     font-size: 0.8em;
     color: #666;
@@ -74,23 +70,21 @@ main {
 /* Pagination links */
 .pagination {
     margin-top: 2em;
-    display: flex;
-    gap: 0.5em;
-    flex-wrap: wrap;
+    text-align: left;
 }
 
 .pagination a {
     text-decoration: underline;
     color: #0077cc;
     font-weight: bold;
-    padding: 0.2em 0.5em;
+    margin-right: 0.5em;
+    cursor: pointer;
+}
+
+.pagination a.current {
+    text-decoration: none;
 }
 
 .pagination a:hover {
-    color: #ff5500;
-}
-
-.pagination a.current-page {
-    text-decoration: none;
-    font-weight: bold;
+    color: #ff6600; /* hover color */
 }
