@@ -59,19 +59,29 @@ function renderPosts() {
                 const p = document.createElement("p");
                 p.innerHTML = block.value.replace(/ /g, "&nbsp;");
                 p.style.fontSize = block.size || "1em";
+                p.style.display = "block";
+                p.style.background = "white";
                 contentWrapper.appendChild(p);
             } else if(block.type === "image") {
                 const img = document.createElement("img");
                 img.src = block.value;
                 img.style.width = block.width || "100%";
+                img.style.display = "block";
                 contentWrapper.appendChild(img);
             } else if(block.type === "audio") {
+                const audioContainer = document.createElement("div");
+                audioContainer.style.width = "100%";
+                audioContainer.style.marginTop = "0.5em";
                 const audio = document.createElement("audio");
                 audio.controls = true;
                 audio.src = block.value;
-                contentWrapper.appendChild(audio);
+                audio.style.display = "block";
+                audio.style.width = "100%";
+                audioContainer.appendChild(audio);
+                contentWrapper.appendChild(audioContainer);
             }
         });
+
 
         postWrapper.appendChild(contentWrapper);
         container.appendChild(postWrapper);
