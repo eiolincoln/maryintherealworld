@@ -92,3 +92,14 @@ main p, main h2 {
     margin-left: 0;
     text-align: left;
 }
+
+/* Sticky / overlay images like eerilyrealistic */
+.post img {
+    display: block;
+    width: 100%;        /* default, can still override per post */
+    position: sticky;
+    top: 0;             /* sticks to top of viewport */
+    z-index: 1;         /* ensures newer images overlay older ones */
+    margin-bottom: 1em; /* spacing from text below */
+}
+
