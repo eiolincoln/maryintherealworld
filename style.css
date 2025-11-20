@@ -76,3 +76,43 @@ main {
     font-weight: bold;
     margin-right: 1em;
 }
+
+
+/* Timeline container for posts */
+#posts-container {
+    position: relative;
+    padding-left: 40px; /* space for the vertical line */
+    border-left: 2px solid #ccc; /* vertical timeline line */
+    margin-left: 20px;
+}
+
+/* Individual post styling */
+.post {
+    position: relative;
+    margin-bottom: 4em;
+}
+
+/* Circle marker on the timeline */
+.post::before {
+    content: '';
+    position: absolute;
+    left: -11px; /* centers the circle on the line */
+    top: 0;
+    width: 20px;
+    height: 20px;
+    background: #0077cc; /* marker color */
+    border-radius: 50%;
+    border: 2px solid #fff;
+}
+
+/* Adjust post image and text layout */
+.post img {
+    display: block;
+    max-width: 90%; /* you can adjust */
+    margin: 1em 0;
+}
+
+/* Optional: add slight shadow or separation */
+.post {
+    padding-left: 10px;
+}
