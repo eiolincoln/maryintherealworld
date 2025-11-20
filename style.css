@@ -36,11 +36,15 @@ nav a:hover {
 .post-container {
     position: relative;
     margin-bottom: 4em;
-    z-index: 5;
+}
+
+.post-content {
+    position: relative;
+    z-index: 10;
 }
 
 .post-content p,
-.post-content audio {
+.audio-container {
     background: white;
     display: block;
     margin: 0.5em 0;
@@ -54,12 +58,15 @@ nav a:hover {
     font-size: 0.9em;
 }
 
+.post-image {
+    display: block;
+    z-index: 0;
+}
+
 .fixed-image {
     position: fixed;
     top: 0;
     left: 0;
-    max-width: 100%;
-    width: auto;
     z-index: 0;
     pointer-events: none;
 }
