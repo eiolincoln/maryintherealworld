@@ -10,18 +10,13 @@ body {
 /* Header & nav */
 header {
     text-align: left;
-    padding: 2em; /* ← this was keeping it away from the left wall */
+    padding: 2em;
     background: #fff;
 }
 
 header h1 {
     margin: 0;
     font-size: 2em;
-}
-
-header h1 span {
-    display: inline-block;
-    margin: 0 0.2em;
 }
 
 nav {
