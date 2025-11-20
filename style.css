@@ -47,10 +47,11 @@ nav a:hover {
 
 /* Main posts container */
 #posts-container {
-    width: 60%;
-    margin: 2em auto;
+    width: 60%;           /* or change to auto if you want full width */
+    margin: 2em 0 2em 2em; /* top, right, bottom, left */
     text-align: left;
 }
+
 
 /* Individual post */
 .post {
