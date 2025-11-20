@@ -74,12 +74,12 @@ nav a:hover {
 /* STICKY IMAGE BEHAVIOR */
 .post-image {
     display: block;
-    width: 100%;
     position: sticky;
     top: 0;
-    z-index: 0;  /* stays behind text */
-    margin: 0 auto 1em auto;
+    z-index: 0;
+    margin-bottom: 1em;
 }
+
 
 /* OBSOLETE — fixed-image not used anymore but kept if needed */
 .fixed-image {
