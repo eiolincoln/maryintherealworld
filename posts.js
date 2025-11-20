@@ -76,6 +76,14 @@ function renderPosts() {
         date.textContent = post.date;
         postWrapper.appendChild(date);
 
+        if (post.image) {
+            const img = document.createElement("img");
+            img.src = post.image;
+            img.style.width = post.imageWidth;
+            img.className = "sticky-image";
+            postWrapper.appendChild(img);
+        }
+
         const contentWrapper = document.createElement("div");
         contentWrapper.className = "post-content";
 
@@ -95,20 +103,9 @@ function renderPosts() {
 
         postWrapper.appendChild(contentWrapper);
         container.appendChild(postWrapper);
-
-        // Add the image inside postWrapper but NOT sticky — we handle sticky globally
-        if (post.image) {
-            const img = document.createElement("img");
-            img.src = post.image;
-            img.style.width = post.imageWidth;
-            img.className = "post-image"; // just for reference
-            img.dataset.postIndex = posts.indexOf(post); // track index
-            postWrapper.appendChild(img);
-        }
     });
 
     renderPagination();
-    setupStickyImage();
 }
 
 function renderPagination() {
@@ -139,36 +136,6 @@ function renderPagination() {
         next.onclick = e => { e.preventDefault(); currentPage++; renderPosts(); };
         pagination.appendChild(next);
     }
-}
-
-// Sticky image setup
-function setupStickyImage() {
-    let stickyImg = document.querySelector(".sticky-image");
-    if (!stickyImg) {
-        stickyImg = document.createElement("img");
-        stickyImg.className = "sticky-image";
-        document.body.appendChild(stickyImg);
-    }
-
-    const postImages = document.querySelectorAll(".post-image");
-    function updateSticky() {
-        let currentSrc = "";
-        for (let img of postImages) {
-            const rect = img.getBoundingClientRect();
-            if (rect.top <= 0) {
-                currentSrc = img.src;
-            }
-        }
-        if (currentSrc) {
-            stickyImg.src = currentSrc;
-            stickyImg.style.display = "block";
-        } else {
-            stickyImg.style.display = "none";
-        }
-    }
-
-    window.addEventListener("scroll", updateSticky);
-    updateSticky();
 }
 
 renderPosts();
