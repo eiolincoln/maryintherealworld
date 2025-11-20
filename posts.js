@@ -1,11 +1,10 @@
 // All posts newest first
 const posts = [
-    
     {
         title: "inventions and ideas",
         date: "19/11/2025 7:24",
         text: "New bread i think it would be a good idea like most people eat bread in the mornings and i people might not like it after 5000000000000 Times of eating the same bread so imagine if there were new Bread.",
-        image: "",              // no image
+        image: "",
         textAboveImage: true,
         textSize: "1.1em",
         imageWidth: "50%",
@@ -16,16 +15,16 @@ const posts = [
         date: "20/11/2025 5:39",
         text: "Been listening to I Love My Computer by Ninajirachi.<br>Favourite: Delete<br><br>i like this album i like how all the songs converge together like i think every song works as a interlude to the next CSIRAC to delete is great cat paws up to All I Am is epic i havent gone into the second half of the album that much (aka after All I Am) except for maybe like It's You nice song great album hypoppy<br>4562",
         image: "images/ILoveMyComputer.jpg",
-        textAboveImage: true,   // text above or below the image
+        textAboveImage: true,
         textSize: "1em",
         imageWidth: "30%",
-        audio: "audio/Delete - Ninajirachi.mp3"               // optional MP3 file path
+        audio: "audio/Delete - Ninajirachi.mp3"
     },
     {
         title: "Second Post",
         date: "2025-11-19 14:00",
         text: "Text-only post example. No image here.",
-        image: "",              // no image
+        image: "",
         textAboveImage: true,
         textSize: "1.1em",
         imageWidth: "50%",
@@ -39,13 +38,13 @@ const posts = [
         textAboveImage: true,
         textSize: "1.1em",
         imageWidth: "50%",
-        audio: "audio/sample.mp3" // optional audio
+        audio: "audio/sample.mp3"
     },
     {
         title: "Second Post",
         date: "2025-11-19 14:00",
         text: "Text-only post example. No image here.",
-        image: "",              // no image
+        image: "",
         textAboveImage: true,
         textSize: "1.1em",
         imageWidth: "50%",
@@ -55,13 +54,12 @@ const posts = [
         title: "Second Post",
         date: "2025-11-19 14:00",
         text: "Text-only post example. No image here.",
-        image: "",              // no image
+        image: "",
         textAboveImage: true,
         textSize: "1.1em",
         imageWidth: "50%",
         audio: ""
-    },
-    // ... add more posts here
+    }
 ];
 
 const postsPerPage = 10;
@@ -80,20 +78,24 @@ function renderPosts() {
         const section = document.createElement("section");
         section.className = "post";
 
+        let firstImageUsed = false;
         let contentHTML = "";
 
-        // Text above image
+        // Handle text + image positioning
         if (post.textAboveImage) {
             contentHTML += `<p style="font-size:${post.textSize}">${post.text}</p>`;
-            if (post.image) {
-                contentHTML += `<img src="${post.image}" style="width:${post.imageWidth}" alt="${post.title}">`;
+        }
+
+        if (post.image) {
+            if (!firstImageUsed) {
+                contentHTML += `<img src="${post.image}" class="sticky-top" style="width:${post.imageWidth}" alt="${post.title}">`;
+                firstImageUsed = true;
+            } else {
+                contentHTML += `<img src="${post.image}" class="overlay-img" style="width:${post.imageWidth}" alt="${post.title}">`;
             }
-        } 
-        // Text below image
-        else {
-            if (post.image) {
-                contentHTML += `<img src="${post.image}" style="width:${post.imageWidth}" alt="${post.title}">`;
-            }
+        }
+
+        if (!post.textAboveImage) {
             contentHTML += `<p style="font-size:${post.textSize}">${post.text}</p>`;
         }
 
@@ -114,13 +116,11 @@ function renderPosts() {
     renderPagination();
 }
 
-
 function renderPagination() {
     const pagination = document.getElementById("pagination");
     pagination.innerHTML = "";
 
-    // Previous arrow
-    if(currentPage > 1) {
+    if (currentPage > 1) {
         const prev = document.createElement("a");
         prev.href = "#";
         prev.textContent = "<";
@@ -128,21 +128,19 @@ function renderPagination() {
         pagination.appendChild(prev);
     }
 
-    // Page numbers
-    for(let i = 1; i <= totalPages; i++) {
+    for (let i = 1; i <= totalPages; i++) {
         const pageLink = document.createElement("a");
         pageLink.href = "#";
         pageLink.textContent = i;
         pageLink.className = i === currentPage ? "current" : "";
-        pageLink.style.color = "black";        // always black
+        pageLink.style.color = "black";
         pageLink.style.textDecoration = i === currentPage ? "none" : "underline";
         pageLink.style.fontWeight = i === currentPage ? "bold" : "normal";
         pageLink.onclick = (e) => { e.preventDefault(); currentPage = i; renderPosts(); };
         pagination.appendChild(pageLink);
     }
 
-    // Next arrow
-    if(currentPage < totalPages) {
+    if (currentPage < totalPages) {
         const next = document.createElement("a");
         next.href = "#";
         next.textContent = ">";
@@ -151,5 +149,4 @@ function renderPagination() {
     }
 }
 
-// Initial render
 renderPosts();
