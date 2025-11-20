@@ -41,32 +41,23 @@ nav a:hover {
     color: #0077cc;
 }
 
+/* Posts container aligns with header/nav */
 #posts-container {
-    margin-left: 2em;  /* same as header padding-left */
-    margin-right: 2em; /* optional for some spacing on the right */
+    margin: 0;        /* remove previous margins */
+    padding-left: 2em; /* align with header padding */
     text-align: left;
-    width: auto;       /* remove fixed width if you had one */
+    width: auto;       /* fill remaining space */
 }
 
 /* Individual posts */
-/* Main content / posts */
-main {
-    width: 60%;           /* You can change this or remove it */
-    margin: 0;            /* Remove auto-centering */
-    padding-left: 2em;    /* Optional: small space from the wall if desired */
-    text-align: left;
-}
-
-/* Posts */
 .post {
-    margin-bottom: 4em;
+    margin-bottom: 2em;   /* space between posts */
     text-align: left;
 }
-
 
 .post img {
     display: block;
-    margin: 1em 0;
+    margin: 0.5em 0;
 }
 
 .datetime {
@@ -83,7 +74,7 @@ main {
 .pagination a {
     margin-right: 0.5em;
     text-decoration: underline;
-    color: #0077cc;
+    color: #111;         /* change number color to black */
     font-weight: bold;
 }
 
@@ -93,5 +84,5 @@ main {
 }
 
 .pagination a:hover {
-    color: #ff5500;
+    color: #0077cc; /* hover effect */
 }
