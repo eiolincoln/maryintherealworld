@@ -56,6 +56,11 @@ main p, main h2 {
 .post img:nth-child(3) { z-index: 3; position: sticky; top: 0; }
 .post img:nth-child(4) { z-index: 4; position: sticky; top: 0; }
 .post img:nth-child(5) { z-index: 5; position: sticky; top: 0; }
+.post img:nth-child(6) { z-index: 6; position: sticky; top: 0; }
+.post img:nth-child(7) { z-index: 7; position: sticky; top: 0; }
+.post img:nth-child(8) { z-index: 8; position: sticky; top: 0; }
+.post img:nth-child(9) { z-index: 9; position: sticky; top: 0; }
+.post img:nth-child(10) { z-index: 10; position: sticky; top: 0; }
 
 /* And so on — but this is usually enough */
 
