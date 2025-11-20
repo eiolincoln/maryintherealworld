@@ -21,7 +21,7 @@ const posts = [
         audio: ""
     },
     {
-        title: "Second Post",
+        title: "Third Post",
         date: "2025-11-19 14:00",
         text: "Text-only post example. No image here.",
         image: "",
@@ -31,7 +31,7 @@ const posts = [
         audio: ""
     },
     {
-        title: "Second Post",
+        title: "Fourth Post",
         date: "2025-11-19 14:00",
         text: "Text-only post example. No image here.",
         image: "",
@@ -41,7 +41,7 @@ const posts = [
         audio: ""
     },
     {
-        title: "Second Post",
+        title: "Fifth Post",
         date: "2025-11-19 14:00",
         text: "Text-only post example. No image here.",
         image: "",
@@ -51,217 +51,7 @@ const posts = [
         audio: ""
     },
     {
-        title: "Second Post",
-        date: "2025-11-19 14:00",
-        text: "Text-only post example. No image here.",
-        image: "",
-        textAboveImage: true,
-        textSize: "1.1em",
-        imageWidth: "50%",
-        audio: ""
-    },
-    {
-        title: "Second Post",
-        date: "2025-11-19 14:00",
-        text: "Text-only post example. No image here.",
-        image: "",
-        textAboveImage: true,
-        textSize: "1.1em",
-        imageWidth: "50%",
-        audio: ""
-    },
-    {
-        title: "Second Post",
-        date: "2025-11-19 14:00",
-        text: "Text-only post example. No image here.",
-        image: "",
-        textAboveImage: true,
-        textSize: "1.1em",
-        imageWidth: "50%",
-        audio: ""
-    },
-    {
-        title: "Second Post",
-        date: "2025-11-19 14:00",
-        text: "Text-only post example. No image here.",
-        image: "",
-        textAboveImage: true,
-        textSize: "1.1em",
-        imageWidth: "50%",
-        audio: ""
-    },
-    {
-        title: "Second Post",
-        date: "2025-11-19 14:00",
-        text: "Text-only post example. No image here.",
-        image: "",
-        textAboveImage: true,
-        textSize: "1.1em",
-        imageWidth: "50%",
-        audio: ""
-    },
-    {
-        title: "Second Post",
-        date: "2025-11-19 14:00",
-        text: "Text-only post example. No image here.",
-        image: "",
-        textAboveImage: true,
-        textSize: "1.1em",
-        imageWidth: "50%",
-        audio: ""
-    },
-    {
-        title: "Second Post",
-        date: "2025-11-19 14:00",
-        text: "Text-only post example. No image here.",
-        image: "",
-        textAboveImage: true,
-        textSize: "1.1em",
-        imageWidth: "50%",
-        audio: ""
-    },
-    {
-        title: "Second Post",
-        date: "2025-11-19 14:00",
-        text: "Text-only post example. No image here.",
-        image: "",
-        textAboveImage: true,
-        textSize: "1.1em",
-        imageWidth: "50%",
-        audio: ""
-    },
-    {
-        title: "Second Post",
-        date: "2025-11-19 14:00",
-        text: "Text-only post example. No image here.",
-        image: "",
-        textAboveImage: true,
-        textSize: "1.1em",
-        imageWidth: "50%",
-        audio: ""
-    },
-    {
-        title: "Second Post",
-        date: "2025-11-19 14:00",
-        text: "Text-only post example. No image here.",
-        image: "",
-        textAboveImage: true,
-        textSize: "1.1em",
-        imageWidth: "50%",
-        audio: ""
-    },
-    {
-        title: "Second Post",
-        date: "2025-11-19 14:00",
-        text: "Text-only post example. No image here.",
-        image: "",
-        textAboveImage: true,
-        textSize: "1.1em",
-        imageWidth: "50%",
-        audio: ""
-    },
-    {
-        title: "Second Post",
-        date: "2025-11-19 14:00",
-        text: "Text-only post example. No image here.",
-        image: "",
-        textAboveImage: true,
-        textSize: "1.1em",
-        imageWidth: "50%",
-        audio: ""
-    },
-    {
-        title: "Second Post",
-        date: "2025-11-19 14:00",
-        text: "Text-only post example. No image here.",
-        image: "",
-        textAboveImage: true,
-        textSize: "1.1em",
-        imageWidth: "50%",
-        audio: ""
-    },
-    {
-        title: "Second Post",
-        date: "2025-11-19 14:00",
-        text: "Text-only post example. No image here.",
-        image: "",
-        textAboveImage: true,
-        textSize: "1.1em",
-        imageWidth: "50%",
-        audio: ""
-    },
-    {
-        title: "Second Post",
-        date: "2025-11-19 14:00",
-        text: "Text-only post example. No image here.",
-        image: "",
-        textAboveImage: true,
-        textSize: "1.1em",
-        imageWidth: "50%",
-        audio: ""
-    },
-    {
-        title: "Second Post",
-        date: "2025-11-19 14:00",
-        text: "Text-only post example. No image here.",
-        image: "",
-        textAboveImage: true,
-        textSize: "1.1em",
-        imageWidth: "50%",
-        audio: ""
-    },
-    {
-        title: "Second Post",
-        date: "2025-11-19 14:00",
-        text: "Text-only post example. No image here.",
-        image: "",
-        textAboveImage: true,
-        textSize: "1.1em",
-        imageWidth: "50%",
-        audio: ""
-    },
-    {
-        title: "Second Post",
-        date: "2025-11-19 14:00",
-        text: "Text-only post example. No image here.",
-        image: "",
-        textAboveImage: true,
-        textSize: "1.1em",
-        imageWidth: "50%",
-        audio: ""
-    },
-    {
-        title: "Second Post",
-        date: "2025-11-19 14:00",
-        text: "Text-only post example. No image here.",
-        image: "",
-        textAboveImage: true,
-        textSize: "1.1em",
-        imageWidth: "50%",
-        audio: ""
-    },
-    {
-        title: "Second Post",
-        date: "2025-11-19 14:00",
-        text: "Text-only post example. No image here.",
-        image: "",
-        textAboveImage: true,
-        textSize: "1.1em",
-        imageWidth: "50%",
-        audio: ""
-    },
-    {
-        title: "Second Post",
-        date: "2025-11-19 14:00",
-        text: "Text-only post example. No image here.",
-        image: "",
-        textAboveImage: true,
-        textSize: "1.1em",
-        imageWidth: "50%",
-        audio: ""
-    },
-    {
-        title: "Second Post",
+        title: "Sixth Post",
         date: "2025-11-19 14:00",
         text: "Text-only post example. No image here.",
         image: "",
