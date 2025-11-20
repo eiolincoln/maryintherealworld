@@ -35,8 +35,6 @@ const posts = [
     }
 ];
 
-
-
 const postsPerPage = 5;
 let currentPage = 1;
 const totalPages = Math.ceil(posts.length / postsPerPage);
@@ -46,7 +44,6 @@ let fixedImage = null;
 function renderPosts() {
     const container = document.getElementById("posts-container");
     container.innerHTML = "";
-
 
     const start = (currentPage - 1) * postsPerPage;
     const end = start + postsPerPage;
@@ -65,11 +62,8 @@ function renderPosts() {
         date.textContent = post.date;
         postWrapper.appendChild(date);
 
-
         const contentWrapper = document.createElement("div");
         contentWrapper.className = "post-content";
-
-
 
         post.content.forEach(block => {
             if (block.type === "text") {
@@ -95,6 +89,7 @@ function renderPosts() {
                 contentWrapper.appendChild(audioContainer);
             }
         });
+
         postWrapper.appendChild(contentWrapper);
         container.appendChild(postWrapper);
     });
@@ -105,6 +100,7 @@ function renderPosts() {
         fixedImage.style.display = "none";
         document.body.appendChild(fixedImage);
     }
+
     window.addEventListener("scroll", updateFixedImage);
 }
 
