@@ -68,7 +68,7 @@ function renderPosts() {
         post.content.forEach(block => {
             if (block.type === "text") {
                 const p = document.createElement("p");
-                p.innerHTML = block.value.replace(/ /g, "&nbsp;");
+                p.innerHTML = block.value;
                 p.style.fontSize = block.size || "1em";
                 contentWrapper.appendChild(p);
             } else if (block.type === "image") {
