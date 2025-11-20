@@ -18,7 +18,7 @@ const posts = [
         image: "images/ILoveMyComputer.jpg",
         textAboveImage: true,   // text above or below the image
         textSize: "1em",
-        imageWidth: "40%",
+        imageWidth: "20%",
         audio: "audio/Delete - Ninajirachi.mp3"               // optional MP3 file path
     },
     {
