@@ -68,21 +68,25 @@ function renderPosts() {
         post.content.forEach(block => {
             if (block.type === "text") {
                 const p = document.createElement("p");
-                p.innerHTML = block.value;
+                p.innerHTML = block.value.replace(/ /g, "&nbsp;");
                 p.style.fontSize = block.size || "1em";
                 contentWrapper.appendChild(p);
             } else if (block.type === "image") {
                 const img = document.createElement("img");
                 img.src = block.value;
-                img.style.width = block.width || "100%";
-                img.dataset.sticky = "true";
+                img.dataset.width = block.width || "100%";
+                img.className = "post-image";
+                img.style.width = img.dataset.width;
                 contentWrapper.appendChild(img);
             } else if (block.type === "audio") {
+                const audioContainer = document.createElement("div");
+                audioContainer.className = "audio-container";
                 const audio = document.createElement("audio");
                 audio.controls = true;
                 audio.src = block.value;
                 audio.style.width = "100%";
-                contentWrapper.appendChild(audio);
+                audioContainer.appendChild(audio);
+                contentWrapper.appendChild(audioContainer);
             }
         });
 
@@ -93,6 +97,7 @@ function renderPosts() {
     if (!fixedImage) {
         fixedImage = document.createElement("img");
         fixedImage.className = "fixed-image";
+        fixedImage.style.display = "none";
         document.body.appendChild(fixedImage);
     }
 
@@ -100,18 +105,21 @@ function renderPosts() {
 }
 
 function updateFixedImage() {
-    const stickyImages = document.querySelectorAll('img[data-sticky="true"]');
-    let current = null;
+    const images = document.querySelectorAll(".post-image");
+    let currentSrc = null;
+    let scrollY = window.scrollY + 10; // small offset
 
-    stickyImages.forEach(img => {
+    images.forEach(img => {
         const rect = img.getBoundingClientRect();
-        if (rect.top <= 0) {
-            current = img.src;
+        const imgTop = window.scrollY + rect.top;
+        if (scrollY >= imgTop) {
+            currentSrc = img.src;
+            fixedImage.style.width = img.dataset.width;
         }
     });
 
-    if (current) {
-        fixedImage.src = current;
+    if (currentSrc) {
+        fixedImage.src = currentSrc;
         fixedImage.style.display = "block";
     } else {
         fixedImage.style.display = "none";
