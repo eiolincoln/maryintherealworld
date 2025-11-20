@@ -53,9 +53,11 @@ function renderPosts() {
         const postWrapper = document.createElement("div");
         postWrapper.className = "post-container";
 
-        const title = document.createElement("h2");
-        title.textContent = post.title;
-        postWrapper.appendChild(title);
+        if(post.title) {
+            const title = document.createElement("h2");
+            title.textContent = post.title;
+            postWrapper.appendChild(title);
+        }
 
         const date = document.createElement("p");
         date.className = "datetime";
@@ -66,19 +68,19 @@ function renderPosts() {
         contentWrapper.className = "post-content";
 
         post.content.forEach(block => {
-            if (block.type === "text") {
+            if(block.type === "text") {
                 const p = document.createElement("p");
                 p.innerHTML = block.value.replace(/ /g, "&nbsp;");
                 p.style.fontSize = block.size || "1em";
                 contentWrapper.appendChild(p);
-            } else if (block.type === "image") {
+            } else if(block.type === "image") {
                 const img = document.createElement("img");
                 img.src = block.value;
                 img.dataset.width = block.width || "100%";
                 img.className = "post-image";
                 img.style.width = img.dataset.width;
                 contentWrapper.appendChild(img);
-            } else if (block.type === "audio") {
+            } else if(block.type === "audio") {
                 const audioContainer = document.createElement("div");
                 audioContainer.className = "audio-container";
                 const audio = document.createElement("audio");
@@ -94,7 +96,7 @@ function renderPosts() {
         container.appendChild(postWrapper);
     });
 
-    if (!fixedImage) {
+    if(!fixedImage) {
         fixedImage = document.createElement("img");
         fixedImage.className = "fixed-image";
         fixedImage.style.display = "none";
@@ -106,20 +108,16 @@ function renderPosts() {
 
 function updateFixedImage() {
     const images = document.querySelectorAll(".post-image");
-    let currentSrc = null;
-    let scrollY = window.scrollY + 10; // small offset
+    let lastVisible = null;
 
     images.forEach(img => {
         const rect = img.getBoundingClientRect();
-        const imgTop = window.scrollY + rect.top;
-        if (scrollY >= imgTop) {
-            currentSrc = img.src;
-            fixedImage.style.width = img.dataset.width;
-        }
+        if(rect.top <= 0) lastVisible = img;
     });
 
-    if (currentSrc) {
-        fixedImage.src = currentSrc;
+    if(lastVisible) {
+        fixedImage.src = lastVisible.src;
+        fixedImage.style.width = lastVisible.dataset.width;
         fixedImage.style.display = "block";
     } else {
         fixedImage.style.display = "none";
