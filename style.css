@@ -34,13 +34,16 @@ nav a:hover {
 }
 
 .post-container {
-    position: relative;
+    position: relative; /* needed for sticky to respect parent */
     margin-bottom: 4em;
 }
 
-.post-content {
-    position: relative;
-    z-index: 10;
+.post-image {
+    display: block;
+    position: sticky;
+    top: 0;        /* sticks to top of viewport */
+    z-index: 0;    /* behind text */
+    margin-bottom: 1em;
 }
 
 .post-content p,
