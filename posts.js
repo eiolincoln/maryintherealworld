@@ -5,7 +5,7 @@ const posts = [
     {
         title: "Hello",
         date: "2025-11-20 05:39",
-        text: "Been listening to I Love My Computer by Ninajirachi. Favourite: Delete",
+        text: "Been listening to I Love My Computer by Ninajirachi. <br>Favourite: Delete",
         image: "images/ILoveMyComputer.jpg",
         textAboveImage: true,
         textSize: "1em",
