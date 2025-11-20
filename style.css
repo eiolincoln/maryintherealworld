@@ -41,15 +41,18 @@ nav a:hover {
     color: #0077cc;
 }
 
-/* Posts container */
 #posts-container {
-    margin-left: 2em; /* same as header padding */
+    margin-left: 2em;  /* same as header padding-left */
+    margin-right: 2em; /* optional for some spacing on the right */
     text-align: left;
+    width: auto;       /* remove fixed width if you had one */
 }
 
 /* Individual posts */
 .post {
     margin-bottom: 4em;
+    text-align: left;  /* ensures text and images stay left-aligned */
+    padding-left: 0;   /* remove extra padding if present */
 }
 
 .post img {
