@@ -1,4 +1,6 @@
 // All posts: newest first
+console.log("Posts JS loaded!");
+
 const posts = [
     { title: "Hello", date: "2025-11-20 5:39", text: "Been listening to I Love My Computer by Ninajirachi. Favourite: Delete", image: "images/ILoveMyComputer.jpg" },
     { title: "Post 9", date: "2025-11-19 14:00", text: "Text for Post 9", image: "images/image9.jpg" },
