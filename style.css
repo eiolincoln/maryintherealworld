@@ -40,7 +40,6 @@ nav a:hover {
 .post-container {
     position: relative;
     margin-bottom: 4em;
-    z-index: 1;
 }
 
 .post-content {
@@ -63,23 +62,11 @@ nav a:hover {
     font-size: 0.9em;
 }
 
-#pagination a {
-    margin-right: 0.5em;
-    text-decoration: underline;
-    color: black;
-}
-
-#pagination .current {
-    font-weight: bold;
-    text-decoration: none;
-}
-
 .sticky-image {
-    position: fixed;
+    position: sticky;
     top: 0;
     left: 0;
-    width: auto;
-    max-width: 40%;
     z-index: 0;
     pointer-events: none;
+    display: block;
 }
