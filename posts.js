@@ -1,9 +1,20 @@
 // All posts newest first
 const posts = [
+    
+    {
+        title: "inventions",
+        date: "19/11/2025 7:24",
+        text: "New bread i think it would be a good idea like most people eat bread in the mornings and i people might not like it after 5000000000000 Times of eating the same bread so imagine if there were new Bread.",
+        image: "",              // no image
+        textAboveImage: true,
+        textSize: "1.1em",
+        imageWidth: "50%",
+        audio: ""
+    },
     {
         title: "first post evarrrrrrrrrrrr",
-        date: "2025-11-20 05:39",
-        text: "Been listening to I Love My Computer by Ninajirachi.<br>Favourite: Delete",
+        date: "20/11/2025 5:39",
+        text: "Been listening to I Love My Computer by Ninajirachi.<br>Favourite: Delete<br><br>i like this album i like how all the songs converge together like i think every song works as a interlude to the next CSIRAC to delete is great, cat paws up to All I Am is great i havent gone into the second half of the album that much (aka after All I Am) except for maybe like It's You nice song great album hypoppy<br>4562",
         image: "images/ILoveMyComputer.jpg",
         textAboveImage: true,   // text above or below the image
         textSize: "1em",
@@ -29,77 +40,6 @@ const posts = [
         textSize: "1.1em",
         imageWidth: "50%",
         audio: "audio/sample.mp3" // optional audio
-    },
-    {
-        title: "Fourth Post",
-        date: "2025-11-19 14:00",
-        text: "Text-only post example. No image here.",
-        image: "",              // no image
-        textAboveImage: true,
-        textSize: "1.1em",
-        imageWidth: "50%",
-        audio: ""
-    },
-    {
-        title: "Fifth Post",
-        date: "2025-11-19 14:00",
-        text: "Text-only post example. No image here.",
-        image: "",              // no image
-        textAboveImage: true,
-        textSize: "1.1em",
-        imageWidth: "50%",
-        audio: ""
-    },
-    {
-        title: "Sixth Post",
-        date: "2025-11-19 14:00",
-        text: "Text-only post example. No image here.",
-        image: "",              // no image
-        textAboveImage: true,
-        textSize: "1.1em",
-        imageWidth: "50%",
-        audio: ""
-    },
-    {
-        title: "Seventh Post",
-        date: "2025-11-19 14:00",
-        text: "Text-only post example. No image here.",
-        image: "",              // no image
-        textAboveImage: true,
-        textSize: "1.1em",
-        imageWidth: "50%",
-        audio: ""
-    },
-    {
-        title: "Eightn Post",
-        date: "2025-11-19 14:00",
-        text: "Text-only post example. No image here.",
-        image: "",              // no image
-        textAboveImage: true,
-        textSize: "1.1em",
-        imageWidth: "50%",
-        audio: ""
-    },
-    {
-        title: "Ninth Post",
-        date: "2025-11-19 14:00",
-        text: "Text-only post example. No image here.",
-        image: "",              // no image
-        textAboveImage: true,
-        textSize: "1.1em",
-        imageWidth: "50%",
-        audio: ""
-    },
-    {
-        title: "Tenth Post",
-        date: "2025-11-19 14:00",
-        text: "Text-only post example. No image here.",
-        image: "",              // no image
-        textAboveImage: true,
-        textSize: "1.1em",
-        imageWidth: "50%",
-        audio: ""
-    },
     // ... add more posts here
 ];
 
