@@ -1,3 +1,4 @@
+// All posts newest first
 const posts = [
     {
         title: "Hello",
@@ -10,16 +11,16 @@ const posts = [
         audio: "" // optional MP3 file path
     },
     {
-        title: "No Image Post",
-        date: "2025-11-21 12:00",
-        text: "This post has no image, only text.",
+        title: "Second Post",
+        date: "2025-11-19 14:00",
+        text: "Text-only post example. No image here.",
         image: "",
         textAboveImage: true,
-        textSize: "1.2em",
-        imageWidth: "",
+        textSize: "1.1em",
+        imageWidth: "50%",
         audio: ""
     },
-    // Add more posts here
+    // ... add more posts here
 ];
 
 const postsPerPage = 5;
@@ -38,23 +39,21 @@ function renderPosts() {
         const section = document.createElement("section");
         section.className = "post";
 
-        let postHTML = "";
-        if (post.textAboveImage) {
-            postHTML += `<p style="font-size:${post.textSize}">${post.text}</p>`;
-            if(post.image) postHTML += `<img src="${post.image}" class="dynamic-img" style="width:${post.imageWidth};" alt="${post.title}">`;
+        let contentHTML = "";
+        if(post.textAboveImage) {
+            contentHTML += `<p style="font-size:${post.textSize}">${post.text}</p>`;
+            if(post.image) contentHTML += `<img src="${post.image}" style="width:${post.imageWidth}" alt="${post.title}">`;
         } else {
-            if(post.image) postHTML += `<img src="${post.image}" class="dynamic-img" style="width:${post.imageWidth};" alt="${post.title}">`;
-            postHTML += `<p style="font-size:${post.textSize}">${post.text}</p>`;
+            if(post.image) contentHTML += `<img src="${post.image}" style="width:${post.imageWidth}" alt="${post.title}">`;
+            contentHTML += `<p style="font-size:${post.textSize}">${post.text}</p>`;
         }
 
-        if(post.audio) postHTML += `<audio controls src="${post.audio}" style="margin-top:0.5em;"></audio>`;
+        if(post.audio) contentHTML += `<audio controls src="${post.audio}"></audio>`;
 
         section.innerHTML = `
-            <div class="post-content">
-                <h2>${post.title}</h2>
-                <p class="datetime">${post.date}</p>
-                ${postHTML}
-            </div>
+            <h2>${post.title}</h2>
+            <p class="datetime">${post.date}</p>
+            ${contentHTML}
         `;
 
         container.appendChild(section);
@@ -68,7 +67,7 @@ function renderPagination() {
     pagination.innerHTML = "";
 
     // Previous arrow
-    if (currentPage > 1) {
+    if(currentPage > 1) {
         const prev = document.createElement("a");
         prev.href = "#";
         prev.textContent = "<";
@@ -77,17 +76,17 @@ function renderPagination() {
     }
 
     // Page numbers
-    for (let i = 1; i <= totalPages; i++) {
+    for(let i = 1; i <= totalPages; i++) {
         const pageLink = document.createElement("a");
         pageLink.href = "#";
         pageLink.textContent = i;
-        pageLink.className = i === currentPage ? "current-page" : "";
+        pageLink.className = i === currentPage ? "current" : "";
         pageLink.onclick = (e) => { e.preventDefault(); currentPage = i; renderPosts(); };
         pagination.appendChild(pageLink);
     }
 
     // Next arrow
-    if (currentPage < totalPages) {
+    if(currentPage < totalPages) {
         const next = document.createElement("a");
         next.href = "#";
         next.textContent = ">";
@@ -96,4 +95,5 @@ function renderPagination() {
     }
 }
 
+// Initial render
 renderPosts();
