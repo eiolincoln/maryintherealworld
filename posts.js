@@ -1,5 +1,16 @@
 const posts = [
     {
+        title: "hoooly poop Ninajirachi just won ARIAs Best Solo Artist",
+        date: "20/11/2025 9:14",
+        content: [
+            { type: "text", value: "this is super f (my computer, cuz no 1 in the World knows me Better) late but", size: "1em" },
+            { type: "image", value:"images/AriaAwards2025-LiveShow-VasiliPapathanasopoulos-Ninajirachi-3-6-scaled.jpg", width: "50%" },
+            { type: "text", value: "she sniped the mother bullet into john f cuntedys head", size: "1em" },
+            { type: "image", value:"images/ADiscordNinajirachiQueen.png", width: "50%" },
+            { type: "text", value: "gosh i wish listened to her music way earlier i had added f☆ck my computer in  my playlist on 11th June 2025 i should've listened earlier maybe could've got her on my Spotify Wrapped but it's too late already", size: "1em" },
+        ]
+    },
+    {
         title: "",
         date: "20/11/2025 9:14",
         content: [
