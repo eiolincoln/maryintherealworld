@@ -31,7 +31,7 @@ const posts = [
         audio: "audio/sample.mp3" // optional audio
     },
     {
-        title: "Second Post",
+        title: "Fourth Post",
         date: "2025-11-19 14:00",
         text: "Text-only post example. No image here.",
         image: "",              // no image
@@ -41,7 +41,7 @@ const posts = [
         audio: ""
     },
     {
-        title: "Second Post",
+        title: "Fifth Post",
         date: "2025-11-19 14:00",
         text: "Text-only post example. No image here.",
         image: "",              // no image
@@ -51,7 +51,7 @@ const posts = [
         audio: ""
     },
     {
-        title: "Second Post",
+        title: "Sixth Post",
         date: "2025-11-19 14:00",
         text: "Text-only post example. No image here.",
         image: "",              // no image
@@ -61,7 +61,7 @@ const posts = [
         audio: ""
     },
     {
-        title: "Second Post",
+        title: "Seventh Post",
         date: "2025-11-19 14:00",
         text: "Text-only post example. No image here.",
         image: "",              // no image
@@ -71,7 +71,7 @@ const posts = [
         audio: ""
     },
     {
-        title: "Second Post",
+        title: "Eightn Post",
         date: "2025-11-19 14:00",
         text: "Text-only post example. No image here.",
         image: "",              // no image
@@ -81,7 +81,7 @@ const posts = [
         audio: ""
     },
     {
-        title: "Second Post",
+        title: "Ninth Post",
         date: "2025-11-19 14:00",
         text: "Text-only post example. No image here.",
         image: "",              // no image
@@ -91,7 +91,7 @@ const posts = [
         audio: ""
     },
     {
-        title: "Second Post",
+        title: "Tenth Post",
         date: "2025-11-19 14:00",
         text: "Text-only post example. No image here.",
         image: "",              // no image
