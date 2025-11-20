@@ -1,7 +1,7 @@
 const posts = [
     {
         title: "hoooly poop Ninajirachi just won ARIAs Best Solo Artist",
-        date: "20/11/2025 9:14",
+        date: "20/11/2025 11:14",
         content: [
             { type: "text", value: "this is super f (my computer, cuz no 1 in the World knows me Better) late but", size: "1em" },
             { type: "image", value:"images/AriaAwards2025-LiveShow-VasiliPapathanasopoulos-Ninajirachi-3-6-scaled.jpg", width: "50%" },
