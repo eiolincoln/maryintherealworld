@@ -55,6 +55,8 @@ const postsPerPage = 5;
 let currentPage = 1;
 const totalPages = Math.ceil(posts.length / postsPerPage);
 
+let fixedImage = null;
+
 function renderPosts() {
     const container = document.getElementById("posts-container");
     container.innerHTML = "";
@@ -63,7 +65,7 @@ function renderPosts() {
     const end = start + postsPerPage;
     const pagePosts = posts.slice(start, end);
 
-    pagePosts.forEach(post => {
+    pagePosts.forEach((post, index) => {
         const postWrapper = document.createElement("div");
         postWrapper.className = "post-container";
 
@@ -75,14 +77,6 @@ function renderPosts() {
         date.className = "datetime";
         date.textContent = post.date;
         postWrapper.appendChild(date);
-
-        if (post.image) {
-            const img = document.createElement("img");
-            img.src = post.image;
-            img.style.width = post.imageWidth;
-            img.className = "sticky-image";
-            postWrapper.appendChild(img);
-        }
 
         const contentWrapper = document.createElement("div");
         contentWrapper.className = "post-content";
@@ -102,39 +96,37 @@ function renderPosts() {
         }
 
         postWrapper.appendChild(contentWrapper);
+
         container.appendChild(postWrapper);
     });
 
-    renderPagination();
+    if (!fixedImage) {
+        fixedImage = document.createElement("img");
+        fixedImage.className = "fixed-image";
+        fixedImage.style.display = "none";
+        document.body.appendChild(fixedImage);
+    }
+
+    window.addEventListener("scroll", updateFixedImage);
 }
 
-function renderPagination() {
-    const pagination = document.getElementById("pagination");
-    pagination.innerHTML = "";
+function updateFixedImage() {
+    const postContainers = document.querySelectorAll(".post-container");
+    let current = null;
 
-    if (currentPage > 1) {
-        const prev = document.createElement("a");
-        prev.href = "#";
-        prev.textContent = "<";
-        prev.onclick = e => { e.preventDefault(); currentPage--; renderPosts(); };
-        pagination.appendChild(prev);
-    }
+    postContainers.forEach(post => {
+        const rect = post.getBoundingClientRect();
+        if (rect.top <= 0) {
+            const img = post.querySelector("img");
+            if (img) current = img.src;
+        }
+    });
 
-    for (let i = 1; i <= totalPages; i++) {
-        const pageLink = document.createElement("a");
-        pageLink.href = "#";
-        pageLink.textContent = i;
-        pageLink.className = i === currentPage ? "current" : "";
-        pageLink.onclick = e => { e.preventDefault(); currentPage = i; renderPosts(); };
-        pagination.appendChild(pageLink);
-    }
-
-    if (currentPage < totalPages) {
-        const next = document.createElement("a");
-        next.href = "#";
-        next.textContent = ">";
-        next.onclick = e => { e.preventDefault(); currentPage++; renderPosts(); };
-        pagination.appendChild(next);
+    if (current) {
+        fixedImage.src = current;
+        fixedImage.style.display = "block";
+    } else {
+        fixedImage.style.display = "none";
     }
 }
 
