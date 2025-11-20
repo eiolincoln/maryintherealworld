@@ -6,7 +6,7 @@ const posts = [
         image: "images/ILoveMyComputer.jpg",
         textAboveImage: true,
         textSize: "1em",
-        imageWidth: "100%",
+        imageWidth: "10%",
         audio: "" // optional MP3 file path
     },
     // ...add more posts here
