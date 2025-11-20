@@ -5,16 +5,16 @@ const posts = [
         date: "2025-11-20 05:39",
         text: "Been listening to I Love My Computer by Ninajirachi.<br>Favourite: Delete",
         image: "images/ILoveMyComputer.jpg",
-        textAboveImage: true,
+        textAboveImage: true,   // text above or below the image
         textSize: "1em",
         imageWidth: "40%",
-        audio: "" // optional MP3 file path
+        audio: ""               // optional MP3 file path
     },
     {
         title: "Second Post",
         date: "2025-11-19 14:00",
         text: "Text-only post example. No image here.",
-        image: "",
+        image: "",              // no image
         textAboveImage: true,
         textSize: "1.1em",
         imageWidth: "50%",
@@ -23,42 +23,12 @@ const posts = [
     {
         title: "Third Post",
         date: "2025-11-19 14:00",
-        text: "Text-only post example. No image here.",
+        text: "This one has audio only.",
         image: "",
         textAboveImage: true,
         textSize: "1.1em",
         imageWidth: "50%",
-        audio: ""
-    },
-    {
-        title: "Fourth Post",
-        date: "2025-11-19 14:00",
-        text: "Text-only post example. No image here.",
-        image: "",
-        textAboveImage: true,
-        textSize: "1.1em",
-        imageWidth: "50%",
-        audio: ""
-    },
-    {
-        title: "Fifth Post",
-        date: "2025-11-19 14:00",
-        text: "Text-only post example. No image here.",
-        image: "",
-        textAboveImage: true,
-        textSize: "1.1em",
-        imageWidth: "50%",
-        audio: ""
-    },
-    {
-        title: "Sixth Post",
-        date: "2025-11-19 14:00",
-        text: "Text-only post example. No image here.",
-        image: "",
-        textAboveImage: true,
-        textSize: "1.1em",
-        imageWidth: "50%",
-        audio: ""
+        audio: "audio/sample.mp3" // optional audio
     },
     // ... add more posts here
 ];
@@ -69,7 +39,7 @@ const totalPages = Math.ceil(posts.length / postsPerPage);
 
 function renderPosts() {
     const container = document.getElementById("posts-container");
-    container.innerHTML = "";
+    container.innerHTML = ""; // clear old posts
 
     const start = (currentPage - 1) * postsPerPage;
     const end = start + postsPerPage;
@@ -80,15 +50,20 @@ function renderPosts() {
         section.className = "post";
 
         let contentHTML = "";
+
+        // Text above image
         if(post.textAboveImage) {
-            contentHTML += `<p style="font-size:${post.textSize}">${post.text}</p>`;
+            if(post.text) contentHTML += `<p style="font-size:${post.textSize}">${post.text}</p>`;
             if(post.image) contentHTML += `<img src="${post.image}" style="width:${post.imageWidth}" alt="${post.title}">`;
-        } else {
+        } 
+        // Image above text
+        else {
             if(post.image) contentHTML += `<img src="${post.image}" style="width:${post.imageWidth}" alt="${post.title}">`;
-            contentHTML += `<p style="font-size:${post.textSize}">${post.text}</p>`;
+            if(post.text) contentHTML += `<p style="font-size:${post.textSize}">${post.text}</p>`;
         }
 
-        if(post.audio) contentHTML += `<audio controls src="${post.audio}"></audio>`;
+        // Optional audio player
+        if(post.audio) contentHTML += `<audio controls src="${post.audio}" style="width:100%; margin-top: 0.5em;"></audio>`;
 
         section.innerHTML = `
             <h2>${post.title}</h2>
@@ -121,6 +96,9 @@ function renderPagination() {
         pageLink.href = "#";
         pageLink.textContent = i;
         pageLink.className = i === currentPage ? "current" : "";
+        pageLink.style.color = "black";        // always black
+        pageLink.style.textDecoration = i === currentPage ? "none" : "underline";
+        pageLink.style.fontWeight = i === currentPage ? "bold" : "normal";
         pageLink.onclick = (e) => { e.preventDefault(); currentPage = i; renderPosts(); };
         pagination.appendChild(pageLink);
     }
