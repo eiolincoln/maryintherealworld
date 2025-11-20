@@ -7,85 +7,82 @@
 
 body {
     font-family: Arial, sans-serif;
-    background: #ffffff;
-    color: #111;
+    background: #fff;
+    color: #000;
+    line-height: 1.5;
 }
 
-/* HEADER */
-header {
-    padding: 2em;
-    text-align: left;
-}
-
-header h1 {
-    margin: 0;
-    font-size: 2em;
-}
-
-header h1 span {
-    display: inline-block;
-    margin: 0 0.2em;
-}
-
-/* NAVIGATION — VERTICAL LIKE BEFORE */
+/* NAVIGATION ON SEPARATE LINES + UNDERLINE */
 nav {
-    margin-top: 0.5em;
     display: block;
+    margin-bottom: 2em;
 }
 
 nav a {
     display: block;
     text-decoration: underline;
-    text-transform: lowercase;
     color: black;
-    font-weight: bold;
     margin-bottom: 0.5em;
 }
 
-/* MAIN CONTENT ON LEFT SIDE */
+/* ALWAYS LEFT-ALIGNED PAGES */
+header,
 main {
-    padding: 2em;
+    padding: 1.5em 2em;
     text-align: left;
-    width: auto;
 }
 
-/* POSTS CONTAINER */
-#posts-container {
-    margin-left: 2em;
-    margin-right: 2em;
-    text-align: left;
+main p,
+main h2 {
+    background: white;
+    display: inline-block;
 }
 
 /* POSTS */
 .post {
     margin-bottom: 4em;
+    position: relative;
 }
 
-/* DATES */
-.datetime {
-    font-size: 0.8em;
-    color: #666;
-    display: block;
-    margin-bottom: 0.5em;
-}
-
-/* STICKY IMAGE SETUP */
-.post img {
-    display: block;
-    width: 100%;
-    margin: 1em 0;
-}
-
-.sticky-top {
-    position: fixed;
+/* PERMANENT TOP IMAGE (FIRST IMAGE) */
+.post img:first-child {
+    position: sticky;
     top: 0;
-    left: 0;
     width: 100%;
     z-index: 1;
 }
 
-.overlay-img {
+/* OVERLAY IMAGES ON TOP */
+.post img:not(:first-child) {
+    width: 100%;
+    display: block;
+    margin-top: 1em;
     position: sticky;
     top: 0;
-    width: 100%;
+}
+
+/* Automatically raise each further image */
+.post img:nth-child(2) { z-index: 2; }
+.post img:nth-child(3) { z-index: 3; }
+.post img:nth-child(4) { z-index: 4; }
+.post img:nth-child(5) { z-index: 5; }
+.post img:nth-child(6) { z-index: 6; }
+.post img:nth-child(7) { z-index: 7; }
+.post img:nth-child(8) { z-index: 8; }
+.post img:nth-child(9) { z-index: 9; }
+.post img:nth-child(10) { z-index: 10; }
+
+.post h2 {
+    margin-bottom: 0;
+}
+
+.post .datetime {
+    margin-top: 0.2em;
+    display: block;
+    font-size: 0.9em;
+    color: #555;
+}
+
+.post p {
+    margin-top: 1em;
 }
