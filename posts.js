@@ -1,4 +1,3 @@
-// All posts newest first
 const posts = [
     {
         title: "inventions and ideas",
@@ -41,9 +40,9 @@ const posts = [
         audio: "audio/sample.mp3"
     },
     {
-        title: "Second Post",
+        title: "Fourth Post",
         date: "2025-11-19 14:00",
-        text: "Text-only post example. No image here.",
+        text: "Another text-only post example.",
         image: "",
         textAboveImage: true,
         textSize: "1.1em",
@@ -51,9 +50,9 @@ const posts = [
         audio: ""
     },
     {
-        title: "Second Post",
+        title: "Fifth Post",
         date: "2025-11-19 14:00",
-        text: "Text-only post example. No image here.",
+        text: "Text-only post example again.",
         image: "",
         textAboveImage: true,
         textSize: "1.1em",
@@ -62,9 +61,8 @@ const posts = [
     }
 ];
 
-const postsPerPage = 10;
+const postsPerPage = 5;
 let currentPage = 1;
-
 const totalPages = Math.ceil(posts.length / postsPerPage);
 
 function renderPosts() {
@@ -75,52 +73,48 @@ function renderPosts() {
     const end = start + postsPerPage;
     const pagePosts = posts.slice(start, end);
 
-    pagePosts.forEach(post => {
+    pagePosts.forEach((post, index) => {
+        const postWrapper = document.createElement("div");
+        postWrapper.className = "post-container";
+
         const title = document.createElement("h2");
         title.textContent = post.title;
-        container.appendChild(title);
+        postWrapper.appendChild(title);
 
         const date = document.createElement("p");
         date.className = "datetime";
         date.textContent = post.date;
-        container.appendChild(date);
+        postWrapper.appendChild(date);
 
-        if (post.textAboveImage) {
-            addText(container, post);
-            addImage(container, post);
-        } else {
-            addImage(container, post);
-            addText(container, post);
+        if (post.image) {
+            const img = document.createElement("img");
+            img.src = post.image;
+            img.style.width = post.imageWidth;
+            postWrapper.appendChild(img);
+        }
+
+        const contentWrapper = document.createElement("div");
+        contentWrapper.className = "post-content";
+
+        if (post.text) {
+            const p = document.createElement("p");
+            p.innerHTML = post.text;
+            p.style.fontSize = post.textSize;
+            contentWrapper.appendChild(p);
         }
 
         if (post.audio) {
             const audio = document.createElement("audio");
             audio.controls = true;
             audio.src = post.audio;
-            container.appendChild(audio);
+            contentWrapper.appendChild(audio);
         }
 
-        const spacer = document.createElement("div");
-        spacer.style.height = "4em";
-        container.appendChild(spacer);
+        postWrapper.appendChild(contentWrapper);
+        container.appendChild(postWrapper);
     });
 
     renderPagination();
-}
-
-function addText(container, post) {
-    const p = document.createElement("p");
-    p.innerHTML = post.text;
-    p.style.fontSize = post.textSize;
-    container.appendChild(p);
-}
-
-function addImage(container, post) {
-    if (!post.image) return;
-    const img = document.createElement("img");
-    img.src = post.image;
-    img.style.width = post.imageWidth;
-    container.appendChild(img);
 }
 
 function renderPagination() {
