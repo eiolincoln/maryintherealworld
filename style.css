@@ -5,7 +5,6 @@
     box-sizing: border-box;
 }
 
-/* BODY */
 body {
     font-family: Arial, sans-serif;
     background: #fff;
@@ -13,70 +12,52 @@ body {
     line-height: 1.5;
 }
 
-/* HEADER */
-header {
-    padding: 1.5em 2em;  /* aligns to left */
+/* HEADER + MAIN ALWAYS ON LEFT */
+header, main {
+    padding: 1.5em 2em;
     text-align: left;
 }
 
-header h1 {
-    font-size: 2rem;
-    font-weight: bold;
+main p, main h2 {
+    background: white;  /* so text never overlaps images */
+    display: inline-block;
+    padding: 0.25em 0;
 }
 
-header nav {
-    margin-top: 0.5em;
-}
-
-header nav a {
-    margin-right: 1em;
-    text-decoration: none;
-    color: black;
-    font-size: 1rem;
-}
-
-/* MAIN CONTENT */
-main {
-    padding: 1.5em 2em;   /* keeps everything flush left */
-    text-align: left;
-}
-
-main h2 {
-    margin-bottom: 0.5em;
-    text-align: left;
-}
-
-main p {
-    text-align: left;
-}
-
-/* POST LIST (home/index.html) */
+/* POSTS */
 .post {
     margin-bottom: 4em;
-    width: 100%;
 }
 
-/* --- STICKY / EERILYREALISTIC STYLE IMAGES --- */
+/* IMAGE WRAPPER */
 .post-image-wrapper {
     position: relative;
-    width: 100%;
-    overflow: visible;
 }
 
-/* Sticky images stacked — newest overlaps */
-.post img {
+/* PERMANENT TOP IMAGE */
+.post img:first-child {
+    position: fixed;    /* stays forever */
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 1;         /* bottom image in stack */
+}
+
+/* OTHER IMAGES — scroll and overlay */
+.post img:not(:first-child) {
     display: block;
     width: 100%;
-    position: sticky;
-    top: 0;
-    z-index: 1;
-    margin-bottom: 1em;
+    position: relative; 
+    margin-top: 1em;
 }
 
-/* If a post has multiple images, stack them */
-.post img:nth-child(2) { z-index: 2; }
-.post img:nth-child(3) { z-index: 3; }
-.post img:nth-child(4) { z-index: 4; }
+/* Automatically raise later images in z-index */
+.post img:nth-child(2) { z-index: 2; position: sticky; top: 0; }
+.post img:nth-child(3) { z-index: 3; position: sticky; top: 0; }
+.post img:nth-child(4) { z-index: 4; position: sticky; top: 0; }
+.post img:nth-child(5) { z-index: 5; position: sticky; top: 0; }
+
+/* And so on — but this is usually enough */
 
 /* PARAGRAPHS IN POSTS */
 .post p {
