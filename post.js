@@ -6,7 +6,7 @@ const posts = [
             { type: "text", value: "this is super f (my computer, cuz no 1 in the World knows me Better) late but", size: "1em" },
             { type: "image", value:"images/AriaAwards2025-LiveShow-VasiliPapathanasopoulos-Ninajirachi-3-6-scaled.jpg", width: "50%" },
             { type: "text", value: "she sniped the mother bullet into john f cuntedys head", size: "1em" },
-            { type: "image", value:"images/DiscordNinajirachiQueen.png", width: "50%" },
+            { type: "image", value:"images/DiscordNinajirachiQueen.png", width: "25%" },
             { type: "text", value: "gosh i wish listened to her music way earlier...", size: "1em" },
         ]
     },
