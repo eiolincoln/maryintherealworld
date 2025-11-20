@@ -55,8 +55,6 @@ const postsPerPage = 5;
 let currentPage = 1;
 const totalPages = Math.ceil(posts.length / postsPerPage);
 
-let lastStickySrc = null;
-
 function renderPosts() {
     const container = document.getElementById("posts-container");
     container.innerHTML = "";
@@ -68,19 +66,6 @@ function renderPosts() {
     pagePosts.forEach(post => {
         const postWrapper = document.createElement("div");
         postWrapper.className = "post-container";
-
-        const stickyWrapper = document.createElement("div");
-        stickyWrapper.className = "sticky-wrapper";
-
-        if (post.image) {
-            const img = document.createElement("img");
-            img.src = post.image;
-            img.style.width = post.imageWidth;
-            img.className = "sticky-image";
-            stickyWrapper.appendChild(img);
-        }
-
-        postWrapper.appendChild(stickyWrapper);
 
         const title = document.createElement("h2");
         title.textContent = post.title;
@@ -96,7 +81,7 @@ function renderPosts() {
 
         if (post.text) {
             const p = document.createElement("p");
-            p.innerHTML = post.text;
+            p.innerHTML = post.text.replace(/ /g, "&nbsp;"); // prevent blank space highlighting
             p.style.fontSize = post.textSize;
             contentWrapper.appendChild(p);
         }
@@ -111,8 +96,8 @@ function renderPosts() {
         postWrapper.appendChild(contentWrapper);
         container.appendChild(postWrapper);
     });
-
     renderPagination();
+    updateStickyImages();
 }
 
 function renderPagination() {
@@ -145,23 +130,30 @@ function renderPagination() {
     }
 }
 
-window.addEventListener("scroll", () => {
-    const stickyImages = document.querySelectorAll(".sticky-image");
-    lastStickySrc = lastStickySrc || (stickyImages.length > 0 ? stickyImages[0].src : null);
-
-    for (let img of stickyImages) {
-        const rect = img.getBoundingClientRect();
-        if (rect.top <= 0) {
-            lastStickySrc = img.src;
-            img.style.visibility = "visible";
-        } else {
-            img.style.visibility = "hidden";
-        }
+function updateStickyImages() {
+    let stickyImg = document.querySelector(".sticky-image");
+    if (!stickyImg) {
+        stickyImg = document.createElement("img");
+        stickyImg.className = "sticky-image";
+        document.body.appendChild(stickyImg);
     }
 
-    stickyImages.forEach(img => {
-        if (lastStickySrc) img.src = lastStickySrc;
+    const postImages = document.querySelectorAll(".post-container img");
+    let currentSrc = "";
+    postImages.forEach(img => {
+        const rect = img.getBoundingClientRect();
+        if (rect.top <= 0) {
+            currentSrc = img.src;
+        }
     });
-});
 
+    if (currentSrc) {
+        stickyImg.src = currentSrc;
+        stickyImg.style.display = "block";
+    } else {
+        stickyImg.style.display = "none";
+    }
+}
+
+window.addEventListener("scroll", updateStickyImages);
 renderPosts();
