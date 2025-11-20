@@ -53,11 +53,9 @@ function renderPosts() {
         const postWrapper = document.createElement("div");
         postWrapper.className = "post-container";
 
-        if(post.title) {
-            const title = document.createElement("h2");
-            title.textContent = post.title;
-            postWrapper.appendChild(title);
-        }
+        const title = document.createElement("h2");
+        title.textContent = post.title;
+        postWrapper.appendChild(title);
 
         const date = document.createElement("p");
         date.className = "datetime";
@@ -68,27 +66,23 @@ function renderPosts() {
         contentWrapper.className = "post-content";
 
         post.content.forEach(block => {
-            if(block.type === "text") {
+            if (block.type === "text") {
                 const p = document.createElement("p");
-                p.innerHTML = block.value.replace(/ /g, "&nbsp;");
+                p.innerHTML = block.value;
                 p.style.fontSize = block.size || "1em";
                 contentWrapper.appendChild(p);
-            } else if(block.type === "image") {
+            } else if (block.type === "image") {
                 const img = document.createElement("img");
                 img.src = block.value;
-                img.dataset.width = block.width || "100%";
-                img.className = "post-image";
-                img.style.width = img.dataset.width;
+                img.style.width = block.width || "100%";
+                img.dataset.sticky = "true";
                 contentWrapper.appendChild(img);
-            } else if(block.type === "audio") {
-                const audioContainer = document.createElement("div");
-                audioContainer.className = "audio-container";
+            } else if (block.type === "audio") {
                 const audio = document.createElement("audio");
                 audio.controls = true;
                 audio.src = block.value;
                 audio.style.width = "100%";
-                audioContainer.appendChild(audio);
-                contentWrapper.appendChild(audioContainer);
+                contentWrapper.appendChild(audio);
             }
         });
 
@@ -96,10 +90,9 @@ function renderPosts() {
         container.appendChild(postWrapper);
     });
 
-    if(!fixedImage) {
+    if (!fixedImage) {
         fixedImage = document.createElement("img");
         fixedImage.className = "fixed-image";
-        fixedImage.style.display = "none";
         document.body.appendChild(fixedImage);
     }
 
@@ -107,17 +100,18 @@ function renderPosts() {
 }
 
 function updateFixedImage() {
-    const images = document.querySelectorAll(".post-image");
-    let lastVisible = null;
+    const stickyImages = document.querySelectorAll('img[data-sticky="true"]');
+    let current = null;
 
-    images.forEach(img => {
+    stickyImages.forEach(img => {
         const rect = img.getBoundingClientRect();
-        if(rect.top <= 0) lastVisible = img;
+        if (rect.top <= 0) {
+            current = img.src;
+        }
     });
 
-    if(lastVisible) {
-        fixedImage.src = lastVisible.src;
-        fixedImage.style.width = lastVisible.dataset.width;
+    if (current) {
+        fixedImage.src = current;
         fixedImage.style.display = "block";
     } else {
         fixedImage.style.display = "none";
