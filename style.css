@@ -49,11 +49,20 @@ nav a:hover {
 }
 
 /* Individual posts */
+/* Main content / posts */
+main {
+    width: 60%;           /* You can change this or remove it */
+    margin: 0;            /* Remove auto-centering */
+    padding-left: 2em;    /* Optional: small space from the wall if desired */
+    text-align: left;
+}
+
+/* Posts */
 .post {
     margin-bottom: 4em;
-    text-align: left;  /* ensures text and images stay left-aligned */
-    padding-left: 0;   /* remove extra padding if present */
+    text-align: left;
 }
+
 
 .post img {
     display: block;
