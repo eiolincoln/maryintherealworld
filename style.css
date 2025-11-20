@@ -1,7 +1,17 @@
-/* Header & nav flush left */
+/* Reset & base */
+body {
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    background-color: #ffffff;
+    color: #111;
+    margin: 0;
+    padding: 0;
+}
+
+/* Header & nav */
 header {
     text-align: left;
-    padding: 0; /* remove padding to stick to the left wall */
+    padding: 2em; /* ← this was keeping it away from the left wall */
+    background: #fff;
 }
 
 header h1 {
@@ -11,7 +21,7 @@ header h1 {
 
 header h1 span {
     display: inline-block;
-    margin: 0 0.2em; /* optional spacing between words */
+    margin: 0 0.2em;
 }
 
 nav {
@@ -27,17 +37,17 @@ nav a {
     margin-bottom: 0.5em;
 }
 
-/* Main content flush left */
+/* Main content / posts */
 main {
-    margin: 0;
-    padding: 0;
+    width: 60%;           /* ← this was giving a fixed width and centering */
+    margin: 0 auto;        /* ← keeps it centered */
     text-align: left;
+    padding-left: 0;      /* optional */
 }
 
-/* Posts container flush left */
 #posts-container {
-    margin: 0;
-    padding: 0;
+    margin-left: 2em;     /* ← aligns posts roughly with header/nav */
+    margin-right: 2em; 
     text-align: left;
 }
 
@@ -45,4 +55,36 @@ main {
 .post {
     margin-bottom: 4em;
     text-align: left;
+}
+
+.post img {
+    display: block;
+    margin: 1em 0;
+}
+
+.datetime {
+    font-size: 0.8em;
+    color: #666;
+}
+
+/* Pagination */
+.pagination {
+    margin-left: 2em;
+    margin-bottom: 2em;
+}
+
+.pagination a {
+    margin-right: 0.5em;
+    text-decoration: underline;
+    color: #0077cc;
+    font-weight: bold;
+}
+
+.pagination a.current {
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.pagination a:hover {
+    color: #ff5500;
 }
