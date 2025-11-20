@@ -8,7 +8,7 @@ const posts = [
         textAboveImage: true,   // text above or below the image
         textSize: "1em",
         imageWidth: "40%",
-        audio: ""               // optional MP3 file path
+        audio: "audio/Delete - Ninajirachi.mp3"               // optional MP3 file path
     },
     {
         title: "Second Post",
