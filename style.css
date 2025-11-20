@@ -1,115 +1,91 @@
-/* Reset & base */
-body {
-    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-    background-color: #ffffff;
-    color: #111;
+/* RESET */
+* {
     margin: 0;
     padding: 0;
+    box-sizing: border-box;
 }
 
-/* Header & nav */
-header {
-    text-align: left;
-    padding: 2em;
+/* BODY */
+body {
+    font-family: Arial, sans-serif;
     background: #fff;
+    color: #000;
+    line-height: 1.5;
+}
+
+/* HEADER */
+header {
+    padding: 1.5em 2em;  /* aligns to left */
+    text-align: left;
 }
 
 header h1 {
-    margin: 0;
-    font-size: 2em;
+    font-size: 2rem;
+    font-weight: bold;
 }
 
-nav {
+header nav {
     margin-top: 0.5em;
 }
 
-nav a {
-    display: block;
-    text-decoration: underline;
-    text-transform: lowercase;
-    color: #333;
-    font-weight: bold;
-    margin-bottom: 0.5em;
+header nav a {
+    margin-right: 1em;
+    text-decoration: none;
+    color: black;
+    font-size: 1rem;
 }
 
-/* Main content / posts */
-/* Main content */
+/* MAIN CONTENT */
 main {
-    margin: 0;            /* removes auto-centering */
-    padding-left: 2em;    /* optional small offset from wall */
-    padding-right: 2em;   /* optional */
-    text-align: left;     /* ensure all text is left-aligned */
-    width: auto;          /* remove any fixed width */
-}
-
-
-#posts-container {
-    margin: 0;      /* left edge touches wall */
-    width: auto;    /* do not fix width */
+    padding: 1.5em 2em;   /* keeps everything flush left */
     text-align: left;
 }
 
+main h2 {
+    margin-bottom: 0.5em;
+    text-align: left;
+}
 
-/* Individual posts */
+main p {
+    text-align: left;
+}
+
+/* POST LIST (home/index.html) */
 .post {
     margin-bottom: 4em;
-    text-align: left;
+    width: 100%;
 }
 
+/* --- STICKY / EERILYREALISTIC STYLE IMAGES --- */
+.post-image-wrapper {
+    position: relative;
+    width: 100%;
+    overflow: visible;
+}
+
+/* Sticky images stacked — newest overlaps */
 .post img {
     display: block;
-    margin: 1em 0;
-}
-
-.datetime {
-    font-size: 0.8em;
-    color: #666;
-}
-
-/* Pagination */
-.pagination {
-    margin-left: 2em;
-    margin-bottom: 2em;
-}
-
-.pagination a {
-    margin-right: 0.5em;
-    text-decoration: underline;
-    color: #0077cc;
-    font-weight: bold;
-}
-
-.pagination a.current {
-    text-decoration: none;
-    font-weight: bold;
-}
-
-.pagination a:hover {
-    color: #ff5500;
-}
-
-main p, main h2 {
-    margin-left: 0;
-    text-align: left;
-}
-
-/* Sticky / overlay images like eerilyrealistic */
-.post img {
-    display: block;
-    width: 100%;        /* default, can still override per post */
+    width: 100%;
     position: sticky;
-    top: 0;             /* sticks to top of viewport */
-    z-index: 1;         /* ensures newer images overlay older ones */
-    margin-bottom: 1em; /* spacing from text below */
+    top: 0;
+    z-index: 1;
+    margin-bottom: 1em;
 }
 
-/* Force left alignment for all main content pages */
-main {
-    margin: 0 !important;
-    padding-left: 2em; /* optional, small space from wall */
-    text-align: left !important;
+/* If a post has multiple images, stack them */
+.post img:nth-child(2) { z-index: 2; }
+.post img:nth-child(3) { z-index: 3; }
+.post img:nth-child(4) { z-index: 4; }
+
+/* PARAGRAPHS IN POSTS */
+.post p {
+    margin-top: 1em;
 }
 
-main h2, main p {
-    text-align: left !important;
+
+
+/* OPTIONAL: Remove underline on hover */
+a:hover {
+    opacity: 0.7;
 }
