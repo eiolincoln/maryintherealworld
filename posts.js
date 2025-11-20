@@ -38,7 +38,6 @@ const posts = [
 const postsPerPage = 5;
 let currentPage = 1;
 const totalPages = Math.ceil(posts.length / postsPerPage);
-
 let fixedImage = null;
 
 function renderPosts() {
@@ -49,7 +48,7 @@ function renderPosts() {
     const end = start + postsPerPage;
     const pagePosts = posts.slice(start, end);
 
-    pagePosts.forEach(post => {
+    pagePosts.forEach((post) => {
         const postWrapper = document.createElement("div");
         postWrapper.className = "post-container";
 
@@ -66,19 +65,19 @@ function renderPosts() {
         contentWrapper.className = "post-content";
 
         post.content.forEach(block => {
-            if (block.type === "text") {
+            if(block.type === "text") {
                 const p = document.createElement("p");
-                p.innerHTML = block.value.replace(/ /g, "&nbsp;");
+                p.innerHTML = block.value;
                 p.style.fontSize = block.size || "1em";
                 contentWrapper.appendChild(p);
-            } else if (block.type === "image") {
+            } else if(block.type === "image") {
                 const img = document.createElement("img");
                 img.src = block.value;
                 img.dataset.width = block.width || "100%";
                 img.className = "post-image";
                 img.style.width = img.dataset.width;
                 contentWrapper.appendChild(img);
-            } else if (block.type === "audio") {
+            } else if(block.type === "audio") {
                 const audioContainer = document.createElement("div");
                 audioContainer.className = "audio-container";
                 const audio = document.createElement("audio");
@@ -107,7 +106,7 @@ function renderPosts() {
 function updateFixedImage() {
     const images = document.querySelectorAll(".post-image");
     let currentSrc = null;
-    let scrollY = window.scrollY + 10; // small offset
+    let scrollY = window.scrollY + 10;
 
     images.forEach(img => {
         const rect = img.getBoundingClientRect();
