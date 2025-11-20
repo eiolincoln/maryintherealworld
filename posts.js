@@ -81,7 +81,7 @@ function renderPosts() {
 
         if (post.text) {
             const p = document.createElement("p");
-            p.innerHTML = post.text.replace(/ /g, "&nbsp;"); // prevent blank space highlighting
+            p.innerHTML = post.text.replace(/ /g, "&nbsp;");
             p.style.fontSize = post.textSize;
             contentWrapper.appendChild(p);
         }
@@ -95,9 +95,20 @@ function renderPosts() {
 
         postWrapper.appendChild(contentWrapper);
         container.appendChild(postWrapper);
+
+        // Add the image inside postWrapper but NOT sticky — we handle sticky globally
+        if (post.image) {
+            const img = document.createElement("img");
+            img.src = post.image;
+            img.style.width = post.imageWidth;
+            img.className = "post-image"; // just for reference
+            img.dataset.postIndex = posts.indexOf(post); // track index
+            postWrapper.appendChild(img);
+        }
     });
+
     renderPagination();
-    updateStickyImages();
+    setupStickyImage();
 }
 
 function renderPagination() {
@@ -130,7 +141,8 @@ function renderPagination() {
     }
 }
 
-function updateStickyImages() {
+// Sticky image setup
+function setupStickyImage() {
     let stickyImg = document.querySelector(".sticky-image");
     if (!stickyImg) {
         stickyImg = document.createElement("img");
@@ -138,22 +150,25 @@ function updateStickyImages() {
         document.body.appendChild(stickyImg);
     }
 
-    const postImages = document.querySelectorAll(".post-container img");
-    let currentSrc = "";
-    postImages.forEach(img => {
-        const rect = img.getBoundingClientRect();
-        if (rect.top <= 0) {
-            currentSrc = img.src;
+    const postImages = document.querySelectorAll(".post-image");
+    function updateSticky() {
+        let currentSrc = "";
+        for (let img of postImages) {
+            const rect = img.getBoundingClientRect();
+            if (rect.top <= 0) {
+                currentSrc = img.src;
+            }
         }
-    });
-
-    if (currentSrc) {
-        stickyImg.src = currentSrc;
-        stickyImg.style.display = "block";
-    } else {
-        stickyImg.style.display = "none";
+        if (currentSrc) {
+            stickyImg.src = currentSrc;
+            stickyImg.style.display = "block";
+        } else {
+            stickyImg.style.display = "none";
+        }
     }
+
+    window.addEventListener("scroll", updateSticky);
+    updateSticky();
 }
 
-window.addEventListener("scroll", updateStickyImages);
 renderPosts();
