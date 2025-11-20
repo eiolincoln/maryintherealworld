@@ -1,6 +1,6 @@
 /* style.css */
 
-/* 1. RESET & BASICS */
+/* 1. RESET */
 * {
     margin: 0;
     padding: 0;
@@ -8,98 +8,117 @@
 }
 
 body {
-    /* The classic Tumblr serif font stack */
-    font-family: "Times New Roman", Times, serif; 
-    background-color: #fcfcfc; /* Off-white background */
-    color: #333;
-    line-height: 1.4;
-    overflow-x: hidden; /* Prevents scrollbar flickering */
+    /* Reverting to the font you used first */
+    font-family: Helvetica, Arial, sans-serif; 
+    background-color: #fff;
+    color: #000;
+    line-height: 1.5;
 }
 
-/* 2. LAYOUT CONTAINER */
-/* This aligns everything to the left with specific width like the video */
-header, main, #posts-container {
-    width: 540px;       /* Fixed width for the column */
-    margin-left: 100px; /* Pushes content away from left edge */
-    padding: 0;         /* Remove default padding */
+/* 2. LAYOUT COLUMN */
+/* Keeps everything in a narrow column on the left */
+header, main {
+    width: 500px;       
+    margin-left: 50px;  /* Space from left edge */
+    padding-bottom: 100px;
 }
 
-/* 3. HEADER & NAV */
+/* 3. HEADER STYLING */
 header {
-    margin-top: 60px;
+    margin-top: 50px;
     margin-bottom: 50px;
 }
 
 h1 {
-    font-size: 28px; /* Smaller, cleaner title */
-    font-weight: normal;
+    font-size: 24px;
+    font-weight: bold; /* Bold like the first design */
     letter-spacing: -1px;
-    margin-bottom: 15px;
-    background: transparent; /* Removes your old white background */
-    padding: 0;
+    margin-bottom: 10px;
 }
 
 nav a {
-    display: inline-block; /* Puts links next to each other */
+    display: inline-block;
     margin-right: 15px;
-    color: #999;
-    text-decoration: none; /* Removes underline */
+    color: #000;
+    text-decoration: none;
+    font-weight: bold;
     font-size: 14px;
-    font-style: italic;
 }
 
 nav a:hover {
-    color: #000;
+    text-decoration: underline;
 }
 
-/* 4. POSTS STYLING */
+.header-code {
+    font-family: monospace;
+    font-size: 11px;
+    color: #888;
+    margin-top: 15px;
+    background: #f4f4f4;
+    display: inline-block;
+    padding: 2px 5px;
+}
+
+/* 4. POST STYLING */
 .post-container {
-    margin-bottom: 80px; /* Big space between posts */
-    position: relative;
-    z-index: 10; /* Keeps text above the background image */
+    margin-bottom: 100px; /* Space between posts */
 }
 
 h2 {
     font-size: 18px;
     font-weight: bold;
-    background: transparent;
-    padding: 0;
+    background: white; /* Background needed to cover sticky images */
+    display: inline-block;
+    padding-right: 10px;
+    position: relative; 
+    z-index: 10; /* Keeps text ON TOP of images */
     margin-bottom: 5px;
 }
 
 .datetime {
     font-size: 11px;
-    color: #bbb; /* Very light grey date */
-    margin-bottom: 15px;
-    font-family: Arial, sans-serif; /* Dates often look better in sans */
-    letter-spacing: 1px;
+    color: #666;
+    margin-bottom: 20px;
+    position: relative;
+    z-index: 10;
+    background: white;
+    display: inline-block;
 }
 
-/* 5. CONTENT & IMAGES */
-.post-content p {
-    font-size: 16px;
-    background: transparent; /* Removes white background */
-    padding: 0;
-    margin-bottom: 15px;
-}
-
+/* 5. THE STICKY IMAGE EFFECT */
 .post-image {
     display: block;
-    max-width: 100%;
+    width: 100%;
     height: auto;
-    margin-bottom: 15px;
+    
+    /* THIS MAKES IT STICK */
+    position: sticky;
+    top: 0;
+    
+    /* Keeps image BEHIND the text that scrolls over it */
+    z-index: 1; 
+    
+    margin-bottom: 20px;
 }
 
-/* 6. BACKGROUND IMAGE LOGIC (From your JS) */
-/* We make sure this sits behind everything */
-.fixed-image {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;     /* Cover full screen */
-    height: 100%;    /* Cover full screen */
-    object-fit: cover; /* Crop to fit */
-    z-index: -1;     /* Send to back */
-    opacity: 0.2;    /* OPTIONAL: Fades the background so text is readable */
-    pointer-events: none;
+/* 6. TEXT CONTENT */
+.post-content p {
+    font-size: 14px;
+    
+    /* White background creates the 'overlay' effect */
+    background: white; 
+    
+    /* Position relative/z-index ensures it sits ON TOP of the sticky image */
+    position: relative;
+    z-index: 10;
+    
+    margin-bottom: 15px;
+    padding: 5px 0;
+}
+
+.audio-container {
+    position: relative;
+    z-index: 10;
+    background: white;
+    margin-bottom: 15px;
 }
