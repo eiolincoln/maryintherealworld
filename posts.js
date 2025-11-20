@@ -48,25 +48,16 @@ const posts = [
         textSize: "1.1em",
         imageWidth: "50%",
         audio: ""
-    },
-    {
-        title: "Fifth Post",
-        date: "2025-11-19 14:00",
-        text: "Text-only post example again.",
-        image: "",
-        textAboveImage: true,
-        textSize: "1.1em",
-        imageWidth: "50%",
-        audio: ""
     }
 ];
 
-const postsPerPage = 10;
+const postsPerPage = 5;
 let currentPage = 1;
 const totalPages = Math.ceil(posts.length / postsPerPage);
 
 const stickyImage = document.createElement("img");
 stickyImage.className = "sticky-image";
+stickyImage.style.display = "none";
 document.body.appendChild(stickyImage);
 
 function renderPosts() {
@@ -77,7 +68,7 @@ function renderPosts() {
     const end = start + postsPerPage;
     const pagePosts = posts.slice(start, end);
 
-    pagePosts.forEach((post, index) => {
+    pagePosts.forEach(post => {
         const postWrapper = document.createElement("div");
         postWrapper.className = "post-container";
 
@@ -89,6 +80,13 @@ function renderPosts() {
         date.className = "datetime";
         date.textContent = post.date;
         postWrapper.appendChild(date);
+
+        if (post.image) {
+            const img = document.createElement("img");
+            img.src = post.image;
+            img.style.width = post.imageWidth;
+            postWrapper.appendChild(img);
+        }
 
         const contentWrapper = document.createElement("div");
         contentWrapper.className = "post-content";
@@ -147,12 +145,12 @@ function renderPagination() {
 window.addEventListener("scroll", () => {
     const postsDivs = document.querySelectorAll(".post-container");
     for (let post of postsDivs) {
-        const imgSrc = post.querySelector("img")?.src;
-        if (!imgSrc) continue;
+        const img = post.querySelector("img");
+        if (!img) continue;
 
         const rect = post.getBoundingClientRect();
-        if (rect.top <= 0 && rect.bottom >= 0) {
-            stickyImage.src = imgSrc;
+        if (rect.top <= 0 && rect.bottom > 0) {
+            stickyImage.src = img.src;
             stickyImage.style.display = "block";
             return;
         }
