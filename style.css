@@ -1,9 +1,11 @@
+/* RESET */
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
 }
 
+/* BASIC PAGE STYLE */
 body {
     font-family: Arial, sans-serif;
     background: #fff;
@@ -16,12 +18,16 @@ header, main {
     text-align: left;
 }
 
+/* TEXT BLOCKS ALWAYS ABOVE IMAGES */
 h1, h2, p {
     background: white;
     display: inline-block;
     padding: 0.2em 0.4em;
+    position: relative;
+    z-index: 20;
 }
 
+/* NAVIGATION */
 nav a {
     display: block;
     text-decoration: underline;
@@ -33,17 +39,16 @@ nav a:hover {
     opacity: 0.7;
 }
 
+/* POST CONTAINER */
 .post-container {
-    position: relative; /* needed for sticky to respect parent */
-    margin-bottom: 4em;
+    position: relative; 
+    margin-bottom: 6em;
 }
 
-.post-image {
-    display: block;
-    position: sticky;
-    top: 0;        /* sticks to top of viewport */
-    z-index: 0;    /* behind text */
-    margin-bottom: 1em;
+/* CONTENT (TEXT) ALWAYS ABOVE IMAGES */
+.post-content {
+    position: relative;
+    z-index: 20;
 }
 
 .post-content p,
@@ -52,20 +57,31 @@ nav a:hover {
     display: block;
     margin: 0.5em 0;
     padding: 0.2em 0.4em;
+    position: relative;
+    z-index: 20;
 }
 
+/* DATE STYLE */
 .datetime {
     display: block;
     margin-top: 0.2em;
     color: #555;
     font-size: 0.9em;
+    position: relative;
+    z-index: 20;
 }
 
+/* STICKY IMAGE BEHAVIOR */
 .post-image {
     display: block;
-    z-index: 0;
+    width: 100%;
+    position: sticky;
+    top: 0;
+    z-index: 0;  /* stays behind text */
+    margin: 0 auto 1em auto;
 }
 
+/* OBSOLETE — fixed-image not used anymore but kept if needed */
 .fixed-image {
     position: fixed;
     top: 0;
