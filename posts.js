@@ -1,8 +1,8 @@
 const posts = [
     {
-        title: "Hello",
+        title: "first post evarrrrrrr",
         date: "2025-11-20 05:39",
-        text: "Been listening to I Love My Computer by Ninajirachi.<br>Favourite: Delete",
+        text: "been listening to I Love My Computer by Ninajirachi.<br>Favourite: Delete",
         image: "images/ILoveMyComputer.jpg",
         textAboveImage: true,
         textSize: "1em",
