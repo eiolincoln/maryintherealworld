@@ -59,7 +59,14 @@ nav a:hover {
 }
 
 .post-image {
-    max-width: 50%;
     display: block;
     z-index: 0;
+}
+
+.fixed-image {
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 0;
+    pointer-events: none;
 }
