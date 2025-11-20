@@ -39,7 +39,7 @@ const totalPages = Math.ceil(posts.length / postsPerPage);
 
 function renderPosts() {
     const container = document.getElementById("posts-container");
-    container.innerHTML = ""; // clear old posts
+    container.innerHTML = "";
 
     const start = (currentPage - 1) * postsPerPage;
     const end = start + postsPerPage;
@@ -52,18 +52,24 @@ function renderPosts() {
         let contentHTML = "";
 
         // Text above image
-        if(post.textAboveImage) {
-            if(post.text) contentHTML += `<p style="font-size:${post.textSize}">${post.text}</p>`;
-            if(post.image) contentHTML += `<img src="${post.image}" style="width:${post.imageWidth}" alt="${post.title}">`;
+        if (post.textAboveImage) {
+            contentHTML += `<p style="font-size:${post.textSize}">${post.text}</p>`;
+            if (post.image) {
+                contentHTML += `<img src="${post.image}" style="width:${post.imageWidth}" alt="${post.title}">`;
+            }
         } 
-        // Image above text
+        // Text below image
         else {
-            if(post.image) contentHTML += `<img src="${post.image}" style="width:${post.imageWidth}" alt="${post.title}">`;
-            if(post.text) contentHTML += `<p style="font-size:${post.textSize}">${post.text}</p>`;
+            if (post.image) {
+                contentHTML += `<img src="${post.image}" style="width:${post.imageWidth}" alt="${post.title}">`;
+            }
+            contentHTML += `<p style="font-size:${post.textSize}">${post.text}</p>`;
         }
 
-        // Optional audio player
-        if(post.audio) contentHTML += `<audio controls src="${post.audio}" style="width:100%; margin-top: 0.5em;"></audio>`;
+        // Optional audio
+        if (post.audio) {
+            contentHTML += `<audio controls src="${post.audio}" style="margin:0.5em 0;"></audio>`;
+        }
 
         section.innerHTML = `
             <h2>${post.title}</h2>
@@ -76,6 +82,7 @@ function renderPosts() {
 
     renderPagination();
 }
+
 
 function renderPagination() {
     const pagination = document.getElementById("pagination");
