@@ -103,3 +103,13 @@ main p, main h2 {
     margin-bottom: 1em; /* spacing from text below */
 }
 
+/* Force left alignment for all main content pages */
+main {
+    margin: 0 !important;
+    padding-left: 2em; /* optional, small space from wall */
+    text-align: left !important;
+}
+
+main h2, main p {
+    text-align: left !important;
+}
