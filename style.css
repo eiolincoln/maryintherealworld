@@ -24,6 +24,7 @@ h1, h2 {
 
 p {
     display: inline-block;
+    background: white;
     padding: 0.2em 0.4em;
 }
 
@@ -47,11 +48,13 @@ nav a:hover {
     margin-bottom: 4em;
 }
 
+.sticky-wrapper {
+    position: relative;
+}
+
 .sticky-image {
-    position: fixed;
+    position: sticky;
     top: 0;
-    left: 0;
-    width: 100%;
     z-index: 0;
 }
 
@@ -69,7 +72,6 @@ nav a:hover {
 }
 
 .post img {
-    width: 100%;
     display: block;
 }
 
