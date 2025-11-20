@@ -1,8 +1,9 @@
+// All posts: newest first
 const posts = [
     {
-        title: "first post evarrrrrrr",
+        title: "Hello",
         date: "2025-11-20 05:39",
-        text: "been listening to I Love My Computer by Ninajirachi<br>Favourite: Delete",
+        text: "Been listening to I Love My Computer by Ninajirachi.<br>Favourite: Delete",
         image: "images/ILoveMyComputer.jpg",
         textAboveImage: true,
         textSize: "1em",
@@ -10,169 +11,29 @@ const posts = [
         audio: "" // optional MP3 file path
     },
     {
-        title: "first post evarrrrrrr",
-        date: "2025-11-20 05:39",
-        text: "been listening to I Love My Computer by Ninajirachi<br>Favourite: Delete",
-        image: "images/ILoveMyComputer.jpg",
-        textAboveImage: true,
+        title: "Post 9",
+        date: "2025-11-19 14:00",
+        text: "Text for Post 9",
+        image: "images/image9.jpg",
+        textAboveImage: false,
         textSize: "1em",
-        imageWidth: "40%",
-        audio: "" // optional MP3 file path
+        imageWidth: "60%",
+        audio: ""
     },
     {
-        title: "first post evarrrrrrr",
-        date: "2025-11-20 05:39",
-        text: "been listening to I Love My Computer by Ninajirachi<br>Favourite: Delete",
-        image: "images/ILoveMyComputer.jpg",
+        title: "Post 8",
+        date: "2025-11-18 09:30",
+        text: "Text for Post 8",
+        image: "images/image8.jpg",
         textAboveImage: true,
-        textSize: "1em",
-        imageWidth: "40%",
-        audio: "" // optional MP3 file path
+        textSize: "0.9em",
+        imageWidth: "50%",
+        audio: ""
     },
-    {
-        title: "first post evarrrrrrr",
-        date: "2025-11-20 05:39",
-        text: "been listening to I Love My Computer by Ninajirachi<br>Favourite: Delete",
-        image: "images/ILoveMyComputer.jpg",
-        textAboveImage: true,
-        textSize: "1em",
-        imageWidth: "40%",
-        audio: "" // optional MP3 file path
-    },
-    {
-        title: "first post evarrrrrrr",
-        date: "2025-11-20 05:39",
-        text: "been listening to I Love My Computer by Ninajirachi<br>Favourite: Delete",
-        image: "images/ILoveMyComputer.jpg",
-        textAboveImage: true,
-        textSize: "1em",
-        imageWidth: "40%",
-        audio: "" // optional MP3 file path
-    },
-    {
-        title: "first post evarrrrrrr",
-        date: "2025-11-20 05:39",
-        text: "been listening to I Love My Computer by Ninajirachi<br>Favourite: Delete",
-        image: "images/ILoveMyComputer.jpg",
-        textAboveImage: true,
-        textSize: "1em",
-        imageWidth: "40%",
-        audio: "" // optional MP3 file path
-    },
-    {
-        title: "first post evarrrrrrr",
-        date: "2025-11-20 05:39",
-        text: "been listening to I Love My Computer by Ninajirachi<br>Favourite: Delete",
-        image: "images/ILoveMyComputer.jpg",
-        textAboveImage: true,
-        textSize: "1em",
-        imageWidth: "40%",
-        audio: "" // optional MP3 file path
-    },
-    {
-        title: "first post evarrrrrrr",
-        date: "2025-11-20 05:39",
-        text: "been listening to I Love My Computer by Ninajirachi<br>Favourite: Delete",
-        image: "images/ILoveMyComputer.jpg",
-        textAboveImage: true,
-        textSize: "1em",
-        imageWidth: "40%",
-        audio: "" // optional MP3 file path
-    },
-    {
-        title: "first post evarrrrrrr",
-        date: "2025-11-20 05:39",
-        text: "been listening to I Love My Computer by Ninajirachi<br>Favourite: Delete",
-        image: "images/ILoveMyComputer.jpg",
-        textAboveImage: true,
-        textSize: "1em",
-        imageWidth: "40%",
-        audio: "" // optional MP3 file path
-    },
-    {
-        title: "first post evarrrrrrr",
-        date: "2025-11-20 05:39",
-        text: "been listening to I Love My Computer by Ninajirachi<br>Favourite: Delete",
-        image: "images/ILoveMyComputer.jpg",
-        textAboveImage: true,
-        textSize: "1em",
-        imageWidth: "40%",
-        audio: "" // optional MP3 file path
-    },
-    {
-        title: "first post evarrrrrrr",
-        date: "2025-11-20 05:39",
-        text: "been listening to I Love My Computer by Ninajirachi<br>Favourite: Delete",
-        image: "images/ILoveMyComputer.jpg",
-        textAboveImage: true,
-        textSize: "1em",
-        imageWidth: "40%",
-        audio: "" // optional MP3 file path
-    },
-    {
-        title: "first post evarrrrrrr",
-        date: "2025-11-20 05:39",
-        text: "been listening to I Love My Computer by Ninajirachi<br>Favourite: Delete",
-        image: "images/ILoveMyComputer.jpg",
-        textAboveImage: true,
-        textSize: "1em",
-        imageWidth: "40%",
-        audio: "" // optional MP3 file path
-    },
-    {
-        title: "first post evarrrrrrr",
-        date: "2025-11-20 05:39",
-        text: "been listening to I Love My Computer by Ninajirachi<br>Favourite: Delete",
-        image: "images/ILoveMyComputer.jpg",
-        textAboveImage: true,
-        textSize: "1em",
-        imageWidth: "40%",
-        audio: "" // optional MP3 file path
-    },
-    {
-        title: "first post evarrrrrrr",
-        date: "2025-11-20 05:39",
-        text: "been listening to I Love My Computer by Ninajirachi<br>Favourite: Delete",
-        image: "images/ILoveMyComputer.jpg",
-        textAboveImage: true,
-        textSize: "1em",
-        imageWidth: "40%",
-        audio: "" // optional MP3 file path
-    },
-    {
-        title: "first post evarrrrrrr",
-        date: "2025-11-20 05:39",
-        text: "been listening to I Love My Computer by Ninajirachi<br>Favourite: Delete",
-        image: "images/ILoveMyComputer.jpg",
-        textAboveImage: true,
-        textSize: "1em",
-        imageWidth: "40%",
-        audio: "" // optional MP3 file path
-    },
-    {
-        title: "first post evarrrrrrr",
-        date: "2025-11-20 05:39",
-        text: "been listening to I Love My Computer by Ninajirachi<br>Favourite: Delete",
-        image: "images/ILoveMyComputer.jpg",
-        textAboveImage: true,
-        textSize: "1em",
-        imageWidth: "40%",
-        audio: "" // optional MP3 file path
-    },
-    {
-        title: "first post evarrrrrrr",
-        date: "2025-11-20 05:39",
-        text: "been listening to I Love My Computer by Ninajirachi<br>Favourite: Delete",
-        image: "images/ILoveMyComputer.jpg",
-        textAboveImage: true,
-        textSize: "1em",
-        imageWidth: "40%",
-        audio: "" // optional MP3 file path
-    },
-    // ...add more posts here
+    // add more posts here
 ];
 
-const postsPerPage = 10;
+const postsPerPage = 5;
 let currentPage = 1;
 const totalPages = Math.ceil(posts.length / postsPerPage);
 
@@ -191,18 +52,21 @@ function renderPosts() {
         let postHTML = "";
         if (post.textAboveImage) {
             postHTML += `<p style="font-size:${post.textSize}">${post.text}</p>`;
-            if(post.image) postHTML += `<img src="${post.image}" style="width:${post.imageWidth}" alt="${post.title}">`;
+            if(post.image) postHTML += `<img src="${post.image}" class="dynamic-img" style="width:${post.imageWidth};" alt="${post.title}">`;
         } else {
-            if(post.image) postHTML += `<img src="${post.image}" style="width:${post.imageWidth}" alt="${post.title}">`;
+            if(post.image) postHTML += `<img src="${post.image}" class="dynamic-img" style="width:${post.imageWidth};" alt="${post.title}">`;
             postHTML += `<p style="font-size:${post.textSize}">${post.text}</p>`;
         }
 
-        if(post.audio) postHTML += `<audio controls src="${post.audio}"></audio>`;
+        if(post.audio) postHTML += `<audio controls src="${post.audio}" style="margin-top:0.5em;"></audio>`;
 
         section.innerHTML = `
-            <h2>${post.title}</h2>
-            <p class="datetime">${post.date}</p>
-            ${postHTML}
+            <div class="timeline-stick"></div>
+            <div class="post-content">
+                <h2>${post.title}</h2>
+                <p class="datetime">${post.date}</p>
+                ${postHTML}
+            </div>
         `;
         container.appendChild(section);
     });
@@ -228,8 +92,7 @@ function renderPagination() {
         const pageLink = document.createElement("a");
         pageLink.href = "#";
         pageLink.textContent = i;
-        pageLink.style.textDecoration = i === currentPage ? "none" : "underline";
-        pageLink.style.fontWeight = i === currentPage ? "bold" : "normal";
+        pageLink.className = i === currentPage ? "current-page" : "";
         pageLink.onclick = (e) => { e.preventDefault(); currentPage = i; renderPosts(); };
         pagination.appendChild(pageLink);
     }
