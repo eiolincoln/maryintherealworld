@@ -25,11 +25,12 @@ header h1 span {
 }
 
 nav {
-    margin-top: 0.5em;
+    margin-top: 1em;
+    line-height: 2em; /* space between links */
 }
 
 nav a {
-    margin: 0 1em;
+    display: block; /* stacked links */
     text-decoration: underline;
     text-transform: lowercase;
     color: #333;
@@ -46,6 +47,13 @@ main {
     margin: 2em auto;
     text-align: left;
 }
+
+/* Post content left-aligned */
+.post {
+    margin-bottom: 4em;
+    text-align: left; /* ensures text inside posts is left-aligned */
+}
+
 
 .post {
     margin-bottom: 4em;
