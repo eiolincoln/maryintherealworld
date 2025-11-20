@@ -1,4 +1,3 @@
-// All posts: newest first
 const posts = [
     {
         title: "Hello",
@@ -11,26 +10,16 @@ const posts = [
         audio: "" // optional MP3 file path
     },
     {
-        title: "Post 9",
-        date: "2025-11-19 14:00",
-        text: "Text for Post 9",
-        image: "images/image9.jpg",
-        textAboveImage: false,
-        textSize: "1em",
-        imageWidth: "60%",
-        audio: ""
-    },
-    {
-        title: "Post 8",
-        date: "2025-11-18 09:30",
-        text: "Text for Post 8",
-        image: "images/image8.jpg",
+        title: "No Image Post",
+        date: "2025-11-21 12:00",
+        text: "This post has no image, only text.",
+        image: "",
         textAboveImage: true,
-        textSize: "0.9em",
-        imageWidth: "50%",
+        textSize: "1.2em",
+        imageWidth: "",
         audio: ""
     },
-    // add more posts here
+    // Add more posts here
 ];
 
 const postsPerPage = 5;
@@ -61,13 +50,13 @@ function renderPosts() {
         if(post.audio) postHTML += `<audio controls src="${post.audio}" style="margin-top:0.5em;"></audio>`;
 
         section.innerHTML = `
-            <div class="timeline-stick"></div>
             <div class="post-content">
                 <h2>${post.title}</h2>
                 <p class="datetime">${post.date}</p>
                 ${postHTML}
             </div>
         `;
+
         container.appendChild(section);
     });
 
