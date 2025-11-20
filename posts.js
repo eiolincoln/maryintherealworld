@@ -55,10 +55,7 @@ const postsPerPage = 5;
 let currentPage = 1;
 const totalPages = Math.ceil(posts.length / postsPerPage);
 
-const stickyImage = document.createElement("img");
-stickyImage.className = "sticky-image";
-stickyImage.style.display = "none";
-document.body.appendChild(stickyImage);
+let lastStickySrc = null;
 
 function renderPosts() {
     const container = document.getElementById("posts-container");
@@ -72,6 +69,19 @@ function renderPosts() {
         const postWrapper = document.createElement("div");
         postWrapper.className = "post-container";
 
+        const stickyWrapper = document.createElement("div");
+        stickyWrapper.className = "sticky-wrapper";
+
+        if (post.image) {
+            const img = document.createElement("img");
+            img.src = post.image;
+            img.style.width = post.imageWidth;
+            img.className = "sticky-image";
+            stickyWrapper.appendChild(img);
+        }
+
+        postWrapper.appendChild(stickyWrapper);
+
         const title = document.createElement("h2");
         title.textContent = post.title;
         postWrapper.appendChild(title);
@@ -80,13 +90,6 @@ function renderPosts() {
         date.className = "datetime";
         date.textContent = post.date;
         postWrapper.appendChild(date);
-
-        if (post.image) {
-            const img = document.createElement("img");
-            img.src = post.image;
-            img.style.width = post.imageWidth;
-            postWrapper.appendChild(img);
-        }
 
         const contentWrapper = document.createElement("div");
         contentWrapper.className = "post-content";
@@ -143,19 +146,22 @@ function renderPagination() {
 }
 
 window.addEventListener("scroll", () => {
-    const postsDivs = document.querySelectorAll(".post-container");
-    for (let post of postsDivs) {
-        const img = post.querySelector("img");
-        if (!img) continue;
+    const stickyImages = document.querySelectorAll(".sticky-image");
+    lastStickySrc = lastStickySrc || (stickyImages.length > 0 ? stickyImages[0].src : null);
 
-        const rect = post.getBoundingClientRect();
-        if (rect.top <= 0 && rect.bottom > 0) {
-            stickyImage.src = img.src;
-            stickyImage.style.display = "block";
-            return;
+    for (let img of stickyImages) {
+        const rect = img.getBoundingClientRect();
+        if (rect.top <= 0) {
+            lastStickySrc = img.src;
+            img.style.visibility = "visible";
+        } else {
+            img.style.visibility = "hidden";
         }
     }
-    stickyImage.style.display = "none";
+
+    stickyImages.forEach(img => {
+        if (lastStickySrc) img.src = lastStickySrc;
+    });
 });
 
 renderPosts();
