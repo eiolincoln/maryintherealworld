@@ -2,38 +2,33 @@ const posts = [
     {
         title: "",
         date: "20/11/2025 9:14",
-        text: "eating time",
-        image: "",
-        textAboveImage: true,
-        textSize: "5em",
-        imageWidth: "100%",
-        audio: ""
+        content: [
+            { type: "text", value: "eating time", size: "5em" }
+        ]
     },
     {
         title: "inventions and ideas",
         date: "19/11/2025 7:24",
-        text: "New bread i think it would be a good idea like most people eat bread in the mornings and i people might not like it after 5000000000000 Times of eating the same bread so imagine if there were new Bread.",
-        image: "",
-        textAboveImage: true,
-        textSize: "1.1em",
-        imageWidth: "50%",
-        audio: ""
+        content: [
+            { type: "text", value: "New bread i think it would be a good idea like most people eat bread in the mornings and i people might not like it after 5000000000000 Times of eating the same bread so imagine if there were new Bread.", size: "1.1em" }
+        ]
     },
     {
         title: "first post evarrrrrrrrrrrr",
         date: "20/11/2025 5:39",
-        text: "Been listening to I Love My Computer by Ninajirachi.<br>Favourite: Delete<br><br>i like this album i like how all the songs converge together like i think every song works as a interlude to the next CSIRAC to delete<br>is great cat paws up to All I Am is epic i havent gone into the second half of the album that much (aka after All I Am) except for maybe like It's You nice song great album hypoppy<br>4562",
-        image: "images/ILoveMyComputer.jpg",
-        textAboveImage: true,
-        textSize: "1em",
-        imageWidth: "50%",
-        audio: "audio/Delete - Ninajirachi.mp3"
-    },
+        content: [
+            { type: "text", value: "Been listening to I Love My Computer by Ninajirachi.<br>Favourite: Delete<br><br>i like this album i like how all the songs converge together like i think every song works as a interlude to the next CSIRAC to delete<br>is great cat paws up to All I Am is epic i havent gone into the second half of the album that much (aka after All I Am) except for maybe like It's You nice song great album hypoppy", size: "1em" },
+            { type: "image", value: "images/ILoveMyComputer.jpg", width: "50%" },
+            { type: "audio", value: "audio/Delete - Ninajirachi.mp3" }
+        ]
+    }
 ];
 
 const postsPerPage = 5;
 let currentPage = 1;
 const totalPages = Math.ceil(posts.length / postsPerPage);
+
+let fixedImage = null;
 
 function renderPosts() {
     const container = document.getElementById("posts-container");
@@ -43,7 +38,7 @@ function renderPosts() {
     const end = start + postsPerPage;
     const pagePosts = posts.slice(start, end);
 
-    pagePosts.forEach(post => {
+    pagePosts.forEach((post) => {
         const postWrapper = document.createElement("div");
         postWrapper.className = "post-container";
 
@@ -56,65 +51,57 @@ function renderPosts() {
         date.textContent = post.date;
         postWrapper.appendChild(date);
 
-        if (post.image) {
-            const img = document.createElement("img");
-            img.src = post.image;
-            img.style.width = post.imageWidth;
-            img.className = "sticky-image";
-            postWrapper.appendChild(img);
-        }
-
         const contentWrapper = document.createElement("div");
         contentWrapper.className = "post-content";
 
-        if (post.text) {
-            const p = document.createElement("p");
-            p.innerHTML = post.text.replace(/ /g, "&nbsp;");
-            p.style.fontSize = post.textSize;
-            contentWrapper.appendChild(p);
-        }
-
-        if (post.audio) {
-            const audio = document.createElement("audio");
-            audio.controls = true;
-            audio.src = post.audio;
-            contentWrapper.appendChild(audio);
-        }
+        post.content.forEach(block => {
+            if(block.type === "text") {
+                const p = document.createElement("p");
+                p.innerHTML = block.value.replace(/ /g, "&nbsp;");
+                p.style.fontSize = block.size || "1em";
+                contentWrapper.appendChild(p);
+            } else if(block.type === "image") {
+                const img = document.createElement("img");
+                img.src = block.value;
+                img.style.width = block.width || "100%";
+                contentWrapper.appendChild(img);
+            } else if(block.type === "audio") {
+                const audio = document.createElement("audio");
+                audio.controls = true;
+                audio.src = block.value;
+                contentWrapper.appendChild(audio);
+            }
+        });
 
         postWrapper.appendChild(contentWrapper);
         container.appendChild(postWrapper);
     });
 
-    renderPagination();
+    if (!fixedImage) {
+        fixedImage = document.createElement("img");
+        fixedImage.className = "fixed-image";
+        fixedImage.style.display = "none";
+        document.body.appendChild(fixedImage);
+    }
+
+    window.addEventListener("scroll", updateFixedImage);
 }
 
-function renderPagination() {
-    const pagination = document.getElementById("pagination");
-    pagination.innerHTML = "";
+function updateFixedImage() {
+    const postContainers = document.querySelectorAll(".post-container");
+    let current = null;
 
-    if (currentPage > 1) {
-        const prev = document.createElement("a");
-        prev.href = "#";
-        prev.textContent = "<";
-        prev.onclick = e => { e.preventDefault(); currentPage--; renderPosts(); };
-        pagination.appendChild(prev);
-    }
+    postContainers.forEach(post => {
+        const rect = post.getBoundingClientRect();
+        const img = post.querySelector("img");
+        if (rect.top <= 0 && img) current = img.src;
+    });
 
-    for (let i = 1; i <= totalPages; i++) {
-        const pageLink = document.createElement("a");
-        pageLink.href = "#";
-        pageLink.textContent = i;
-        pageLink.className = i === currentPage ? "current" : "";
-        pageLink.onclick = e => { e.preventDefault(); currentPage = i; renderPosts(); };
-        pagination.appendChild(pageLink);
-    }
-
-    if (currentPage < totalPages) {
-        const next = document.createElement("a");
-        next.href = "#";
-        next.textContent = ">";
-        next.onclick = e => { e.preventDefault(); currentPage++; renderPosts(); };
-        pagination.appendChild(next);
+    if (current) {
+        fixedImage.src = current;
+        fixedImage.style.display = "block";
+    } else {
+        fixedImage.style.display = "none";
     }
 }
 
