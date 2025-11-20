@@ -1,7 +1,7 @@
 // All posts newest first
 const posts = [
     {
-        title: "Hello",
+        title: "first post evarrrrrrrrrrrr",
         date: "2025-11-20 05:39",
         text: "Been listening to I Love My Computer by Ninajirachi.<br>Favourite: Delete",
         image: "images/ILoveMyComputer.jpg",
@@ -29,6 +29,76 @@ const posts = [
         textSize: "1.1em",
         imageWidth: "50%",
         audio: "audio/sample.mp3" // optional audio
+    },
+    {
+        title: "Second Post",
+        date: "2025-11-19 14:00",
+        text: "Text-only post example. No image here.",
+        image: "",              // no image
+        textAboveImage: true,
+        textSize: "1.1em",
+        imageWidth: "50%",
+        audio: ""
+    },
+    {
+        title: "Second Post",
+        date: "2025-11-19 14:00",
+        text: "Text-only post example. No image here.",
+        image: "",              // no image
+        textAboveImage: true,
+        textSize: "1.1em",
+        imageWidth: "50%",
+        audio: ""
+    },
+    {
+        title: "Second Post",
+        date: "2025-11-19 14:00",
+        text: "Text-only post example. No image here.",
+        image: "",              // no image
+        textAboveImage: true,
+        textSize: "1.1em",
+        imageWidth: "50%",
+        audio: ""
+    },
+    {
+        title: "Second Post",
+        date: "2025-11-19 14:00",
+        text: "Text-only post example. No image here.",
+        image: "",              // no image
+        textAboveImage: true,
+        textSize: "1.1em",
+        imageWidth: "50%",
+        audio: ""
+    },
+    {
+        title: "Second Post",
+        date: "2025-11-19 14:00",
+        text: "Text-only post example. No image here.",
+        image: "",              // no image
+        textAboveImage: true,
+        textSize: "1.1em",
+        imageWidth: "50%",
+        audio: ""
+    },
+    {
+        title: "Second Post",
+        date: "2025-11-19 14:00",
+        text: "Text-only post example. No image here.",
+        image: "",              // no image
+        textAboveImage: true,
+        textSize: "1.1em",
+        imageWidth: "50%",
+        audio: ""
+    },
+    {
+        title: "Second Post",
+        date: "2025-11-19 14:00",
+        text: "Text-only post example. No image here.",
+        image: "",              // no image
+        textAboveImage: true,
+        textSize: "1.1em",
+        imageWidth: "50%",
+        audio: ""
     },
     // ... add more posts here
 ];
