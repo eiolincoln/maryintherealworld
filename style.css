@@ -22,10 +22,6 @@ h1, h2, p {
     padding: 0.2em 0.4em;
 }
 
-nav {
-    display: block;
-}
-
 nav a {
     display: block;
     text-decoration: underline;
@@ -62,11 +58,12 @@ nav a:hover {
     font-size: 0.9em;
 }
 
-.sticky-image {
-    position: sticky;
+.fixed-image {
+    position: fixed;
     top: 0;
     left: 0;
+    width: auto;
+    max-width: 100%;
     z-index: 0;
     pointer-events: none;
-    display: block;
 }
