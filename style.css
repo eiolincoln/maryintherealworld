@@ -30,4 +30,36 @@ nav a {
 }
 
 nav a:hover {
-    opacity:
+    opacity: 0.7;
+}
+
+.post-container {
+    position: relative;
+    margin-bottom: 4em;
+    z-index: 5;
+}
+
+.post-content p,
+.post-content audio {
+    background: white;
+    display: block;
+    margin: 0.5em 0;
+    padding: 0.2em 0.4em;
+}
+
+.datetime {
+    display: block;
+    margin-top: 0.2em;
+    color: #555;
+    font-size: 0.9em;
+}
+
+.fixed-image {
+    position: fixed;
+    top: 0;
+    left: 0;
+    max-width: 100%;
+    width: auto;
+    z-index: 0;
+    pointer-events: none;
+}
