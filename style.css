@@ -24,6 +24,16 @@ main p, main h2 {
     padding: 0.25em 0;
 }
 
+nav {
+    display: flex;
+    gap: 1em;
+}
+
+nav a {
+    text-decoration: none;
+    color: black;
+}
+
 /* POSTS */
 .post {
     margin-bottom: 4em;
@@ -49,6 +59,17 @@ main p, main h2 {
     width: 100%;
     position: relative; 
     margin-top: 1em;
+}
+
+.post h2 {
+    margin-bottom: 0;
+}
+
+.post .datetime {
+    margin-top: 0.2em;
+    display: block;     /* <-- this forces it onto a new line */
+    color: #555;
+    font-size: 0.9em;
 }
 
 /* Automatically raise later images in z-index */
