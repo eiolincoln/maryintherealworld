@@ -6,7 +6,7 @@ const posts = [
             { type: "text", value: "this is super f (my computer, cuz no 1 in the World knows me Better) late but", size: "1em" },
             { type: "image", value:"images/AriaAwards2025-LiveShow-VasiliPapathanasopoulos-Ninajirachi-3-6-scaled.jpg", width: "50%" },
             { type: "text", value: "she sniped the mother bullet into john f cuntedys head", size: "1em" },
-            { type: "image", value:"images/DiscordNinajirachiQueen.png", width: "50%" },
+            { type: "image", value:"images/ADiscordNinajirachiQueen.png", width: "50%" },
             { type: "text", value: "gosh i wish listened to her music way earlier i had added f☆ck my computer in  my playlist on 11th June 2025 i should've listened earlier maybe could've got her on my Spotify Wrapped but it's too late already", size: "1em" },
         ]
     },
@@ -39,6 +39,8 @@ const postsPerPage = 5;
 let currentPage = 1;
 const totalPages = Math.ceil(posts.length / postsPerPage);
 
+let fixedImage = null;
+
 function renderPosts() {
     const container = document.getElementById("posts-container");
     container.innerHTML = "";
@@ -47,7 +49,7 @@ function renderPosts() {
     const end = start + postsPerPage;
     const pagePosts = posts.slice(start, end);
 
-    pagePosts.forEach((post, index) => {
+    pagePosts.forEach(post => {
         const postWrapper = document.createElement("div");
         postWrapper.className = "post-container";
 
@@ -64,18 +66,19 @@ function renderPosts() {
         contentWrapper.className = "post-content";
 
         post.content.forEach(block => {
-            if(block.type === "text") {
+            if (block.type === "text") {
                 const p = document.createElement("p");
                 p.innerHTML = block.value.replace(/ /g, "&nbsp;");
                 p.style.fontSize = block.size || "1em";
                 contentWrapper.appendChild(p);
-            } else if(block.type === "image") {
+            } else if (block.type === "image") {
                 const img = document.createElement("img");
                 img.src = block.value;
                 img.dataset.width = block.width || "100%";
                 img.className = "post-image";
+                img.style.width = img.dataset.width;
                 contentWrapper.appendChild(img);
-            } else if(block.type === "audio") {
+            } else if (block.type === "audio") {
                 const audioContainer = document.createElement("div");
                 audioContainer.className = "audio-container";
                 const audio = document.createElement("audio");
@@ -91,38 +94,36 @@ function renderPosts() {
         container.appendChild(postWrapper);
     });
 
-    setupStickyImages();
+    if (!fixedImage) {
+        fixedImage = document.createElement("img");
+        fixedImage.className = "fixed-image";
+        fixedImage.style.display = "none";
+        document.body.appendChild(fixedImage);
+    }
+
+    window.addEventListener("scroll", updateFixedImage);
 }
 
-function setupStickyImages() {
-    const fixedImages = document.querySelectorAll(".post-image");
-    fixedImages.forEach(img => {
+function updateFixedImage() {
+    const images = document.querySelectorAll(".post-image");
+    let currentSrc = null;
+    let scrollY = window.scrollY + 10; // small offset
+
+    images.forEach(img => {
         const rect = img.getBoundingClientRect();
-        img.style.position = "relative";
-        img.style.top = "0";
-        img.style.zIndex = "0";
+        const imgTop = window.scrollY + rect.top;
+        if (scrollY >= imgTop) {
+            currentSrc = img.src;
+            fixedImage.style.width = img.dataset.width;
+        }
     });
 
-    window.addEventListener("scroll", () => {
-        const scrollY = window.scrollY;
-        const postContainers = document.querySelectorAll(".post-container");
-
-        postContainers.forEach(post => {
-            const img = post.querySelector(".post-image");
-            if(!img) return;
-            const rect = post.getBoundingClientRect();
-            const postTop = window.scrollY + rect.top;
-            const postBottom = postTop + post.offsetHeight;
-
-            if(scrollY >= postTop) {
-                img.style.position = "fixed";
-                img.style.top = "0";
-            } else {
-                img.style.position = "relative";
-                img.style.top = "0";
-            }
-        });
-    });
+    if (currentSrc) {
+        fixedImage.src = currentSrc;
+        fixedImage.style.display = "block";
+    } else {
+        fixedImage.style.display = "none";
+    }
 }
 
 renderPosts();
