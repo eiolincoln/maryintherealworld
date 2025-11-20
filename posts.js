@@ -39,8 +39,6 @@ const postsPerPage = 5;
 let currentPage = 1;
 const totalPages = Math.ceil(posts.length / postsPerPage);
 
-let fixedImage = null;
-
 function renderPosts() {
     const container = document.getElementById("posts-container");
     container.innerHTML = "";
@@ -49,7 +47,7 @@ function renderPosts() {
     const end = start + postsPerPage;
     const pagePosts = posts.slice(start, end);
 
-    pagePosts.forEach((post) => {
+    pagePosts.forEach((post, index) => {
         const postWrapper = document.createElement("div");
         postWrapper.className = "post-container";
 
@@ -70,60 +68,61 @@ function renderPosts() {
                 const p = document.createElement("p");
                 p.innerHTML = block.value.replace(/ /g, "&nbsp;");
                 p.style.fontSize = block.size || "1em";
-                p.style.display = "block";
-                p.style.background = "white";
                 contentWrapper.appendChild(p);
             } else if(block.type === "image") {
                 const img = document.createElement("img");
                 img.src = block.value;
-                img.style.width = block.width || "100%";
-                img.style.display = "block";
+                img.dataset.width = block.width || "100%";
+                img.className = "post-image";
                 contentWrapper.appendChild(img);
             } else if(block.type === "audio") {
                 const audioContainer = document.createElement("div");
-                audioContainer.style.width = "100%";
-                audioContainer.style.marginTop = "0.5em";
+                audioContainer.className = "audio-container";
                 const audio = document.createElement("audio");
                 audio.controls = true;
                 audio.src = block.value;
-                audio.style.display = "block";
                 audio.style.width = "100%";
                 audioContainer.appendChild(audio);
                 contentWrapper.appendChild(audioContainer);
             }
         });
 
-
         postWrapper.appendChild(contentWrapper);
         container.appendChild(postWrapper);
     });
 
-    if (!fixedImage) {
-        fixedImage = document.createElement("img");
-        fixedImage.className = "fixed-image";
-        fixedImage.style.display = "none";
-        document.body.appendChild(fixedImage);
-    }
-
-    window.addEventListener("scroll", updateFixedImage);
+    setupStickyImages();
 }
 
-function updateFixedImage() {
-    const postContainers = document.querySelectorAll(".post-container");
-    let current = null;
-
-    postContainers.forEach(post => {
-        const rect = post.getBoundingClientRect();
-        const img = post.querySelector("img");
-        if (rect.top <= 0 && img) current = img.src;
+function setupStickyImages() {
+    const fixedImages = document.querySelectorAll(".post-image");
+    fixedImages.forEach(img => {
+        const rect = img.getBoundingClientRect();
+        img.style.position = "relative";
+        img.style.top = "0";
+        img.style.zIndex = "0";
     });
 
-    if (current) {
-        fixedImage.src = current;
-        fixedImage.style.display = "block";
-    } else {
-        fixedImage.style.display = "none";
-    }
+    window.addEventListener("scroll", () => {
+        const scrollY = window.scrollY;
+        const postContainers = document.querySelectorAll(".post-container");
+
+        postContainers.forEach(post => {
+            const img = post.querySelector(".post-image");
+            if(!img) return;
+            const rect = post.getBoundingClientRect();
+            const postTop = window.scrollY + rect.top;
+            const postBottom = postTop + post.offsetHeight;
+
+            if(scrollY >= postTop) {
+                img.style.position = "fixed";
+                img.style.top = "0";
+            } else {
+                img.style.position = "relative";
+                img.style.top = "0";
+            }
+        });
+    });
 }
 
 renderPosts();
