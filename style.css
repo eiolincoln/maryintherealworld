@@ -10,9 +10,8 @@ body {
 /* Header */
 header {
     text-align: center;
-    padding: 2em;
+    padding: 2em 0;
     background: #fff;
-    border-bottom: 1px solid #ccc;
 }
 
 header h1 {
@@ -20,21 +19,31 @@ header h1 {
     font-size: 2em;
 }
 
+header h1 span {
+    display: inline-block;
+    margin: 0 0.2em;
+}
+
+nav {
+    margin-top: 0.5em;
+}
+
 nav a {
     margin: 0 1em;
     text-decoration: none;
     color: #333;
+    font-weight: bold;
 }
 
 /* Main posts */
 main {
     width: 60%;
     margin: 2em auto;
+    text-align: left;
 }
 
 .post {
     margin-bottom: 4em;
-    position: relative;
 }
 
 .post img {
@@ -46,11 +55,4 @@ main {
 .datetime {
     font-size: 0.8em;
     color: #666;
-}
-
-/* Footer */
-footer {
-    text-align: center;
-    padding: 2em;
-    border-top: 1px solid #ccc;
 }
