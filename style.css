@@ -8,20 +8,11 @@ body {
 }
 
 /* Header & nav */
+/* Header & nav */
 header {
     text-align: left;
-    padding: 2em;
+    padding: 2em 0 2em 2em; /* top, right, bottom, left */
     background: #fff;
-}
-
-header h1 {
-    margin: 0;
-    font-size: 2em;
-}
-
-header h1 span {
-    display: inline-block;
-    margin: 0 0.2em;
 }
 
 nav {
@@ -41,17 +32,17 @@ nav a:hover {
     color: #0077cc;
 }
 
-/* Posts container aligns with header/nav */
+/* Posts container: flush left like header/nav */
 #posts-container {
-    margin: 0;        /* remove previous margins */
-    padding-left: 2em; /* align with header padding */
+    margin: 0;            /* no extra margin */
+    padding-left: 2em;    /* optional: same as header left padding */
     text-align: left;
-    width: auto;       /* fill remaining space */
+    width: auto;          /* let it fill horizontally */
 }
 
 /* Individual posts */
 .post {
-    margin-bottom: 2em;   /* space between posts */
+    margin-bottom: 2em;   /* spacing between posts */
     text-align: left;
 }
 
