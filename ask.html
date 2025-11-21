@@ -1,29 +1,55 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>ask</title>
-<link rel="stylesheet" href="style.css">
-<link rel="icon" href="favicon.png" type="image/png">
-<style>
-    .ask-form input, .ask-form textarea, .ask-form button {
-        display: block;
-        width: 100%;
-        margin-bottom: 1em;
-        font-size: 1em;
-    }
-    .submission-message {
-        display: none;
-        color: green;
-        font-weight: bold;
-        margin-top: 1em;
-    }
-</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ask</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="icon" href="favicon.png" type="image/png">
+    <style>
+        .ask-form {
+            max-width: 600px;
+            margin-top: 2em;
+        }
+
+        .ask-form label {
+            display: block;
+            margin: 0.5em 0 0.2em;
+            font-weight: bold;
+        }
+
+        .ask-form input[type="text"],
+        .ask-form textarea {
+            width: 100%;
+            padding: 0.5em;
+            font-size: 1em;
+            margin-bottom: 1em;
+            border: 1px solid #aaa;
+            border-radius: 4px;
+        }
+
+        .ask-form button {
+            padding: 0.5em 1em;
+            font-size: 1em;
+            cursor: pointer;
+        }
+
+        .submission-message {
+            margin-top: 1em;
+            font-weight: bold;
+            color: green;
+        }
+
+        header h1 {
+            font-weight: bold;
+            text-decoration: underline;
+        }
+    </style>
 </head>
 <body>
+
 <header>
-    <h1><u>mary <span>in</span> <span>the</span> real <span>world</span></u></h1>
+    <h1>mary <span>in</span> <span>the</span> real <span>world</span></h1>
     <nav>
         <a href="index.html">home</a>
         <a href="ask.html">ask</a>
@@ -42,40 +68,45 @@
         <textarea name="question" required placeholder="Write something"></textarea>
 
         <button type="submit">send</button>
-    </form>
 
-    <div class="submission-message" id="submissionMessage">
-        Submission complete! Thank you.
-    </div>
+        <p id="submissionMessage" class="submission-message" style="display: none;">
+            Submission Complete!
+        </p>
+    </form>
 </main>
 
 <script>
-const form = document.getElementById('askForm');
-const message = document.getElementById('submissionMessage');
+    const form = document.getElementById('askForm');
+    const message = document.getElementById('submissionMessage');
 
-form.addEventListener('submit', async (e) => {
-    e.preventDefault();
+    form.addEventListener('submit', async function(e) {
+        e.preventDefault(); // prevent default form submission
 
-    const formData = new FormData(form);
-    const name = formData.get('name') || 'anonymous';
-    const question = formData.get('question');
-    const data = new FormData();
-    data.append('message', `${name} asks: ${question}`);
+        const formData = new FormData(form);
 
-    // send to FormSubmit
-    const response = await fetch('https://formsubmit.co/el/fogure', {
-        method: 'POST',
-        body: data,
-        headers: { 'Accept': 'application/json' }
+        // default name if empty
+        if (!formData.get('name')) {
+            formData.set('name', 'anonymous');
+        }
+
+        // format message as: "(name) asks: question"
+        const payload = new FormData();
+        payload.append('message', `(${formData.get('name')}) asks: ${formData.get('question')}`);
+        payload.append('_captcha', 'false');
+
+        // send to FormSubmit
+        const response = await fetch('https://formsubmit.co/maryinrealworld@gmail.com', {
+            method: 'POST',
+            body: payload
+        });
+
+        if (response.ok) {
+            message.style.display = 'block';
+            form.reset();
+        } else {
+            alert('There was a problem submitting your question. Please try again.');
+        }
     });
-
-    if(response.ok){
-        message.style.display = 'block';
-        form.reset();
-    } else {
-        alert('Oops! Something went wrong.');
-    }
-});
 </script>
 
 </body>
