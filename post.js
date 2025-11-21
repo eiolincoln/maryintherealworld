@@ -77,9 +77,6 @@ const postsPerPage = 10;
 let currentPage = 1;
 const totalPages = Math.ceil(posts.length / postsPerPage);
 
-// -----------------------------
-// RENDER POSTS
-// -----------------------------
 function renderPosts() {
     const container = document.getElementById("posts-container");
     container.innerHTML = "";
@@ -87,6 +84,8 @@ function renderPosts() {
     const start = (currentPage - 1) * postsPerPage;
     const end = start + postsPerPage;
     const pagePosts = posts.slice(start, end);
+
+    let zCounter = 100; // starting z-index for sticky blocks
 
     pagePosts.forEach(post => {
         const wrap = document.createElement("div");
@@ -105,37 +104,42 @@ function renderPosts() {
         contentWrap.className = "post-content";
 
         post.content.forEach(block => {
+            let elem;
             if(block.type === "text"){
-                const p = document.createElement("p");
-                p.innerHTML = block.value;
-                p.style.fontSize = block.size || "1em";
-                contentWrap.appendChild(p);
+                elem = document.createElement("p");
+                elem.innerHTML = block.value;
+                elem.style.fontSize = block.size || "1em";
             }
             if(block.type === "image"){
-                const img = document.createElement("img");
-                img.src = block.value;
-                img.className = "post-image";
-                img.style.width = block.width || "100%";
-                contentWrap.appendChild(img);
+                elem = document.createElement("img");
+                elem.src = block.value;
+                elem.className = "post-image";
+                elem.style.width = block.width || "100%";
             }
             if(block.type === "video"){
-                const v = document.createElement("video");
-                v.src = block.value;
-                v.controls = true;
-                v.autoplay = true;      // autoplay on load
-                v.muted = true;         // start muted
-                v.loop = true;          // optional: loop video
-                v.className = "post-video";
-                v.style.width = block.width || "100%";
-                contentWrap.appendChild(v);
+                elem = document.createElement("video");
+                elem.src = block.value;
+                elem.controls = true;
+                elem.autoplay = true;
+                elem.muted = true;
+                elem.loop = true;
+                elem.className = "post-video";
+                elem.style.width = block.width || "100%";
+            }
+            if(block.type === "audio"){
+                elem = document.createElement("audio");
+                elem.src = block.value;
+                elem.controls = true;
+                elem.className = "post-audio";
+                elem.style.width = "100%";
             }
 
-            if(block.type === "audio"){
-                const a = document.createElement("audio");
-                a.src = block.value;
-                a.controls = true;
-                a.style.width = "100%";
-                contentWrap.appendChild(a);
+            if(elem){
+                elem.style.position = "sticky";
+                elem.style.top = "0";
+                elem.style.zIndex = zCounter++;
+                elem.style.marginBottom = "1em";
+                contentWrap.appendChild(elem);
             }
         });
 
@@ -146,9 +150,6 @@ function renderPosts() {
     renderPagination();
 }
 
-// -----------------------------
-// RENDER PAGINATION LINKS
-// -----------------------------
 function renderPagination() {
     let pagination = document.getElementById("pagination");
     if(!pagination){
@@ -161,7 +162,6 @@ function renderPagination() {
     }
     pagination.innerHTML = "";
 
-    // Previous link
     if(currentPage > 1){
         const prev = document.createElement("a");
         prev.href = "#";
@@ -177,7 +177,6 @@ function renderPagination() {
         pagination.appendChild(prev);
     }
 
-    // Page numbers
     for(let i = 1; i <= totalPages; i++){
         const num = document.createElement("a");
         num.href = "#";
@@ -194,7 +193,6 @@ function renderPagination() {
         pagination.appendChild(num);
     }
 
-    // Next link
     if(currentPage < totalPages){
         const next = document.createElement("a");
         next.href = "#";
@@ -211,7 +209,4 @@ function renderPagination() {
     }
 }
 
-// -----------------------------
-// INITIAL RENDER
-// -----------------------------
 renderPosts();
