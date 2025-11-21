@@ -138,3 +138,35 @@ nav a:hover {
     z-index: 0;
     pointer-events: none;
 }
+
+.ask-form {
+    display: black;
+    width: 100%;
+    max-width: 500px;
+}
+
+.ask-form input,
+.ask-form textarea {
+    width: 100%;
+    padding: 0.5em;
+    margin: 0.5em 0;
+    border: 1px solid #000;
+    background: #fff;
+    color: #000;
+    font-family: inherit;
+}
+
+.ask-form textarea {
+    height: 150px;
+}
+
+.ask-form button {
+    padding: 0.6em 1.2em;
+    cursor: pointer;
+    border: 1px solid #000;
+    background: #fff;
+}
+
+.ask-form button:hover {
+    background: #eee;
+}
