@@ -1,21 +1,15 @@
 const posts = [
-
     {
         title: "hoooly poop Ninajirachi just won ARIAs Best Solo Artist",
         date: "20/11/2025 11:14",
         content: [
             { type: "text", value: "this is super f (my computer, cuz no 1 in the World knows me Better) late but", size: "1em" },
-            { type: "image", value: "images/AriaAwards2025-LiveShow-VasiliPapathanasopoulos-Ninajirachi-3-6-scaled.jpg", width: "50%" },
+            { type: "image", value:"images/AriaAwards2025-LiveShow-VasiliPapathanasopoulos-Ninajirachi-3-6-scaled.jpg", width: "50%" },
             { type: "text", value: "she sniped the mother bullet into john f cuntedys head", size: "1em" },
-            { type: "image", value: "images/DiscordNinajirachiQueen.png", width: "25%" },
-            { 
-                type: "text", 
-                value: "gosh i wish listened to her music way earlier i had added f☆ck my computer in my playlist on 11th June 2025 i should've listened earlier maybe<br>could've got her on my Spotify Wrapped but it's too late<br>4562 4562 4562 4562 ",
-                size: "1em"
-            }
+            { type: "image", value:"images/DiscordNinajirachiQueen.png", width: "25%" },
+            { type: "text", value: "gosh i wish listened to her music way earlier i had added f☆ck my computer in my playlist on 11th June 2025 i should've listened earlier maybe<br>could've got her on my Spotify Wrapped but it's too late<br>4562 4562 4562 4562 ", size: "1em" },
         ]
     },
-
     {
         title: "",
         date: "20/11/2025 9:14",
@@ -24,44 +18,26 @@ const posts = [
             { type: "text", value: "update: this was about dinner", size: "1em" }
         ]
     },
-
     {
         title: "inventions and ideas",
         date: "19/11/2025 7:24",
         content: [
-            { 
-                type: "text",
-                value: "New bread i think it would be a good idea like most people eat bread in the mornings and i people might not like it after 5000000000000 Times of eating the same bread so imagine if there were new Bread",
-                size: "1.1em"
-            }
+            { type: "text", value: "New bread i think it would be a good idea like most people eat bread in the mornings and i people might not like it after 5000000000000 Times of eating the same bread so imagine if there were new Bread", size: "1.1em" }
         ]
     },
-
     {
         title: "first post evarrrrrrrrrrrr",
         date: "20/11/2025 5:39",
         content: [
-            { 
-                type: "text",
-                value: "Been listening to I Love My Computer by Ninajirachi.<br>Favourite: Delete",
-                size: "1em"
-            },
-
+            { type: "text", value: "Been listening to I Love My Computer by Ninajirachi.<br>Favourite: Delete", size: "1em" },
             { type: "image", value: "images/ILoveMyComputer.jpg", width: "50%" },
-
-            { 
-                type: "text",
-                value: "i like this album i like how all the songs converge together like i think every song works as a interlude to the next CSIRAC to delete<br>is great cat paws up to All I Am is epic i havent gone into the second half of the album that much (aka after All I Am) except for maybe<br>like It's You nice song great album hypoppy",
-                size: "1em"
-            },
-
+            { type: "text", value: "i like this album i like how all the songs converge together like i think every song works as a interlude to the next CSIRAC to delete<br>is great cat paws up to All I Am is epic i havent gone into the second half of the album that much (aka after All I Am) except for maybe<br>like It's You nice song great album hypoppy", size: "1em" },
             { type: "audio", value: "audio/Delete - Ninajirachi.mp3" }
         ]
     }
-
 ];
 
-const postsPerPage = 10;
+const postsPerPage = 5;
 let currentPage = 1;
 const totalPages = Math.ceil(posts.length / postsPerPage);
 
