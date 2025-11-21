@@ -3,7 +3,7 @@ const posts = [
         title: "video test on website",
         date:"",
         content:[
-            { type: "video", value: "videos/sparkleinjamen.mp4", width: "10%" },
+            { type: "video", value: "videos/sparkleinjamen.mp4", width: "50%" },
             { type: "text", value: "11/21/2025 3:19pm<br><br><br><br><br>anonymous", size: "1em" },
         ]
     },
@@ -61,10 +61,12 @@ function renderPosts() {
         const postWrapper = document.createElement("div");
         postWrapper.className = "post-container";
 
+        // Title
         const title = document.createElement("h2");
         title.textContent = post.title;
         postWrapper.appendChild(title);
 
+        // Date
         const date = document.createElement("p");
         date.className = "datetime";
         date.textContent = post.date;
@@ -76,15 +78,23 @@ function renderPosts() {
         post.content.forEach(block => {
             if(block.type === "text") {
                 const p = document.createElement("p");
-                p.innerHTML = block.value.replace(/ /g, "&nbsp;");
+                p.innerHTML = block.value;
+                p.className = "floating-text";
                 p.style.fontSize = block.size || "1em";
                 contentWrapper.appendChild(p);
             } else if(block.type === "image") {
                 const img = document.createElement("img");
                 img.src = block.value;
-                img.className = "post-image";
+                img.className = "post-image sticky-media";
                 img.style.width = block.width || "100%";
                 contentWrapper.appendChild(img);
+            } else if(block.type === "video") {
+                const video = document.createElement("video");
+                video.src = block.value;
+                video.controls = true;
+                video.className = "post-video sticky-media";
+                video.style.width = block.width || "100%";
+                contentWrapper.appendChild(video);
             } else if(block.type === "audio") {
                 const audioContainer = document.createElement("div");
                 audioContainer.className = "audio-container";
@@ -94,13 +104,6 @@ function renderPosts() {
                 audio.style.width = "100%";
                 audioContainer.appendChild(audio);
                 contentWrapper.appendChild(audioContainer);
-            } else if (block.type === "video") {
-                const video = document.createElement("video");
-                video.src = block.value;
-                video.controls = true;
-                video.className = "post-video";
-                video.style.width = block.width || "100%";
-                contentWrapper.appendChild(video);
             }
         });
 
