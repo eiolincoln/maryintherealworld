@@ -1,30 +1,3 @@
-/* Force absolutely flush-left layout */
-html, body {
-  margin: 0 !important;
-  padding: 0 !important;
-  width: 100%;
-}
-header, main, nav, h1, h2, p, .post-container, .post-content {
-  margin-left: 0 !important;
-  padding-left: 0 !important;
-}
-header h1 {
-  display: block;
-  margin: 0;
-  padding: 0;
-}
-nav {
-  display: block;
-  margin: 0;
-  padding: 0;
-}
-nav a {
-  display: block;
-  margin: 0;
-  padding: 0;
-  text-decoration: underline;
-}
-
 /* RESET */
 * {
     margin: 0;
@@ -33,7 +6,10 @@ nav a {
 }
 
 /* BASIC PAGE STYLE */
-body {
+html, body {
+    margin: 0 !important;
+    padding: 0 !important;
+    width: 100%;
     font-family: Arial, Helvetica, sans-serif;
     background: #fff;
     color: #000;
@@ -46,12 +22,13 @@ header, main {
     text-align: left;
 }
 
-/* TEXT BLOCKS */
+/* TEXT STYLING */
 h1, h2, p {
+    background: white;
     display: inline-block;
     padding: 0.2em 0.4em;
-    background: white;
-    margin-bottom: 0.3em;
+    position: relative;
+    z-index: 20;
 }
 
 /* NAVIGATION */
@@ -61,52 +38,50 @@ nav a {
     color: black;
     margin-bottom: 0.3em;
 }
-
 nav a:hover {
     opacity: 0.7;
 }
 
 /* POST CONTAINER */
 .post-container {
-    position: relative; 
-    margin-bottom: 6em;
-    font-size: 1rem;
+    position: relative;
+    margin-bottom: 0; /* spacing handled by sticky wrapper */
+}
+
+/* ENTIRE POST STICKS */
+.post-sticky-wrapper {
+    position: sticky;
+    top: 0;
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    background: white;
+    z-index: 1;
+    padding: 1em 0;
 }
 
 /* POST CONTENT */
-.post-content {
-    position: relative;
-}
-
-/* STICKY CONTENT BLOCKS */
-.post-content > * {
-    position: sticky;
-    top: 0;
-    display: block;
-    margin-bottom: 1em;
-}
-
-/* Media styling */
-.post-image,
-.post-video,
-.post-audio {
-    max-width: 100%;
-    height: auto;
-    display: block;
-}
-
-/* VIDEO SPECIFIC */
-.post-video {
-    object-fit: contain;
-}
-
-/* TEXT STYLING */
 .post-content p {
     background: white;
+    display: block;
+    margin: 0.5em 0;
     padding: 0.2em 0.4em;
 }
 
-/* DATE STYLE */
+/* MEDIA */
+.post-image,
+.post-video,
+.post-audio {
+    display: block;
+    margin: 1em 0;
+    width: 30em;
+    max-width: 100%;
+    height: auto;
+}
+
+/* DATETIME */
 .datetime {
     display: block;
     margin-top: 0.2em;
@@ -114,13 +89,12 @@ nav a:hover {
     font-size: 0.9em;
 }
 
-/* FORM */
+/* FORM STYLING */
 .ask-form {
     display: block;
     width: 100%;
     max-width: 500px;
 }
-
 .ask-form input,
 .ask-form textarea {
     width: 100%;
@@ -131,37 +105,15 @@ nav a:hover {
     color: #000;
     font-family: inherit;
 }
-
 .ask-form textarea {
     height: 150px;
 }
-
 .ask-form button {
     padding: 0.6em 1.2em;
     cursor: pointer;
     border: 1px solid #000;
     background: #fff;
 }
-
 .ask-form button:hover {
     background: #eee;
-}
-
-/* Wrap entire post to stick */
-.post-sticky-wrapper {
-    position: sticky;
-    top: 0;
-    width: 100%;
-    height: 100vh; /* full viewport height */
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-start;
-    background: rgba(255,255,255,0.9); /* semi-transparent to see overlap */
-    z-index: 1; /* will be overridden dynamically in JS */
-    border: 1px solid red; /* DEBUG: visualize sticking */
-}
-
-.post-container {
-    position: relative;
-    margin-bottom: 0; /* spacing handled by wrapper height */
 }
