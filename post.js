@@ -80,14 +80,18 @@ function renderPosts() {
     const end = start + postsPerPage;
     const pagePosts = posts.slice(start, end);
 
+    let firstMediaSet = false; // Only first media on page is sticky
+
     pagePosts.forEach(post => {
         const wrap = document.createElement("div");
         wrap.className = "post-container";
 
+        // Title
         const title = document.createElement("h2");
         title.innerHTML = post.title;
         wrap.appendChild(title);
 
+        // Date
         const date = document.createElement("p");
         date.className = "datetime";
         date.textContent = post.date;
@@ -103,23 +107,27 @@ function renderPosts() {
                 p.style.fontSize = block.size || "1em";
                 contentWrap.appendChild(p);
             }
-            if(block.type === "image"){
-                const img = document.createElement("img");
-                img.src = block.value;
-                img.className = "post-image";
-                img.style.width = block.width || "100%";
-                contentWrap.appendChild(img);
-            }
-            if(block.type === "video"){
-                const v = document.createElement("video");
-                v.src = block.value;
-                v.controls = true;
-                v.autoplay = true;      // autoplay on load
-                v.muted = true;         // start muted
-                v.loop = true;          // optional: loop video
-                v.className = "post-video";
-                v.style.width = block.width || "100%";
-                contentWrap.appendChild(v);
+
+            if(block.type === "image" || block.type === "video"){
+                const media = document.createElement(block.type);
+                media.src = block.value;
+                media.style.width = block.width || "100%";
+
+                if(block.type === "video"){
+                    media.autoplay = true;
+                    media.muted = true;
+                    media.loop = true;
+                    media.controls = true;
+                }
+
+                if(!firstMediaSet){
+                    media.className = "sticky-page-media"; // Only first media per page
+                    firstMediaSet = true;
+                } else {
+                    media.className = block.type === "video" ? "post-video" : "post-image";
+                }
+
+                contentWrap.appendChild(media);
             }
 
             if(block.type === "audio"){
