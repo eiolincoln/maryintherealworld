@@ -65,7 +65,7 @@ const posts = [
 // -----------------------------
 // PAGINATION SETTINGS
 // -----------------------------
-const postsPerPage = 5;
+const postsPerPage = 10;
 let currentPage = 1;
 const totalPages = Math.ceil(posts.length / postsPerPage);
 
