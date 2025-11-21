@@ -1,3 +1,6 @@
+// -----------------------------
+// POSTS
+// -----------------------------
 const posts = [
     {
         title: "video test on website",
@@ -45,9 +48,11 @@ const posts = [
     }
 ];
 
+// -----------------------------
+// PAGINATION
+// -----------------------------
 const postsPerPage = 5;
 let currentPage = 1;
-const totalPages = Math.ceil(posts.length / postsPerPage);
 
 function renderPosts() {
     const container = document.getElementById("posts-container");
@@ -58,57 +63,63 @@ function renderPosts() {
     const pagePosts = posts.slice(start, end);
 
     pagePosts.forEach(post => {
-        const postWrapper = document.createElement("div");
-        postWrapper.className = "post-container";
+        const wrap = document.createElement("div");
+        wrap.className = "post-container";
 
-        // Title
+        // title
         const title = document.createElement("h2");
         title.textContent = post.title;
-        postWrapper.appendChild(title);
+        wrap.appendChild(title);
 
-        // Date
+        // date
         const date = document.createElement("p");
         date.className = "datetime";
         date.textContent = post.date;
-        postWrapper.appendChild(date);
+        wrap.appendChild(date);
 
-        const contentWrapper = document.createElement("div");
-        contentWrapper.className = "post-content";
+        const cwrap = document.createElement("div");
+        cwrap.className = "post-content";
 
+        // Blocks inside post
         post.content.forEach(block => {
-            if(block.type === "text") {
+
+            if (block.type === "text") {
                 const p = document.createElement("p");
                 p.innerHTML = block.value;
-                p.className = "floating-text";
                 p.style.fontSize = block.size || "1em";
-                contentWrapper.appendChild(p);
-            } else if(block.type === "image") {
+                p.className = "floating-text";
+                cwrap.appendChild(p);
+            }
+
+            if (block.type === "image") {
                 const img = document.createElement("img");
                 img.src = block.value;
-                img.className = "post-image sticky-media";
-                img.style.width = block.width || "100%";
-                contentWrapper.appendChild(img);
-            } else if(block.type === "video") {
-                const video = document.createElement("video");
-                video.src = block.value;
-                video.controls = true;
-                video.className = "post-video sticky-media";
-                video.style.width = block.width || "100%";
-                contentWrapper.appendChild(video);
-            } else if(block.type === "audio") {
-                const audioContainer = document.createElement("div");
-                audioContainer.className = "audio-container";
-                const audio = document.createElement("audio");
-                audio.controls = true;
-                audio.src = block.value;
-                audio.style.width = "100%";
-                audioContainer.appendChild(audio);
-                contentWrapper.appendChild(audioContainer);
+                img.style.width = block.width;
+                img.className = "post-image";
+                cwrap.appendChild(img);
             }
+
+            if (block.type === "video") {
+                const v = document.createElement("video");
+                v.src = block.value;
+                v.controls = true;
+                v.style.width = block.width;
+                v.className = "post-video";
+                cwrap.appendChild(v);
+            }
+
+            if (block.type === "audio") {
+                const a = document.createElement("audio");
+                a.src = block.value;
+                a.controls = true;
+                a.style.width = "100%";
+                cwrap.appendChild(a);
+            }
+
         });
 
-        postWrapper.appendChild(contentWrapper);
-        container.appendChild(postWrapper);
+        wrap.appendChild(cwrap);
+        container.appendChild(wrap);
     });
 }
 
