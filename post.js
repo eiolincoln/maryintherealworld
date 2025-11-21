@@ -3,7 +3,7 @@ const posts = [
         title: "21 Photos", 
         date: "11/21/2025 8:21pm",
         content: [
-            { type: "image", value:"images/Screenshot1.png", width: "50%" },
+            { type: "image", value:"images/Screenshot1.png", width: "25%" },
         ]
     },
     {
