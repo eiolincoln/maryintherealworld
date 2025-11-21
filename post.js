@@ -1,7 +1,7 @@
 const posts = [
     {
         title: "video test on website",
-        date:""
+        date:"",
         content:[
             { type: "video", value: "videos/sparkleinjamen.mp4", width: "50%" },
             { type: "text", value: "<br><br><br><br><br>anonymous", size: "1em" },
