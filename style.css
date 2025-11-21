@@ -7,7 +7,7 @@
 
 /* BASIC PAGE STYLE */
 body {
-    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-family: "Arial", "Helvetica", sans-serif; /* changed font */
     background: #fff;
     color: #000;
     line-height: 1.5;
@@ -59,7 +59,7 @@ nav a:hover {
     padding: 0.2em 0.4em;
     position: relative;
     z-index: 20;
-    font-size: 1em; /* relative unit for scaling */
+    font-size: 1rem; /* use rem for scaling with zoom */
 }
 
 /* Make empty lines (only <br> elements) transparent */
@@ -75,7 +75,7 @@ nav a:hover {
     display: block;
     margin-top: 0.2em;
     color: #555;
-    font-size: 0.9em;
+    font-size: 0.9rem;
     position: relative;
     z-index: 20;
 }
@@ -87,18 +87,18 @@ nav a:hover {
     top: 0;
     z-index: 0;
     margin-bottom: 1em;
-    width: 50%;     /* relative width */
+    width: 50%;      /* relative width, scales with zoom */
     max-width: 100%;
-    height: auto;   /* maintain aspect ratio */
+    height: auto;    /* maintains aspect ratio */
 }
 
-/* NORMAL VIDEO BEHAVIOR */
+/* NORMAL VIDEO BEHAVIOR (scrolls with text) */
 .post-video {
     display: block;
     margin-bottom: 1em;
-    width: 50%;     /* relative width */
+    width: 50%;      /* relative width, scales with zoom */
     max-width: 100%;
-    height: auto;   /* maintain aspect ratio */
+    height: auto;
 }
 
 /* OBSOLETE — fixed-image not used anymore but kept if needed */
