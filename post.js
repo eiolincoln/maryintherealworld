@@ -3,6 +3,13 @@
 // -----------------------------
 const posts = [
     {
+        title: "",
+        date: "11/21/2025 11:39pm",
+        content: [
+            { type: "text", value "this album sucks. i’m preparing for war.", size "1em"}
+        ]
+    },
+    {
         title: "<u><b>got that water in my еye eye еye</b></u>",
         date: "11/21/2025 10:43pm",
         content: [
