@@ -14,7 +14,7 @@ const posts = [
         date: "11/21/2025 10:43pm",
         content: [
             { type: "image", value:"images/Beauty.png", width: "25%" },
-            { type: "text", value: "not mine, looks like my grandfathers, his is green", size: "1em" },
+            { type: "text", value: "not mine, looks like my grandfathers, but his is green", size: "1em" },
         ]
     },
     {
@@ -77,61 +77,6 @@ const posts = [
     }
 ];
 
-pagePosts.forEach((post, index) => {
-    const wrap = document.createElement("div");
-    wrap.className = "post-container";
-
-    const stickyWrapper = document.createElement("div");
-    stickyWrapper.className = "post-sticky-wrapper";
-    stickyWrapper.style.zIndex = 100 + index; // later posts overlay earlier
-
-    const title = document.createElement("h2");
-    title.innerHTML = post.title;
-    stickyWrapper.appendChild(title);
-
-    const date = document.createElement("p");
-    date.className = "datetime";
-    date.textContent = post.date;
-    stickyWrapper.appendChild(date);
-
-    post.content.forEach(block => {
-        let elem;
-        if(block.type === "text"){
-            elem = document.createElement("p");
-            elem.innerHTML = block.value;
-            elem.style.fontSize = block.size || "1em";
-        }
-        if(block.type === "image"){
-            elem = document.createElement("img");
-            elem.src = block.value;
-            elem.className = "post-image";
-            elem.style.width = block.width || "100%";
-        }
-        if(block.type === "video"){
-            elem = document.createElement("video");
-            elem.src = block.value;
-            elem.controls = true;
-            elem.autoplay = true;
-            elem.muted = true;
-            elem.loop = true;
-            elem.className = "post-video";
-            elem.style.width = block.width || "100%";
-        }
-        if(block.type === "audio"){
-            elem = document.createElement("audio");
-            elem.src = block.value;
-            elem.controls = true;
-            elem.style.width = "100%";
-        }
-
-        if(elem) stickyWrapper.appendChild(elem);
-    });
-
-    wrap.appendChild(stickyWrapper);
-    container.appendChild(wrap);
-});
-
-
 // -----------------------------
 // PAGINATION SETTINGS
 // -----------------------------
@@ -139,6 +84,9 @@ const postsPerPage = 10;
 let currentPage = 1;
 const totalPages = Math.ceil(posts.length / postsPerPage);
 
+// -----------------------------
+// RENDER POSTS
+// -----------------------------
 function renderPosts() {
     const container = document.getElementById("posts-container");
     container.innerHTML = "";
@@ -147,23 +95,22 @@ function renderPosts() {
     const end = start + postsPerPage;
     const pagePosts = posts.slice(start, end);
 
-    let zCounter = 100; // starting z-index for sticky blocks
-
-    pagePosts.forEach(post => {
+    pagePosts.forEach((post, index) => {
         const wrap = document.createElement("div");
         wrap.className = "post-container";
 
+        const stickyWrapper = document.createElement("div");
+        stickyWrapper.className = "post-sticky-wrapper";
+        stickyWrapper.style.zIndex = 100 + index;
+
         const title = document.createElement("h2");
         title.innerHTML = post.title;
-        wrap.appendChild(title);
+        stickyWrapper.appendChild(title);
 
         const date = document.createElement("p");
         date.className = "datetime";
         date.textContent = post.date;
-        wrap.appendChild(date);
-
-        const contentWrap = document.createElement("div");
-        contentWrap.className = "post-content";
+        stickyWrapper.appendChild(date);
 
         post.content.forEach(block => {
             let elem;
@@ -196,22 +143,19 @@ function renderPosts() {
                 elem.style.width = "100%";
             }
 
-            if(elem){
-                elem.style.position = "sticky";
-                elem.style.top = "0";
-                elem.style.zIndex = zCounter++;
-                elem.style.marginBottom = "1em";
-                contentWrap.appendChild(elem);
-            }
+            if(elem) stickyWrapper.appendChild(elem);
         });
 
-        wrap.appendChild(contentWrap);
+        wrap.appendChild(stickyWrapper);
         container.appendChild(wrap);
     });
 
     renderPagination();
 }
 
+// -----------------------------
+// RENDER PAGINATION LINKS
+// -----------------------------
 function renderPagination() {
     let pagination = document.getElementById("pagination");
     if(!pagination){
@@ -271,6 +215,7 @@ function renderPagination() {
     }
 }
 
+// -----------------------------
+// INITIAL RENDER
+// -----------------------------
 renderPosts();
-
-
