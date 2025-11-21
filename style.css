@@ -7,10 +7,11 @@
 
 /* BASIC PAGE STYLE */
 body {
-    font-family: "Arial", "Helvetica", sans-serif; /* changed font */
+    font-family: Arial, Helvetica, sans-serif;
     background: #fff;
     color: #000;
     line-height: 1.5;
+    font-size: 16px; /* base font size */
 }
 
 header, main {
@@ -43,6 +44,7 @@ nav a:hover {
 .post-container {
     position: relative; 
     margin-bottom: 6em;
+    font-size: 1rem; /* base for scaling */
 }
 
 /* CONTENT (TEXT) ALWAYS ABOVE IMAGES */
@@ -51,7 +53,7 @@ nav a:hover {
     z-index: 20;
 }
 
-/* Keep normal text highlight */
+/* Keep normal text highlight full width */
 .post-content p {
     background: white;
     display: block;
@@ -59,15 +61,14 @@ nav a:hover {
     padding: 0.2em 0.4em;
     position: relative;
     z-index: 20;
-    font-size: 1rem; /* use rem for scaling with zoom */
 }
 
-/* Make empty lines (only <br> elements) transparent */
+/* Make empty lines (<br> only) transparent */
 .post-content p br {
     display: block;
     content: "";
-    background: none;
-    line-height: 1.2em; /* adjust spacing */
+    background: none; /* ensures no white background */
+    line-height: 1.2em; /* adjust spacing as needed */
 }
 
 /* DATE STYLE */
@@ -75,7 +76,7 @@ nav a:hover {
     display: block;
     margin-top: 0.2em;
     color: #555;
-    font-size: 0.9rem;
+    font-size: 0.9em;
     position: relative;
     z-index: 20;
 }
@@ -87,16 +88,16 @@ nav a:hover {
     top: 0;
     z-index: 0;
     margin-bottom: 1em;
-    width: 50%;      /* relative width, scales with zoom */
+    width: 30em;   /* scales with text zoom */
     max-width: 100%;
-    height: auto;    /* maintains aspect ratio */
+    height: auto;
 }
 
-/* NORMAL VIDEO BEHAVIOR (scrolls with text) */
+/* VIDEO BEHAVIOR - scrolls normally with text */
 .post-video {
     display: block;
     margin-bottom: 1em;
-    width: 50%;      /* relative width, scales with zoom */
+    width: 30em;   /* scales with text zoom */
     max-width: 100%;
     height: auto;
 }
