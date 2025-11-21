@@ -1,5 +1,13 @@
 const posts = [
     {
+        title: "video test on website",
+        date:""
+        content:[
+            { type: "video", value: "videos/sparkleinjamen.mp4", width: "50%" },
+            { type: "text", value: "<br><br><br><br><br>anonymous", size: "1em" },
+        ]
+    }
+    {
         title: "hoooly poop Ninajirachi just won ARIAs Best Solo Artist",
         date: "20/11/2025 11:14",
         content: [
