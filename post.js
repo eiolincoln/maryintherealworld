@@ -70,6 +70,61 @@ const posts = [
     }
 ];
 
+pagePosts.forEach((post, index) => {
+    const wrap = document.createElement("div");
+    wrap.className = "post-container";
+
+    const stickyWrapper = document.createElement("div");
+    stickyWrapper.className = "post-sticky-wrapper";
+    stickyWrapper.style.zIndex = 100 + index; // later posts overlay earlier
+
+    const title = document.createElement("h2");
+    title.innerHTML = post.title;
+    stickyWrapper.appendChild(title);
+
+    const date = document.createElement("p");
+    date.className = "datetime";
+    date.textContent = post.date;
+    stickyWrapper.appendChild(date);
+
+    post.content.forEach(block => {
+        let elem;
+        if(block.type === "text"){
+            elem = document.createElement("p");
+            elem.innerHTML = block.value;
+            elem.style.fontSize = block.size || "1em";
+        }
+        if(block.type === "image"){
+            elem = document.createElement("img");
+            elem.src = block.value;
+            elem.className = "post-image";
+            elem.style.width = block.width || "100%";
+        }
+        if(block.type === "video"){
+            elem = document.createElement("video");
+            elem.src = block.value;
+            elem.controls = true;
+            elem.autoplay = true;
+            elem.muted = true;
+            elem.loop = true;
+            elem.className = "post-video";
+            elem.style.width = block.width || "100%";
+        }
+        if(block.type === "audio"){
+            elem = document.createElement("audio");
+            elem.src = block.value;
+            elem.controls = true;
+            elem.style.width = "100%";
+        }
+
+        if(elem) stickyWrapper.appendChild(elem);
+    });
+
+    wrap.appendChild(stickyWrapper);
+    container.appendChild(wrap);
+});
+
+
 // -----------------------------
 // PAGINATION SETTINGS
 // -----------------------------
@@ -210,3 +265,5 @@ function renderPagination() {
 }
 
 renderPosts();
+
+
