@@ -51,8 +51,8 @@ nav a:hover {
     z-index: 20;
 }
 
-.post-content p,
-.audio-container {
+/* Keep normal text highlight */
+.post-content p {
     background: white;
     display: block;
     margin: 0.5em 0;
@@ -60,6 +60,15 @@ nav a:hover {
     position: relative;
     z-index: 20;
 }
+
+/* Make empty lines (only <br> elements) transparent */
+.post-content p br {
+    display: block;
+    content: "";
+    background: none; /* ensures no white background */
+    line-height: 1.2em; /* adjust spacing as needed */
+}
+
 
 /* DATE STYLE */
 .datetime {
