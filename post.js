@@ -6,7 +6,7 @@ const posts = [
         title: "<u><b>21 Photos</b></u>",
         date: "11/21/2025 8:21pm",
         content: [
-            { type: "image", value:"images/Screenshot1.png", width: "15%" },
+            { type: "image", value:"images/Screenshot1.png", width: "25%" },
         ]
     },
     {
