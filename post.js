@@ -6,7 +6,7 @@ const posts = [
         title: "<u><b>21 Photos</b></u>",
         date: "11/21/2025 8:21pm",
         content: [
-            { type: "image", value:"images/Screenshot1.png", width: "25%" },
+            { type: "image", value:"images/Screenshot1.png", width: "50%" },
         ]
     },
     {
@@ -84,18 +84,15 @@ function renderPosts() {
         const wrap = document.createElement("div");
         wrap.className = "post-container";
 
-        // Title (HTML works here)
         const title = document.createElement("h2");
         title.innerHTML = post.title;
         wrap.appendChild(title);
 
-        // Date
         const date = document.createElement("p");
         date.className = "datetime";
         date.textContent = post.date;
         wrap.appendChild(date);
 
-        // Content
         const contentWrap = document.createElement("div");
         contentWrap.className = "post-content";
 
@@ -138,7 +135,7 @@ function renderPosts() {
 }
 
 // -----------------------------
-// RENDER PAGINATION BUTTONS
+// RENDER PAGINATION LINKS
 // -----------------------------
 function renderPagination() {
     let pagination = document.getElementById("pagination");
@@ -147,25 +144,58 @@ function renderPagination() {
         pagination.id = "pagination";
         pagination.style.marginTop = "2em";
         pagination.style.marginBottom = "2em";
-        document.body.appendChild(pagination);
+        pagination.style.fontSize = "1em";
+        document.getElementById("posts-container").after(pagination);
     }
     pagination.innerHTML = "";
 
+    // Previous link
+    if(currentPage > 1){
+        const prev = document.createElement("a");
+        prev.href = "#";
+        prev.textContent = "Previous";
+        prev.style.marginRight = "1em";
+        prev.style.textDecoration = "underline";
+        prev.onclick = (e) => {
+            e.preventDefault();
+            currentPage--;
+            renderPosts();
+            window.scrollTo(0,0);
+        };
+        pagination.appendChild(prev);
+    }
+
+    // Page numbers
     for(let i = 1; i <= totalPages; i++){
-        const btn = document.createElement("button");
-        btn.textContent = i;
-        btn.style.marginRight = "0.5em";
-        btn.style.padding = "0.3em 0.6em";
-        if(i === currentPage){
-            btn.style.fontWeight = "bold";
-            btn.disabled = true;
-        }
-        btn.onclick = () => {
+        const num = document.createElement("a");
+        num.href = "#";
+        num.textContent = i;
+        num.style.marginRight = "0.5em";
+        num.style.textDecoration = "underline";
+        if(i === currentPage) num.style.fontWeight = "bold";
+        num.onclick = (e) => {
+            e.preventDefault();
             currentPage = i;
             renderPosts();
             window.scrollTo(0,0);
         };
-        pagination.appendChild(btn);
+        pagination.appendChild(num);
+    }
+
+    // Next link
+    if(currentPage < totalPages){
+        const next = document.createElement("a");
+        next.href = "#";
+        next.textContent = "Next";
+        next.style.marginLeft = "1em";
+        next.style.textDecoration = "underline";
+        next.onclick = (e) => {
+            e.preventDefault();
+            currentPage++;
+            renderPosts();
+            window.scrollTo(0,0);
+        };
+        pagination.appendChild(next);
     }
 }
 
