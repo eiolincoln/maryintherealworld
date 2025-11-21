@@ -17,9 +17,27 @@
     </nav>
 </header>
 
-<main>
+<<main>
     <h2>ask</h2>
-    <p>hello</p>
+
+    <form action="https://formsubmit.co/maryinrealworld" method="POST" class="ask-form">
+
+        <!-- Prevent spam -->
+        <input type="hidden" name="_captcha" value="false">
+
+        <!-- Where you want to be redirected after sending -->
+        <input type="hidden" name="_next" value="https://eiolincoln.github.io/maryintherealworld/ask.html">
+
+        <label>Your name (optional):</label>
+        <input type="text" name="name" placeholder="anonymous">
+
+        <label>Your question:</label>
+        <textarea name="question" required placeholder="Write something"></textarea>
+
+        <button type="submit">send</button>
+    </form>
+
 </main>
+
 </body>
 </html>
