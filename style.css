@@ -98,3 +98,16 @@ h1, h2, p,
     z-index: 0;
     pointer-events: none;
 }
+
+.floating-text {
+  display: inline-block;
+  position: relative;
+  z-index: 20;
+  line-height: 1.5em;
+}
+
+.floating-text span {
+  background: white; /* highlight only behind text */
+  padding: 0.2em 0.4em;
+}
+
