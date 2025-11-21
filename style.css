@@ -48,17 +48,18 @@ nav a:hover {
 /* CONTENT (TEXT) ALWAYS ABOVE IMAGES */
 .post-content {
     position: relative;
-}
-
-.post-content p,
-.audio-container,
-h1, h2, p,
-.datetime {
-    background: white;
-    position: relative;
     z-index: 20;
 }
 
+.post-content p,
+.audio-container {
+    background: white;
+    display: block;
+    margin: 0.5em 0;
+    padding: 0.2em 0.4em;
+    position: relative;
+    z-index: 20;
+}
 
 /* DATE STYLE */
 .datetime {
@@ -79,17 +80,6 @@ h1, h2, p,
     margin-bottom: 1em;
 }
 
-/* STICKY VIDEO BEHAVIOR */
-.post-video {
-    display: block;
-    position: sticky;
-    top: 0;
-    z-index: 0;
-    margin-bottom: 5em; /* creates scroll space so they actually stick */
-}
-
-
-
 /* OBSOLETE — fixed-image not used anymore but kept if needed */
 .fixed-image {
     position: fixed;
@@ -99,15 +89,8 @@ h1, h2, p,
     pointer-events: none;
 }
 
-.floating-text {
-  display: inline-block;
-  position: relative;
-  z-index: 20;
-  line-height: 1.5em;
+/* NEW: normal video behavior (scrolls with text) */
+.post-video {
+    display: block;
+    margin-bottom: 1em;
 }
-
-.floating-text span {
-  background: white; /* highlight only behind text */
-  padding: 0.2em 0.4em;
-}
-
