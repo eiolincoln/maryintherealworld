@@ -79,6 +79,15 @@ h1, h2, p,
     margin-bottom: 1em;
 }
 
+/* STICKY VIDEO BEHAVIOR */
+.post-video {
+    display: block;
+    position: sticky;
+    top: 0;
+    z-index: 0;
+    margin-bottom: 5em; /* creates scroll space so they actually stick */
+}
+
 
 
 /* OBSOLETE — fixed-image not used anymore but kept if needed */
