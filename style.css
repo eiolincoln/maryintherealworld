@@ -125,9 +125,13 @@ nav a:hover {
 .post-video {
     display: block;
     margin-bottom: 1em;
-    width: 30em;   /* scales with text zoom */
+    width: 30em;       /* or whatever size you want */
     max-width: 100%;
     height: auto;
+    
+    position: sticky;  /* THIS MAKES IT STICK */
+    top: 0;            /* sticks to top of the viewport */
+    z-index: 10;       /* make sure it appears above other content */
 }
 
 /* OBSOLETE — fixed-image not used anymore but kept if needed */
