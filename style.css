@@ -1,3 +1,31 @@
+/* Force absolutely flush-left layout */
+html, body {
+  margin: 0 !important;
+  padding: 0 !important;
+  width: 100%;
+}
+header, main, nav, h1, h2, p, .post-container, .post-content {
+  margin-left: 0 !important;
+  padding-left: 0 !important;
+}
+header h1 {
+  display: block;
+  margin: 0;
+  padding: 0;
+}
+nav {
+  display: block;
+  margin: 0;
+  padding: 0;
+}
+nav a {
+  display: block;
+  margin: 0;
+  padding: 0;
+  text-decoration: underline;
+}
+
+
 /* RESET */
 * {
     margin: 0;
@@ -6,15 +34,12 @@
 }
 
 /* BASIC PAGE STYLE */
-html, body {
-    margin: 0 !important;
-    padding: 0 !important;
-    width: 100%;
+body {
     font-family: Arial, Helvetica, sans-serif;
     background: #fff;
     color: #000;
     line-height: 1.5;
-    font-size: 16px;
+    font-size: 16px; /* base font size */
 }
 
 header, main {
@@ -22,7 +47,7 @@ header, main {
     text-align: left;
 }
 
-/* TEXT STYLING */
+/* TEXT BLOCKS ALWAYS ABOVE IMAGES */
 h1, h2, p {
     background: white;
     display: inline-block;
@@ -38,63 +63,92 @@ nav a {
     color: black;
     margin-bottom: 0.3em;
 }
+
 nav a:hover {
     opacity: 0.7;
 }
 
 /* POST CONTAINER */
 .post-container {
+    position: relative; 
+    margin-bottom: 6em;
+    font-size: 1rem; /* base for scaling */
+}
+
+/* CONTENT (TEXT) ALWAYS ABOVE IMAGES */
+.post-content {
     position: relative;
-    margin-bottom: 0; /* spacing handled by sticky wrapper */
+    z-index: 20;
 }
 
-/* ENTIRE POST STICKS */
-.post-sticky-wrapper {
-    position: sticky;
-    top: 0;
-    width: 100%;
-    height: 100vh;
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-start;
-    background: white;
-    z-index: 1;
-    padding: 1em 0;
-}
-
-/* POST CONTENT */
+/* Keep normal text highlight full width */
 .post-content p {
     background: white;
     display: block;
     margin: 0.5em 0;
     padding: 0.2em 0.4em;
+    position: relative;
+    z-index: 20;
 }
 
-/* MEDIA */
-.post-image,
-.post-video,
-.post-audio {
+/* Make empty lines (<br> only) transparent */
+.post-content p br {
     display: block;
-    margin: 1em 0;
-    width: 30em;
-    max-width: 100%;
-    height: auto;
+    content: "";
+    background: none; /* ensures no white background */
+    line-height: 1.2em; /* adjust spacing as needed */
 }
 
-/* DATETIME */
+/* DATE STYLE */
 .datetime {
     display: block;
     margin-top: 0.2em;
     color: #555;
     font-size: 0.9em;
+    position: relative;
+    z-index: 20;
 }
 
-/* FORM STYLING */
-.ask-form {
+/* STICKY IMAGE BEHAVIOR */
+.post-image {
     display: block;
+    position: sticky;
+    top: 0;
+    z-index: 0;
+    margin-bottom: 1em;
+    width: 30em;   /* scales with text zoom */
+    max-width: 100%;
+    height: auto;
+}
+
+/* VIDEO BEHAVIOR - scrolls normally with text */
+.post-video {
+    display: block;
+    margin-bottom: 1em;
+    width: 30em;       /* or whatever size you want */
+    max-width: 100%;
+    height: auto;
+    
+    position: sticky;  /* THIS MAKES IT STICK */
+    top: 0;            /* sticks to top of the viewport */
+    z-index: 10;       /* make sure it appears above other content */
+}
+
+/* OBSOLETE — fixed-image not used anymore but kept if needed */
+.fixed-image {
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 0;
+    pointer-events: none;
+}
+
+.ask-form {
+    display: black;
     width: 100%;
     max-width: 500px;
 }
+
 .ask-form input,
 .ask-form textarea {
     width: 100%;
@@ -105,15 +159,18 @@ nav a:hover {
     color: #000;
     font-family: inherit;
 }
+
 .ask-form textarea {
     height: 150px;
 }
+
 .ask-form button {
     padding: 0.6em 1.2em;
     cursor: pointer;
     border: 1px solid #000;
     background: #fff;
 }
+
 .ask-form button:hover {
     background: #eee;
 }
