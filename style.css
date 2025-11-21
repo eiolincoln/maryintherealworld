@@ -5,9 +5,10 @@
     box-sizing: border-box;
 }
 
+
 /* BASIC PAGE STYLE */
 body {
-    font-family: Arial, sans-serif;
+    font-family: "Times New Roman", Times, serif;
     background: #fff;
     color: #000;
     line-height: 1.5;
@@ -18,31 +19,13 @@ header, main {
     text-align: left;
 }
 
-/* TEXT BLOCKS — highlight only behind text */
-h1, h2 {
+/* TEXT BLOCKS ALWAYS ABOVE IMAGES */
+h1, h2, p {
     background: white;
-    display: inline;       /* only covers text itself */
+    display: inline-block;
     padding: 0.2em 0.4em;
     position: relative;
     z-index: 20;
-}
-
-.post-content p,
-.post-content .audio-container {
-    background: white;     /* highlight behind text */
-    display: inline;       /* only behind letters */
-    margin: 0.5em 0;
-    padding: 0.2em 0.4em;
-    position: relative;
-    z-index: 20;
-}
-
-/* Make <br> lines transparent */
-.post-content p br {
-    display: block;
-    content: "";
-    background: none;      /* no highlight for empty lines */
-    line-height: 1.2em;    /* spacing between empty lines */
 }
 
 /* NAVIGATION */
@@ -69,6 +52,25 @@ nav a:hover {
     z-index: 20;
 }
 
+/* Keep normal text highlight */
+.post-content p {
+    background: white;
+    display: block;
+    margin: 0.5em 0;
+    padding: 0.2em 0.4em;
+    position: relative;
+    z-index: 20;
+}
+
+/* Make empty lines (only <br> elements) transparent */
+.post-content p br {
+    display: block;
+    content: "";
+    background: none; /* ensures no white background */
+    line-height: 1.2em; /* adjust spacing as needed */
+}
+
+
 /* DATE STYLE */
 .datetime {
     display: block;
@@ -86,14 +88,6 @@ nav a:hover {
     top: 0;
     z-index: 0;
     margin-bottom: 1em;
-    float: left;           /* left aligned */
-}
-
-/* VIDEO SCROLLS WITH TEXT */
-.post-video {
-    display: block;
-    margin-bottom: 1em;
-    float: left;           /* align left like images */
 }
 
 /* OBSOLETE — fixed-image not used anymore but kept if needed */
@@ -103,4 +97,10 @@ nav a:hover {
     left: 0;
     z-index: 0;
     pointer-events: none;
+}
+
+/* NEW: normal video behavior (scrolls with text) */
+.post-video {
+    display: block;
+    margin-bottom: 1em;
 }
