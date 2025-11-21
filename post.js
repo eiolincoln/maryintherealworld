@@ -4,7 +4,7 @@ const posts = [
         date:"",
         content:[
             { type: "video", value: "videos/sparkleinjamen.mp4", width: "50%" },
-            { type: "text", value: "11/21/2025 3:19pm<br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>anonymous", size: "1em" },
+            { type: "text", value: "11/21/2025 3:19pm<br><br><br><br><br>anonymous", size: "1em" },
         ]
     },
     {
@@ -78,21 +78,10 @@ function renderPosts() {
         post.content.forEach(block => {
             if(block.type === "text") {
                 const p = document.createElement("p");
+                p.innerHTML = block.value;
                 p.className = "floating-text";
                 p.style.fontSize = block.size || "1em";
-    
-                const lines = block.value.split(/<br\s*\/?>/i);
-                lines.forEach((line, index) => {
-                    const span = document.createElement("span");
-                    span.innerHTML = line;
-                    p.appendChild(span);
-                    if(index < lines.length - 1) {
-                        p.appendChild(document.createElement("br"));
-                    }
-                });
-            
                 contentWrapper.appendChild(p);
-            }
             } else if(block.type === "image") {
                 const img = document.createElement("img");
                 img.src = block.value;
