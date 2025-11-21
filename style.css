@@ -5,10 +5,9 @@
     box-sizing: border-box;
 }
 
-
 /* BASIC PAGE STYLE */
 body {
-    font-family: Arial, sans-serif;
+    font-family: "Times New Roman", Times, serif; /* changed font */
     background: #fff;
     color: #000;
     line-height: 1.5;
@@ -60,16 +59,16 @@ nav a:hover {
     padding: 0.2em 0.4em;
     position: relative;
     z-index: 20;
+    font-size: 1em; /* relative unit for scaling */
 }
 
 /* Make empty lines (only <br> elements) transparent */
 .post-content p br {
     display: block;
     content: "";
-    background: none; /* ensures no white background */
-    line-height: 1.2em; /* adjust spacing as needed */
+    background: none;
+    line-height: 1.2em; /* adjust spacing */
 }
-
 
 /* DATE STYLE */
 .datetime {
@@ -88,6 +87,18 @@ nav a:hover {
     top: 0;
     z-index: 0;
     margin-bottom: 1em;
+    width: 50%;     /* relative width */
+    max-width: 100%;
+    height: auto;   /* maintain aspect ratio */
+}
+
+/* NORMAL VIDEO BEHAVIOR */
+.post-video {
+    display: block;
+    margin-bottom: 1em;
+    width: 50%;     /* relative width */
+    max-width: 100%;
+    height: auto;   /* maintain aspect ratio */
 }
 
 /* OBSOLETE — fixed-image not used anymore but kept if needed */
@@ -97,10 +108,4 @@ nav a:hover {
     left: 0;
     z-index: 0;
     pointer-events: none;
-}
-
-/* NEW: normal video behavior (scrolls with text) */
-.post-video {
-    display: block;
-    margin-bottom: 1em;
 }
