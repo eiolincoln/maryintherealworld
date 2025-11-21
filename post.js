@@ -29,8 +29,9 @@ const posts = [
         title: "first post evarrrrrrrrrrrr",
         date: "20/11/2025 5:39",
         content: [
-            { type: "text", value: "Been listening to I Love My Computer by Ninajirachi.<br>Favourite: Delete<br><br>i like this album i like how all the songs converge together like i think every song works as a interlude to the next CSIRAC to delete<br>is great cat paws up to All I Am is epic i havent gone into the second half of the album that much (aka after All I Am) except for maybe like It's You nice song great album hypoppy", size: "1em" },
+            { type: "text", value: "Been listening to I Love My Computer by Ninajirachi.<br>Favourite: Delete", size: "1em" },
             { type: "image", value: "images/ILoveMyComputer.jpg", width: "50%" },
+            { type: "text", value: "i like this album i like how all the songs converge together like i think every song works as a interlude to the next CSIRAC to delete<br>is great cat paws up to All I Am is epic i havent gone into the second half of the album that much (aka after All I Am) except for maybe<br>like It's You nice song great album hypoppy", size: "1em" },
             { type: "audio", value: "audio/Delete - Ninajirachi.mp3" }
         ]
     }
