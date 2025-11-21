@@ -1,6 +1,3 @@
-// -----------------------------
-// POSTS
-// -----------------------------
 const posts = [
     {
         title: "video test on website",
@@ -48,9 +45,6 @@ const posts = [
     }
 ];
 
-// -----------------------------
-// PAGINATION
-// -----------------------------
 const postsPerPage = 5;
 let currentPage = 1;
 
@@ -66,29 +60,24 @@ function renderPosts() {
         const wrap = document.createElement("div");
         wrap.className = "post-container";
 
-        // title
         const title = document.createElement("h2");
         title.textContent = post.title;
         wrap.appendChild(title);
 
-        // date
         const date = document.createElement("p");
         date.className = "datetime";
         date.textContent = post.date;
         wrap.appendChild(date);
 
-        const cwrap = document.createElement("div");
-        cwrap.className = "post-content";
+        const contentWrap = document.createElement("div");
+        contentWrap.className = "post-content";
 
-        // Blocks inside post
         post.content.forEach(block => {
-
             if (block.type === "text") {
                 const p = document.createElement("p");
                 p.innerHTML = block.value;
                 p.style.fontSize = block.size || "1em";
-                p.className = "floating-text";
-                cwrap.appendChild(p);
+                contentWrap.appendChild(p);
             }
 
             if (block.type === "image") {
@@ -96,7 +85,7 @@ function renderPosts() {
                 img.src = block.value;
                 img.style.width = block.width;
                 img.className = "post-image";
-                cwrap.appendChild(img);
+                contentWrap.appendChild(img);
             }
 
             if (block.type === "video") {
@@ -105,20 +94,18 @@ function renderPosts() {
                 v.controls = true;
                 v.style.width = block.width;
                 v.className = "post-video";
-                cwrap.appendChild(v);
+                contentWrap.appendChild(v);
             }
 
             if (block.type === "audio") {
                 const a = document.createElement("audio");
                 a.src = block.value;
                 a.controls = true;
-                a.style.width = "100%";
-                cwrap.appendChild(a);
+                contentWrap.appendChild(a);
             }
-
         });
 
-        wrap.appendChild(cwrap);
+        wrap.appendChild(contentWrap);
         container.appendChild(wrap);
     });
 }
