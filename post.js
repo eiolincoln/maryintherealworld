@@ -1,6 +1,4 @@
-// -----------------------------
-// POSTS DATA
-// -----------------------------
+// posts data (replace or edit these entries as you like)
 const posts = [
     {
         title: "",
@@ -76,149 +74,263 @@ const posts = [
         ]
     }
 ];
-
-// -----------------------------
-// PAGINATION SETTINGS
-// -----------------------------
-const postsPerPage = 10;
+// pagination config
+const postsPerPage = 5;
 let currentPage = 1;
 const totalPages = Math.ceil(posts.length / postsPerPage);
 
-// -----------------------------
-// RENDER POSTS
-// -----------------------------
+// helper: unique id generator for stickables
+let stickIdCounter = 0;
+function nextStickId() { return "stick-" + (stickIdCounter++); }
+
+// render posts into #posts-container
 function renderPosts() {
-    const container = document.getElementById("posts-container");
-    container.innerHTML = "";
+  const container = document.getElementById("posts-container");
+  container.innerHTML = "";
 
-    const start = (currentPage - 1) * postsPerPage;
-    const end = start + postsPerPage;
-    const pagePosts = posts.slice(start, end);
+  const start = (currentPage - 1) * postsPerPage;
+  const end = start + postsPerPage;
+  const pagePosts = posts.slice(start, end);
 
-    pagePosts.forEach(post => {
-        const wrap = document.createElement("div");
-        wrap.className = "post-container";
+  pagePosts.forEach((post) => {
+    const wrap = document.createElement("div");
+    wrap.className = "post-container";
 
-        const title = document.createElement("h2");
-        title.innerHTML = post.title;
-        wrap.appendChild(title);
+    // title
+    const title = document.createElement("h2");
+    title.innerHTML = post.title || "";
+    wrap.appendChild(title);
 
-        const date = document.createElement("p");
-        date.className = "datetime";
-        date.textContent = post.date;
-        wrap.appendChild(date);
+    // date
+    if (post.date) {
+      const date = document.createElement("p");
+      date.className = "datetime";
+      date.textContent = post.date;
+      wrap.appendChild(date);
+    }
 
-        const contentWrap = document.createElement("div");
-        contentWrap.className = "post-content";
+    const contentWrap = document.createElement("div");
+    contentWrap.className = "post-content";
 
-        post.content.forEach(block => {
-            if(block.type === "text"){
-                const p = document.createElement("p");
-                p.innerHTML = block.value;
-                p.style.fontSize = block.size || "1em";
-                contentWrap.appendChild(p);
-            }
-            if(block.type === "image"){
-                const img = document.createElement("img");
-                img.src = block.value;
-                img.className = "post-image";
-                img.style.width = block.width || "100%";
-                contentWrap.appendChild(img);
-            }
-            if(block.type === "video"){
-                const v = document.createElement("video");
-                v.src = block.value;
-                v.controls = true;
-                v.autoplay = true;      // autoplay on load
-                v.muted = true;         // start muted
-                v.loop = true;          // optional: loop video
-                v.className = "post-video";
-                v.style.width = block.width || "100%";
-                contentWrap.appendChild(v);
-            }
+    // create blocks - each media/text block that should "stick" gets data-stick-id
+    post.content.forEach(block => {
+      if (block.type === "text") {
+        const p = document.createElement("p");
+        // keep <br> and inline HTML
+        p.innerHTML = block.value || "";
+        if (block.size) p.style.fontSize = block.size;
+        // text blocks are stickable too
+        p.dataset.stickId = nextStickId();
+        p.dataset.stickType = "text";
+        p.className = "stickable stick-text";
+        contentWrap.appendChild(p);
+      }
 
-            if(block.type === "audio"){
-                const a = document.createElement("audio");
-                a.src = block.value;
-                a.controls = true;
-                a.style.width = "100%";
-                contentWrap.appendChild(a);
-            }
-        });
+      if (block.type === "image") {
+        const img = document.createElement("img");
+        img.src = block.value;
+        img.className = "post-image stickable stick-image";
+        img.style.width = block.width || "100%";
+        img.dataset.stickId = nextStickId();
+        img.dataset.stickType = "image";
+        // preserve original width value for clone sizing
+        img.dataset.origWidth = block.width || "";
+        contentWrap.appendChild(img);
+      }
 
-        wrap.appendChild(contentWrap);
-        container.appendChild(wrap);
+      if (block.type === "video") {
+        const v = document.createElement("video");
+        v.src = block.value;
+        v.controls = true;
+        v.autoplay = false; // autoplay off for original; clones can autoplay if you want
+        v.muted = true;
+        v.loop = true;
+        v.className = "post-video stickable stick-video";
+        v.style.width = block.width || "100%";
+        v.dataset.stickId = nextStickId();
+        v.dataset.stickType = "video";
+        v.dataset.origWidth = block.width || "";
+        contentWrap.appendChild(v);
+      }
+
+      if (block.type === "audio") {
+        const audioWrap = document.createElement("div");
+        audioWrap.className = "audio-container stickable stick-audio";
+        const audio = document.createElement("audio");
+        audio.controls = true;
+        audio.src = block.value;
+        audio.style.width = "100%";
+        audio.dataset.stickId = nextStickId();
+        audio.dataset.stickType = "audio";
+        audioWrap.dataset.stickId = audio.dataset.stickId;
+        audioWrap.dataset.stickType = "audio";
+        audioWrap.appendChild(audio);
+        contentWrap.appendChild(audioWrap);
+      }
     });
 
-    renderPagination();
+    wrap.appendChild(contentWrap);
+    container.appendChild(wrap);
+  });
+
+  renderPagination();
+  initStickyEngine();
 }
 
-// -----------------------------
-// RENDER PAGINATION LINKS
-// -----------------------------
+// pagination (numbers underlined; previous/next)
 function renderPagination() {
-    let pagination = document.getElementById("pagination");
-    if(!pagination){
-        pagination = document.createElement("div");
-        pagination.id = "pagination";
-        pagination.style.marginTop = "2em";
-        pagination.style.marginBottom = "2em";
-        pagination.style.fontSize = "1em";
-        document.getElementById("posts-container").after(pagination);
-    }
-    pagination.innerHTML = "";
+  const pagination = document.getElementById("pagination");
+  pagination.innerHTML = "";
 
-    // Previous link
-    if(currentPage > 1){
-        const prev = document.createElement("a");
-        prev.href = "#";
-        prev.textContent = "Previous";
-        prev.style.marginRight = "1em";
-        prev.style.textDecoration = "underline";
-        prev.onclick = (e) => {
-            e.preventDefault();
-            currentPage--;
-            renderPosts();
-            window.scrollTo(0,0);
-        };
-        pagination.appendChild(prev);
-    }
+  if (currentPage > 1) {
+    const prev = document.createElement("a");
+    prev.href = "#";
+    prev.textContent = "Previous";
+    prev.onclick = (e) => { e.preventDefault(); currentPage--; renderPosts(); window.scrollTo(0,0); };
+    pagination.appendChild(prev);
+  }
 
-    // Page numbers
-    for(let i = 1; i <= totalPages; i++){
-        const num = document.createElement("a");
-        num.href = "#";
-        num.textContent = i;
-        num.style.marginRight = "0.5em";
-        num.style.textDecoration = "underline";
-        if(i === currentPage) num.style.fontWeight = "bold";
-        num.onclick = (e) => {
-            e.preventDefault();
-            currentPage = i;
-            renderPosts();
-            window.scrollTo(0,0);
-        };
-        pagination.appendChild(num);
-    }
+  for (let i = 1; i <= totalPages; i++) {
+    const a = document.createElement("a");
+    a.href = "#";
+    a.textContent = i;
+    a.className = (i === currentPage) ? "current" : "";
+    a.onclick = (e) => { e.preventDefault(); currentPage = i; renderPosts(); window.scrollTo(0,0); };
+    pagination.appendChild(a);
+  }
 
-    // Next link
-    if(currentPage < totalPages){
-        const next = document.createElement("a");
-        next.href = "#";
-        next.textContent = "Next";
-        next.style.marginLeft = "1em";
-        next.style.textDecoration = "underline";
-        next.onclick = (e) => {
-            e.preventDefault();
-            currentPage++;
-            renderPosts();
-            window.scrollTo(0,0);
-        };
-        pagination.appendChild(next);
-    }
+  if (currentPage < totalPages) {
+    const next = document.createElement("a");
+    next.href = "#";
+    next.textContent = "Next";
+    next.onclick = (e) => { e.preventDefault(); currentPage++; renderPosts(); window.scrollTo(0,0); };
+    pagination.appendChild(next);
+  }
 }
 
-// -----------------------------
-// INITIAL RENDER
-// -----------------------------
+/* ---------------------------
+   STICKY STACK ENGINE (stacking behavior)
+   ---------------------------
+   - All elements that should be able to stick have class "stickable"
+   - When a stickable's bounding top <= 0, we clone it into #sticky-stack
+   - When it scrolls back above top (> 0), we remove its clone and restore original
+   - Clones are given class "stacked-item" and are stacked in order (newer clones appended -> appear lower visually,
+     but JS sets z-index so newest appear on top visually if needed)
+*/
+let stickyMap = new Map(); // stickId => { clone, originalHidden }
+
+function initStickyEngine() {
+  // clear any previous map/clones
+  stickyMap.forEach((val) => {
+    if (val.clone && val.clone.parentNode) val.clone.remove();
+  });
+  stickyMap.clear();
+
+  // ensure stack container exists
+  const stack = document.getElementById("sticky-stack");
+  stack.innerHTML = "";
+
+  // make list of stickable elements on page (in order they appear)
+  const stickables = Array.from(document.querySelectorAll(".stickable"));
+
+  // on scroll/resize check state
+  function checkStickables() {
+    const viewportTop = 0; // use top of viewport
+    stickables.forEach((el, idx) => {
+      const stickId = el.dataset.stickId;
+      if (!stickId) return;
+      const rect = el.getBoundingClientRect();
+      // if top <= 0 we want it stacked (cloned)
+      if (rect.top <= viewportTop) {
+        if (!stickyMap.has(stickId)) {
+          // create clone
+          const cloned = createCloneFor(el);
+          // append to stack
+          stack.appendChild(cloned);
+          // set z-index so later items are visually above earlier ones
+          cloned.style.zIndex = 100 + stack.children.length;
+          // hide the original while cloned
+          hideOriginal(el);
+          stickyMap.set(stickId, { clone: cloned, original: el });
+        }
+      } else {
+        // element is above threshold; if it was stuck remove clone and reveal original
+        if (stickyMap.has(stickId)) {
+          const entry = stickyMap.get(stickId);
+          if (entry.clone && entry.clone.parentNode) entry.clone.parentNode.removeChild(entry.clone);
+          showOriginal(entry.original);
+          stickyMap.delete(stickId);
+        }
+      }
+    });
+  }
+
+  // run once now
+  checkStickables();
+
+  // attach scroll and resize listeners
+  window.removeEventListener("scroll", checkStickables);
+  window.removeEventListener("resize", checkStickables);
+  window.addEventListener("scroll", checkStickables, { passive: true });
+  window.addEventListener("resize", checkStickables);
+}
+
+// create a clone element suitable for stacking (keeps media controls interactive)
+function createCloneFor(el) {
+  const wrapper = document.createElement("div");
+  wrapper.className = "stacked-item";
+
+  const type = el.dataset.stickType || el.tagName.toLowerCase();
+
+  if (type === "text" || el.tagName.toLowerCase() === "p") {
+    const textClone = document.createElement("div");
+    textClone.className = "cloned-text";
+    textClone.innerHTML = el.innerHTML;
+    wrapper.appendChild(textClone);
+  } else if (type === "image" || el.tagName.toLowerCase() === "img") {
+    const img = document.createElement("img");
+    img.className = "cloned-media";
+    img.src = el.src;
+    // if original recorded width, use it
+    if (el.dataset.origWidth) img.style.width = el.dataset.origWidth;
+    wrapper.appendChild(img);
+  } else if (type === "video") {
+    const v = document.createElement("video");
+    v.className = "cloned-media";
+    v.src = el.src;
+    v.controls = true;
+    v.autoplay = false; // leave autoplay off; user can play
+    v.muted = false; // do not force mute on the clone
+    v.loop = true;
+    // size
+    if (el.dataset.origWidth) v.style.width = el.dataset.origWidth;
+    wrapper.appendChild(v);
+  } else if (type === "audio") {
+    const a = document.createElement("audio");
+    a.className = "cloned-media";
+    a.controls = true;
+    a.src = (el.tagName.toLowerCase() === "audio") ? el.src : (el.querySelector("audio") ? el.querySelector("audio").src : "");
+    wrapper.appendChild(a);
+  } else {
+    // fallback: clone outerHTML
+    wrapper.innerHTML = el.outerHTML;
+  }
+
+  // clicking inside stack should still allow interactions with controls
+  wrapper.addEventListener("click", (e) => {
+    e.stopPropagation();
+  });
+
+  return wrapper;
+}
+
+function hideOriginal(el) {
+  // hide original visually but keep layout (we set visibility: hidden so it still takes space)
+  el.style.visibility = "hidden";
+}
+function showOriginal(el) {
+  el.style.visibility = "";
+}
+
+// initial render
 renderPosts();
