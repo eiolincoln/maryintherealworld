@@ -26,79 +26,111 @@ nav a {
 }
 
 
-/* RESET */
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
 }
 
-/* PAGE STYLE */
 body {
+    background: white;
+    color: black;
     font-family: Arial, Helvetica, sans-serif;
-    background: #fff;
-    color: #000;
-    line-height: 1.5;
-    font-size: 16px;
+    line-height: 1.4;
+    padding: 20px;
 }
 
-header, main {
-    padding: 1.5em 2em;
-    text-align: left;
+/* ---------------------------
+   HEADER
+--------------------------- */
+header {
+    margin-bottom: 30px;
 }
 
-/* NAVIGATION */
+header h1 {
+    font-size: 2em;
+    margin-bottom: 10px;
+}
+
+nav {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
 nav a {
-    display: block;
     text-decoration: underline;
     color: black;
-    margin-bottom: 0.3em;
+    font-size: 1.1em;
 }
 
-/* POST CONTAINER */
+/* ---------------------------
+   POSTS LAYOUT
+--------------------------- */
+#posts-container {
+    margin-top: 20px;
+}
+
 .post-container {
-    margin-bottom: 2em;
+    margin-bottom: 60px;
 }
 
-/* STICKY WRAPPER: sticks to top until next post */
 .post-sticky-wrapper {
-    position: sticky;
-    top: 0;
-    z-index: 10;
-    background: white;
-    padding-top: 1em;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    position: relative; /* Not sticky yet — avoids breaking layout */
 }
 
-/* TEXT */
-.post-sticky-wrapper h2,
+/* Title */
+.post-sticky-wrapper h2 {
+    font-size: 1.3em;
+    font-weight: bold;
+}
+
+/* Date */
+.datetime {
+    font-size: 0.9em;
+    opacity: 0.7;
+}
+
+/* Text blocks */
 .post-sticky-wrapper p {
-    background: white;
-    padding: 0.2em 0.4em;
-    margin-bottom: 0.5em;
+    max-width: 600px;
 }
 
-/* MEDIA */
-.post-sticky-wrapper img,
-.post-sticky-wrapper video,
-.post-sticky-wrapper audio {
+/* Images */
+.post-sticky-wrapper img {
     display: block;
-    margin: 1em 0;
+    margin: 5px 0;
     max-width: 100%;
 }
 
-/* VIDEO SPECIFIC */
+/* Videos */
 .post-sticky-wrapper video {
-    width: 30em;
+    display: block;
+    margin: 5px 0;
+    max-width: 100%;
+    background: black;
 }
 
-/* IMAGE SPECIFIC */
-.post-sticky-wrapper img {
-    width: 30em;
+/* Audio */
+.post-sticky-wrapper audio {
+    margin: 5px 0;
 }
 
-/* DATE */
-.datetime {
-    font-size: 0.9em;
-    color: #555;
-    margin-bottom: 0.5em;
+/* ---------------------------
+   PAGINATION
+--------------------------- */
+#pagination {
+    margin: 40px 0;
+    display: flex;
+    gap: 15px;
+    flex-wrap: wrap;
+}
+
+#pagination a {
+    color: black;
+    text-decoration: underline;
+    cursor: pointer;
 }
