@@ -1,5 +1,12 @@
 const posts = [
     {
+        title: "<u><b>20 Photos</b></u>", 
+        date: "11/21/2025 7:16pm",
+        content: [
+            { type: "text", value: "<i>77</i>", size: "1em" }
+        ]
+    },
+    {
         title: "video test on website",
         date:"11/21/2025 3:19pm",
         content:[
