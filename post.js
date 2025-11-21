@@ -13,15 +13,15 @@ const posts = [
         title: "<u><b>got that water in my еye eye еye</b></u>",
         date: "11/21/2025 10:43pm",
         content: [
-            { type: "image", value:"images/Beauty.png", width: "25%" },
-            { type: "text", value: "not mine, looks like my grandfathers, but his is green", size: "1em" },
+            { type: "image", value: "images/Beauty.png", width: "25%" },
+            { type: "text", value: "not mine, looks like my grandfathers, but his is green", size: "1em" }
         ]
     },
     {
         title: "21 Photos",
         date: "11/21/2025 8:21pm",
         content: [
-            { type: "image", value:"images/Screenshot1.png", width: "25%" },
+            { type: "image", value: "images/Screenshot1.png", width: "25%" }
         ]
     },
     {
@@ -33,21 +33,21 @@ const posts = [
     },
     {
         title: "video test on website",
-        date:"11/21/2025 3:19pm",
-        content:[
+        date: "11/21/2025 3:19pm",
+        content: [
             { type: "video", value: "videos/sparkleinjamen.mp4", width: "50%" },
-            { type: "text", value: "11/21/2025 3:19pm anonymous", size: "1em" },
+            { type: "text", value: "11/21/2025 3:19pm anonymous", size: "1em" }
         ]
     },
     {
         title: "hoooly poop Ninajirachi just won ARIAs Best Solo Artist",
         date: "20/11/2025 11:14pm",
         content: [
-            { type: "text", value: "this is super f (my computer, cuz no 1 in the World knows me Better) late but", size: "1em" },
+            { type: "text", value: "this is super f late but", size: "1em" },
             { type: "image", value:"images/AriaAwards2025-LiveShow-VasiliPapathanasopoulos-Ninajirachi-3-6-scaled.jpg", width: "50%" },
             { type: "text", value: "she sniped the mother bullet into john f cuntedys head", size: "1em" },
             { type: "image", value:"images/DiscordNinajirachiQueen.png", width: "25%" },
-            { type: "text", value: "gosh i wish listened to her music way earlier i had added f☆ck my computer in my playlist on 11th June 2025 i should've listened earlier maybe<br>could've got her on my Spotify Wrapped but it's too late<br><br>4562 4562 4562 4562 ", size: "1em" },
+            { type: "text", value: "gosh i wish listened earlier<br>4562 4562 4562 4562", size: "1em" }
         ]
     },
     {
@@ -62,23 +62,23 @@ const posts = [
         title: "inventions and ideas",
         date: "19/11/2025 7:24pm",
         content: [
-            { type: "text", value: "New bread i think it would be a good idea like most people eat bread in the mornings and i people might not like it after 5000000000000 Times of eating the same bread so imagine if there were new Bread", size: "1.1em" }
+            { type: "text", value: "New bread concept...", size: "1.1em" }
         ]
     },
     {
         title: "first post evarrrrrrrrrrrr",
         date: "20/11/2025 5:39pm",
         content: [
-            { type: "text", value: "Been listening to I Love My Computer by Ninajirachi.<br>Favourite: Delete", size: "1em" },
+            { type: "text", value: "Been listening to I Love My Computer...", size: "1em" },
             { type: "image", value: "images/ILoveMyComputer.jpg", width: "50%" },
-            { type: "text", value: "i like this album i like how all the songs converge together like i think every song works as a interlude to the next CSIRAC to delete<br>is great cat paws up to All I Am is epic i havent gone into the second half of the album that much (aka after All I Am) except for maybe<br>like It's You nice song great album hypoppy", size: "1em" },
+            { type: "text", value: "i like this album...", size: "1em" },
             { type: "audio", value: "audio/Delete - Ninajirachi.mp3" }
         ]
     }
 ];
 
 // -----------------------------
-// PAGINATION SETTINGS
+// PAGINATION
 // -----------------------------
 const postsPerPage = 10;
 let currentPage = 1;
@@ -96,133 +96,123 @@ function renderPosts() {
     const pagePosts = posts.slice(start, end);
 
     pagePosts.forEach((post, index) => {
-    const wrap = document.createElement("div");
-    wrap.className = "post-container";
+        const wrap = document.createElement("div");
+        wrap.className = "post-container";
 
-    const stickyWrapper = document.createElement("div");
-    stickyWrapper.className = "post-sticky-wrapper";
-    stickyWrapper.style.zIndex = 100 + index;
+        const stickyWrapper = document.createElement("div");
+        stickyWrapper.className = "post-sticky-wrapper";
+        stickyWrapper.style.zIndex = 100 + index;
 
-    const title = document.createElement("h2");
-    title.innerHTML = post.title;
-    stickyWrapper.appendChild(title);
+        const title = document.createElement("h2");
+        title.innerHTML = post.title;
+        stickyWrapper.appendChild(title);
 
-    const date = document.createElement("p");
-    date.className = "datetime";
-    date.textContent = post.date;
-    stickyWrapper.appendChild(date);
+        const date = document.createElement("p");
+        date.className = "datetime";
+        date.textContent = post.date;
+        stickyWrapper.appendChild(date);
 
-pagePosts.forEach((post, index) => {
-    const wrap = document.createElement("div");
-    wrap.className = "post-container";
+        // CONTENT
+        post.content.forEach(block => {
+            let elem;
 
-    const stickyWrapper = document.createElement("div");
-    stickyWrapper.className = "post-sticky-wrapper";
-    stickyWrapper.style.zIndex = 100 + index;
+            if (block.type === "text") {
+                elem = document.createElement("p");
+                elem.innerHTML = block.value;
+                elem.style.fontSize = block.size || "1em";
+            }
 
-    const title = document.createElement("h2");
-    title.innerHTML = post.title;
-    stickyWrapper.appendChild(title);
+            if (block.type === "image") {
+                elem = document.createElement("img");
+                elem.src = block.value;
+                elem.style.width = block.width || "100%";
+            }
 
-    const date = document.createElement("p");
-    date.className = "datetime";
-    date.textContent = post.date;
-    stickyWrapper.appendChild(date);
+            if (block.type === "video") {
+                elem = document.createElement("video");
+                elem.src = block.value;
+                elem.style.width = block.width || "100%";
+                elem.controls = true;
+                elem.autoplay = true;
+                elem.muted = true;
+                elem.loop = true;
+            }
 
-    post.content.forEach(block => {
-        let elem;
-        if(block.type === "text"){
-            elem = document.createElement("p");
-            elem.innerHTML = block.value;
-            elem.style.fontSize = block.size || "1em";
-        }
-        if(block.type === "image"){
-            elem = document.createElement("img");
-            elem.src = block.value;
-        }
-        if(block.type === "video"){
-            elem = document.createElement("video");
-            elem.src = block.value;
-            elem.controls = true;
-            elem.autoplay = true;
-            elem.muted = true;
-            elem.loop = true;
-        }
-        if(block.type === "audio"){
-            elem = document.createElement("audio");
-            elem.src = block.value;
-            elem.controls = true;
-        }
-        if(elem) stickyWrapper.appendChild(elem);
+            if (block.type === "audio") {
+                elem = document.createElement("audio");
+                elem.src = block.value;
+                elem.controls = true;
+            }
+
+            stickyWrapper.appendChild(elem);
+        });
+
+        wrap.appendChild(stickyWrapper);
+        container.appendChild(wrap);
     });
-
-    wrap.appendChild(stickyWrapper);
-    container.appendChild(wrap);
-});
 
     renderPagination();
 }
 
 // -----------------------------
-// RENDER PAGINATION LINKS
+// RENDER PAGINATION
 // -----------------------------
 function renderPagination() {
     let pagination = document.getElementById("pagination");
-    if(!pagination){
+
+    if (!pagination) {
         pagination = document.createElement("div");
         pagination.id = "pagination";
-        pagination.style.marginTop = "2em";
-        pagination.style.marginBottom = "2em";
-        pagination.style.fontSize = "1em";
         document.getElementById("posts-container").after(pagination);
     }
+
     pagination.innerHTML = "";
 
-    // Previous link
-    if(currentPage > 1){
+    // Previous
+    if (currentPage > 1) {
         const prev = document.createElement("a");
         prev.href = "#";
         prev.textContent = "Previous";
-        prev.style.marginRight = "1em";
         prev.style.textDecoration = "underline";
         prev.onclick = (e) => {
             e.preventDefault();
             currentPage--;
             renderPosts();
-            window.scrollTo(0,0);
+            window.scrollTo(0, 0);
         };
         pagination.appendChild(prev);
     }
 
     // Page numbers
-    for(let i = 1; i <= totalPages; i++){
+    for (let i = 1; i <= totalPages; i++) {
         const num = document.createElement("a");
         num.href = "#";
         num.textContent = i;
-        num.style.marginRight = "0.5em";
+        num.style.margin = "0 0.5em";
         num.style.textDecoration = "underline";
-        if(i === currentPage) num.style.fontWeight = "bold";
+        if (i === currentPage) num.style.fontWeight = "bold";
+
         num.onclick = (e) => {
             e.preventDefault();
             currentPage = i;
             renderPosts();
-            window.scrollTo(0,0);
+            window.scrollTo(0, 0);
         };
+
         pagination.appendChild(num);
     }
 
-    // Next link
-    if(currentPage < totalPages){
+    // Next
+    if (currentPage < totalPages) {
         const next = document.createElement("a");
         next.href = "#";
         next.textContent = "Next";
-        next.style.marginLeft = "1em";
         next.style.textDecoration = "underline";
         next.onclick = (e) => {
             e.preventDefault();
             currentPage++;
             renderPosts();
-            window.scrollTo(0,0);
+            window.scrollTo(0, 0);
         };
         pagination.appendChild(next);
     }
