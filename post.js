@@ -86,6 +86,13 @@ function renderPosts() {
                 audio.style.width = "100%";
                 audioContainer.appendChild(audio);
                 contentWrapper.appendChild(audioContainer);
+            } else if (block.type === "video") {
+                const video = document.createElement("video");
+                video.src = block.value;
+                video.controls = true;
+                video.className = "post-video";
+                video.style.width = block.width || "100%";
+                contentWrapper.appendChild(video);
             }
         });
 
