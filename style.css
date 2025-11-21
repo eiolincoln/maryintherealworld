@@ -174,3 +174,22 @@ nav a:hover {
 .ask-form button:hover {
     background: #eee;
 }
+
+
+/* Sticky media for entire page */
+.sticky-page-media {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    max-width: 100%;
+    height: auto;
+    z-index: 0; /* text will scroll above */
+}
+
+/* Ensure other media scroll normally */
+.post-image, .post-video {
+    position: relative;
+    z-index: 1;
+}
+
