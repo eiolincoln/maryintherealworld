@@ -3,13 +3,6 @@
 // -----------------------------
 const posts = [
     {
-        title: "",
-        date: "11/21/2025 10:43pm",
-        content: [
-            { type: "text", value: "this album sucks. i’m preparing for war. ", size: "1em" }
-        ]
-    },
-    {
         title: "<u><b>got that water in my еye eye еye</b></u>",
         date: "11/21/2025 10:43pm",
         content: [
@@ -95,58 +88,58 @@ function renderPosts() {
     const end = start + postsPerPage;
     const pagePosts = posts.slice(start, end);
 
-    pagePosts.forEach((post, index) => {
+    pagePosts.forEach(post => {
         const wrap = document.createElement("div");
         wrap.className = "post-container";
 
-        const stickyWrapper = document.createElement("div");
-        stickyWrapper.className = "post-sticky-wrapper";
-        stickyWrapper.style.zIndex = 100 + index;
-
         const title = document.createElement("h2");
         title.innerHTML = post.title;
-        stickyWrapper.appendChild(title);
+        wrap.appendChild(title);
 
         const date = document.createElement("p");
         date.className = "datetime";
         date.textContent = post.date;
-        stickyWrapper.appendChild(date);
+        wrap.appendChild(date);
+
+        const contentWrap = document.createElement("div");
+        contentWrap.className = "post-content";
 
         post.content.forEach(block => {
-            let elem;
             if(block.type === "text"){
-                elem = document.createElement("p");
-                elem.innerHTML = block.value;
-                elem.style.fontSize = block.size || "1em";
+                const p = document.createElement("p");
+                p.innerHTML = block.value;
+                p.style.fontSize = block.size || "1em";
+                contentWrap.appendChild(p);
             }
             if(block.type === "image"){
-                elem = document.createElement("img");
-                elem.src = block.value;
-                elem.className = "post-image";
-                elem.style.width = block.width || "100%";
+                const img = document.createElement("img");
+                img.src = block.value;
+                img.className = "post-image";
+                img.style.width = block.width || "100%";
+                contentWrap.appendChild(img);
             }
             if(block.type === "video"){
-                elem = document.createElement("video");
-                elem.src = block.value;
-                elem.controls = true;
-                elem.autoplay = true;
-                elem.muted = true;
-                elem.loop = true;
-                elem.className = "post-video";
-                elem.style.width = block.width || "100%";
-            }
-            if(block.type === "audio"){
-                elem = document.createElement("audio");
-                elem.src = block.value;
-                elem.controls = true;
-                elem.className = "post-audio";
-                elem.style.width = "100%";
+                const v = document.createElement("video");
+                v.src = block.value;
+                v.controls = true;
+                v.autoplay = true;      // autoplay on load
+                v.muted = true;         // start muted
+                v.loop = true;          // optional: loop video
+                v.className = "post-video";
+                v.style.width = block.width || "100%";
+                contentWrap.appendChild(v);
             }
 
-            if(elem) stickyWrapper.appendChild(elem);
+            if(block.type === "audio"){
+                const a = document.createElement("audio");
+                a.src = block.value;
+                a.controls = true;
+                a.style.width = "100%";
+                contentWrap.appendChild(a);
+            }
         });
 
-        wrap.appendChild(stickyWrapper);
+        wrap.appendChild(contentWrap);
         container.appendChild(wrap);
     });
 
@@ -168,6 +161,7 @@ function renderPagination() {
     }
     pagination.innerHTML = "";
 
+    // Previous link
     if(currentPage > 1){
         const prev = document.createElement("a");
         prev.href = "#";
@@ -183,6 +177,7 @@ function renderPagination() {
         pagination.appendChild(prev);
     }
 
+    // Page numbers
     for(let i = 1; i <= totalPages; i++){
         const num = document.createElement("a");
         num.href = "#";
@@ -199,6 +194,7 @@ function renderPagination() {
         pagination.appendChild(num);
     }
 
+    // Next link
     if(currentPage < totalPages){
         const next = document.createElement("a");
         next.href = "#";
