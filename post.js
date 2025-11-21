@@ -114,10 +114,14 @@ function renderPosts() {
                 const v = document.createElement("video");
                 v.src = block.value;
                 v.controls = true;
+                v.autoplay = true;      // autoplay on load
+                v.muted = true;         // start muted
+                v.loop = true;          // optional: loop video
                 v.className = "post-video";
                 v.style.width = block.width || "100%";
                 contentWrap.appendChild(v);
             }
+
             if(block.type === "audio"){
                 const a = document.createElement("audio");
                 a.src = block.value;
