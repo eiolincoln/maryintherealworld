@@ -26,111 +26,151 @@ nav a {
 }
 
 
+/* RESET */
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
 }
 
+/* BASIC PAGE STYLE */
 body {
-    background: white;
-    color: black;
     font-family: Arial, Helvetica, sans-serif;
-    line-height: 1.4;
-    padding: 20px;
+    background: #fff;
+    color: #000;
+    line-height: 1.5;
+    font-size: 16px; /* base font size */
 }
 
-/* ---------------------------
-   HEADER
---------------------------- */
-header {
-    margin-bottom: 30px;
+header, main {
+    padding: 1.5em 2em;
+    text-align: left;
 }
 
-header h1 {
-    font-size: 2em;
-    margin-bottom: 10px;
+/* TEXT BLOCKS ALWAYS ABOVE IMAGES */
+h1, h2, p {
+    background: white;
+    display: inline-block;
+    padding: 0.2em 0.4em;
+    position: relative;
+    z-index: 20;
 }
 
-nav {
-    display: flex;
-    flex-direction: column;
-    gap: 5px;
-}
-
+/* NAVIGATION */
 nav a {
+    display: block;
     text-decoration: underline;
     color: black;
-    font-size: 1.1em;
+    margin-bottom: 0.3em;
 }
 
-/* ---------------------------
-   POSTS LAYOUT
---------------------------- */
-#posts-container {
-    margin-top: 20px;
-}
-
-.post-container {
-    margin-bottom: 60px;
-}
-
-.post-sticky-wrapper {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-    position: relative; /* Not sticky yet — avoids breaking layout */
-}
-
-/* Title */
-.post-sticky-wrapper h2 {
-    font-size: 1.3em;
-    font-weight: bold;
-}
-
-/* Date */
-.datetime {
-    font-size: 0.9em;
+nav a:hover {
     opacity: 0.7;
 }
 
-/* Text blocks */
-.post-sticky-wrapper p {
-    max-width: 600px;
+/* POST CONTAINER */
+.post-container {
+    position: relative; 
+    margin-bottom: 6em;
+    font-size: 1rem; /* base for scaling */
 }
 
-/* Images */
-.post-sticky-wrapper img {
+/* CONTENT (TEXT) ALWAYS ABOVE IMAGES */
+.post-content {
+    position: relative;
+    z-index: 20;
+}
+
+/* Keep normal text highlight full width */
+.post-content p {
+    background: white;
     display: block;
-    margin: 5px 0;
-    max-width: 100%;
+    margin: 0.5em 0;
+    padding: 0.2em 0.4em;
+    position: relative;
+    z-index: 20;
 }
 
-/* Videos */
-.post-sticky-wrapper video {
+/* Make empty lines (<br> only) transparent */
+.post-content p br {
     display: block;
-    margin: 5px 0;
+    content: "";
+    background: none; /* ensures no white background */
+    line-height: 1.2em; /* adjust spacing as needed */
+}
+
+/* DATE STYLE */
+.datetime {
+    display: block;
+    margin-top: 0.2em;
+    color: #555;
+    font-size: 0.9em;
+    position: relative;
+    z-index: 20;
+}
+
+/* STICKY IMAGE BEHAVIOR */
+.post-image {
+    display: block;
+    position: sticky;
+    top: 0;
+    z-index: 0;
+    margin-bottom: 1em;
+    width: 30em;   /* scales with text zoom */
     max-width: 100%;
-    background: black;
+    height: auto;
 }
 
-/* Audio */
-.post-sticky-wrapper audio {
-    margin: 5px 0;
+/* VIDEO BEHAVIOR - scrolls normally with text */
+.post-video {
+    display: block;
+    margin-bottom: 1em;
+    width: 30em;       /* or whatever size you want */
+    max-width: 100%;
+    height: auto;
+    
+    position: sticky;  /* THIS MAKES IT STICK */
+    top: 0;            /* sticks to top of the viewport */
+    z-index: 10;       /* make sure it appears above other content */
 }
 
-/* ---------------------------
-   PAGINATION
---------------------------- */
-#pagination {
-    margin: 40px 0;
-    display: flex;
-    gap: 15px;
-    flex-wrap: wrap;
+/* OBSOLETE — fixed-image not used anymore but kept if needed */
+.fixed-image {
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 0;
+    pointer-events: none;
 }
 
-#pagination a {
-    color: black;
-    text-decoration: underline;
+.ask-form {
+    display: black;
+    width: 100%;
+    max-width: 500px;
+}
+
+.ask-form input,
+.ask-form textarea {
+    width: 100%;
+    padding: 0.5em;
+    margin: 0.5em 0;
+    border: 1px solid #000;
+    background: #fff;
+    color: #000;
+    font-family: inherit;
+}
+
+.ask-form textarea {
+    height: 150px;
+}
+
+.ask-form button {
+    padding: 0.6em 1.2em;
     cursor: pointer;
+    border: 1px solid #000;
+    background: #fff;
+}
+
+.ask-form button:hover {
+    background: #eee;
 }
