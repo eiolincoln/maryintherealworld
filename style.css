@@ -1,176 +1,161 @@
-/* Force absolutely flush-left layout */
+/* layout flush-left */
 html, body {
-  margin: 0 !important;
-  padding: 0 !important;
+  margin: 0;
+  padding: 0;
   width: 100%;
+  height: 100%;
+  -webkit-text-size-adjust: 100%;
+  -ms-text-size-adjust: 100%;
+  font-family: Arial, Helvetica, sans-serif;
+  background: #fff;
+  color: #000;
 }
-header, main, nav, h1, h2, p, .post-container, .post-content {
-  margin-left: 0 !important;
-  padding-left: 0 !important;
+
+/* header & nav flush-left */
+header {
+  padding: 0.8em 0.6em;
+  text-align: left;
 }
 header h1 {
-  display: block;
   margin: 0;
-  padding: 0;
+  font-size: 1.6rem;
+  display: block;
 }
+header h1 span { display: inline-block; }
 nav {
-  display: block;
-  margin: 0;
-  padding: 0;
+  margin-top: 0.6em;
 }
 nav a {
   display: block;
-  margin: 0;
-  padding: 0;
   text-decoration: underline;
+  color: black;
+  text-transform: lowercase;
+  margin: 0.15em 0;
 }
 
-
-/* RESET */
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
+/* main content flush-left */
+main {
+  padding: 0.8em 0.6em;
 }
 
-/* BASIC PAGE STYLE */
-body {
-    font-family: Arial, Helvetica, sans-serif;
-    background: #fff;
-    color: #000;
-    line-height: 1.5;
-    font-size: 16px; /* base font size */
-}
-
-header, main {
-    padding: 1.5em 2em;
-    text-align: left;
-}
-
-/* TEXT BLOCKS ALWAYS ABOVE IMAGES */
-h1, h2, p {
-    background: white;
-    display: inline-block;
-    padding: 0.2em 0.4em;
-    position: relative;
-    z-index: 20;
-}
-
-/* NAVIGATION */
-nav a {
-    display: block;
-    text-decoration: underline;
-    color: black;
-    margin-bottom: 0.3em;
-}
-
-nav a:hover {
-    opacity: 0.7;
-}
-
-/* POST CONTAINER */
+/* posts */
 .post-container {
-    position: relative; 
-    margin-bottom: 6em;
-    font-size: 1rem; /* base for scaling */
+  position: relative;
+  margin-bottom: 4em;
+  width: auto;
+  max-width: none;
 }
 
-/* CONTENT (TEXT) ALWAYS ABOVE IMAGES */
+/* post content (text) sits above images visually */
 .post-content {
-    position: relative;
-    z-index: 20;
+  position: relative;
+  z-index: 20;
+  left: 0;
 }
 
-/* Keep normal text highlight full width */
-.post-content p {
-    background: white;
-    display: block;
-    margin: 0.5em 0;
-    padding: 0.2em 0.4em;
-    position: relative;
-    z-index: 20;
+/* make text blocks have white background so they don't visually overlap images */
+.post-content p,
+.post-content h2,
+.post-content .audio-container {
+  display: block;
+  background: white;
+  padding: 0.15em 0.25em;
+  margin: 0.4em 0;
+  z-index: 20;
 }
 
-/* Make empty lines (<br> only) transparent */
-.post-content p br {
-    display: block;
-    content: "";
-    background: none; /* ensures no white background */
-    line-height: 1.2em; /* adjust spacing as needed */
-}
-
-/* DATE STYLE */
+/* date style */
 .datetime {
-    display: block;
-    margin-top: 0.2em;
-    color: #555;
-    font-size: 0.9em;
-    position: relative;
-    z-index: 20;
+  display: block;
+  margin-top: 0.2em;
+  color: #555;
+  font-size: 0.9em;
+  position: relative;
+  z-index: 20;
 }
 
-/* STICKY IMAGE BEHAVIOR */
+/* images stick behavior - each image is treated stickable (stacking works via JS) */
 .post-image {
-    display: block;
-    position: sticky;
-    top: 0;
-    z-index: 0;
-    margin-bottom: 1em;
-    width: 30em;   /* scales with text zoom */
-    max-width: 100%;
-    height: auto;
+  display: block;
+  width: auto;
+  max-width: 60vw;
+  margin: 0.6em 0 1em 0;
+  position: relative;
+  z-index: 1;
 }
 
-/* VIDEO BEHAVIOR - scrolls normally with text */
+/* video style (will be stickable by JS) */
 .post-video {
-    display: block;
-    margin-bottom: 1em;
-    width: 30em;       /* or whatever size you want */
-    max-width: 100%;
-    height: auto;
-    
-    position: sticky;  /* THIS MAKES IT STICK */
-    top: 0;            /* sticks to top of the viewport */
-    z-index: 10;       /* make sure it appears above other content */
+  display: block;
+  width: auto;
+  max-width: 60vw;
+  margin: 0.6em 0 1em 0;
+  position: relative;
+  z-index: 1;
 }
 
-/* OBSOLETE — fixed-image not used anymore but kept if needed */
-.fixed-image {
-    position: fixed;
-    top: 0;
-    left: 0;
-    z-index: 0;
-    pointer-events: none;
+/* audio container style */
+.audio-container {
+  display: block;
+  margin: 0.5em 0;
+  background: white;
+  z-index: 20;
 }
 
-.ask-form {
-    display: black;
-    width: 100%;
-    max-width: 500px;
+/* STICKY STACK (fixed at top-left, items stack downwards) */
+#sticky-stack {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: auto;
+  max-width: 60vw;
+  pointer-events: none; /* so clicks pass through to page — controls inside clones will enable pointer-events */
+  z-index: 9999;
 }
 
-.ask-form input,
-.ask-form textarea {
-    width: 100%;
-    padding: 0.5em;
-    margin: 0.5em 0;
-    border: 1px solid #000;
-    background: #fff;
-    color: #000;
-    font-family: inherit;
+/* each stacked clone */
+.stacked-item {
+  position: relative;
+  margin: 0;
+  pointer-events: auto; /* allow interaction with controls inside */
+  background: transparent;
 }
 
-.ask-form textarea {
-    height: 150px;
+/* ensure text clones appear above image clones inside stack unless z-index changed by JS */
+.stacked-item .cloned-text {
+  background: white;
+  display: block;
+  padding: 0.15em 0.25em;
 }
 
-.ask-form button {
-    padding: 0.6em 1.2em;
-    cursor: pointer;
-    border: 1px solid #000;
-    background: #fff;
+/* image clones should fill the clone width but not overflow */
+.stacked-item .cloned-media {
+  display: block;
+  max-width: 100%;
+  height: auto;
+  margin: 0.15em 0;
 }
 
-.ask-form button:hover {
-    background: #eee;
+/* pagination styling (numbers underlined; current bold; no buttons) */
+#pagination {
+  margin-top: 1.2em;
+  margin-bottom: 2em;
+}
+#pagination a {
+  margin-right: 0.6em;
+  text-decoration: underline;
+  cursor: pointer;
+  color: black;
+}
+#pagination a.current {
+  font-weight: bold;
+  text-decoration: none;
+}
+
+/* helpers for flush-left: force everything to start at left edge */
+*, *::before, *::after { box-sizing: border-box; }
+
+/* small responsive tweak */
+@media (max-width: 640px) {
+  .post-image, .post-video, #sticky-stack { max-width: 95vw; }
 }
