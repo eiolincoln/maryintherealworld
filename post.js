@@ -1,13 +1,16 @@
+// -----------------------------
+// POSTS DATA
+// -----------------------------
 const posts = [
     {
-        title: "21 Photos", 
+        title: "<u><b>21 Photos</b></u>",
         date: "11/21/2025 8:21pm",
         content: [
             { type: "image", value:"images/Screenshot1.png", width: "25%" },
         ]
     },
     {
-        title: "20 Photos", 
+        title: "<u><b>20 Photos</b></u>",
         date: "11/21/2025 7:16pm",
         content: [
             { type: "text", value: "<i>77</i>", size: "1em" }
@@ -59,9 +62,16 @@ const posts = [
     }
 ];
 
+// -----------------------------
+// PAGINATION SETTINGS
+// -----------------------------
 const postsPerPage = 5;
 let currentPage = 1;
+const totalPages = Math.ceil(posts.length / postsPerPage);
 
+// -----------------------------
+// RENDER POSTS
+// -----------------------------
 function renderPosts() {
     const container = document.getElementById("posts-container");
     container.innerHTML = "";
@@ -74,47 +84,48 @@ function renderPosts() {
         const wrap = document.createElement("div");
         wrap.className = "post-container";
 
+        // Title (HTML works here)
         const title = document.createElement("h2");
-        title.textContent = post.title;
+        title.innerHTML = post.title;
         wrap.appendChild(title);
 
+        // Date
         const date = document.createElement("p");
         date.className = "datetime";
         date.textContent = post.date;
         wrap.appendChild(date);
 
+        // Content
         const contentWrap = document.createElement("div");
         contentWrap.className = "post-content";
 
         post.content.forEach(block => {
-            if (block.type === "text") {
+            if(block.type === "text"){
                 const p = document.createElement("p");
                 p.innerHTML = block.value;
                 p.style.fontSize = block.size || "1em";
                 contentWrap.appendChild(p);
             }
-
-            if (block.type === "image") {
+            if(block.type === "image"){
                 const img = document.createElement("img");
                 img.src = block.value;
-                img.style.width = block.width;
                 img.className = "post-image";
+                img.style.width = block.width || "100%";
                 contentWrap.appendChild(img);
             }
-
-            if (block.type === "video") {
+            if(block.type === "video"){
                 const v = document.createElement("video");
                 v.src = block.value;
                 v.controls = true;
-                v.style.width = block.width;
                 v.className = "post-video";
+                v.style.width = block.width || "100%";
                 contentWrap.appendChild(v);
             }
-
-            if (block.type === "audio") {
+            if(block.type === "audio"){
                 const a = document.createElement("audio");
                 a.src = block.value;
                 a.controls = true;
+                a.style.width = "100%";
                 contentWrap.appendChild(a);
             }
         });
@@ -122,6 +133,43 @@ function renderPosts() {
         wrap.appendChild(contentWrap);
         container.appendChild(wrap);
     });
+
+    renderPagination();
 }
 
+// -----------------------------
+// RENDER PAGINATION BUTTONS
+// -----------------------------
+function renderPagination() {
+    let pagination = document.getElementById("pagination");
+    if(!pagination){
+        pagination = document.createElement("div");
+        pagination.id = "pagination";
+        pagination.style.marginTop = "2em";
+        pagination.style.marginBottom = "2em";
+        document.body.appendChild(pagination);
+    }
+    pagination.innerHTML = "";
+
+    for(let i = 1; i <= totalPages; i++){
+        const btn = document.createElement("button");
+        btn.textContent = i;
+        btn.style.marginRight = "0.5em";
+        btn.style.padding = "0.3em 0.6em";
+        if(i === currentPage){
+            btn.style.fontWeight = "bold";
+            btn.disabled = true;
+        }
+        btn.onclick = () => {
+            currentPage = i;
+            renderPosts();
+            window.scrollTo(0,0);
+        };
+        pagination.appendChild(btn);
+    }
+}
+
+// -----------------------------
+// INITIAL RENDER
+// -----------------------------
 renderPosts();
