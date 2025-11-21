@@ -95,60 +95,70 @@ function renderPosts() {
     const end = start + postsPerPage;
     const pagePosts = posts.slice(start, end);
 
-    pagePosts.forEach(post => {
-        const wrap = document.createElement("div");
-        wrap.className = "post-container";
+    pagePosts.forEach((post, index) => {
+    const wrap = document.createElement("div");
+    wrap.className = "post-container";
 
-        const title = document.createElement("h2");
-        title.innerHTML = post.title;
-        wrap.appendChild(title);
+    const stickyWrapper = document.createElement("div");
+    stickyWrapper.className = "post-sticky-wrapper";
+    stickyWrapper.style.zIndex = 100 + index;
 
-        const date = document.createElement("p");
-        date.className = "datetime";
-        date.textContent = post.date;
-        wrap.appendChild(date);
+    const title = document.createElement("h2");
+    title.innerHTML = post.title;
+    stickyWrapper.appendChild(title);
 
-        const contentWrap = document.createElement("div");
-        contentWrap.className = "post-content";
+    const date = document.createElement("p");
+    date.className = "datetime";
+    date.textContent = post.date;
+    stickyWrapper.appendChild(date);
 
-        post.content.forEach(block => {
-            if(block.type === "text"){
-                const p = document.createElement("p");
-                p.innerHTML = block.value;
-                p.style.fontSize = block.size || "1em";
-                contentWrap.appendChild(p);
-            }
-            if(block.type === "image"){
-                const img = document.createElement("img");
-                img.src = block.value;
-                img.className = "post-image";
-                img.style.width = block.width || "100%";
-                contentWrap.appendChild(img);
-            }
-            if(block.type === "video"){
-                const v = document.createElement("video");
-                v.src = block.value;
-                v.controls = true;
-                v.autoplay = true;      // autoplay on load
-                v.muted = true;         // start muted
-                v.loop = true;          // optional: loop video
-                v.className = "post-video";
-                v.style.width = block.width || "100%";
-                contentWrap.appendChild(v);
-            }
+pagePosts.forEach((post, index) => {
+    const wrap = document.createElement("div");
+    wrap.className = "post-container";
 
-            if(block.type === "audio"){
-                const a = document.createElement("audio");
-                a.src = block.value;
-                a.controls = true;
-                a.style.width = "100%";
-                contentWrap.appendChild(a);
-            }
-        });
+    const stickyWrapper = document.createElement("div");
+    stickyWrapper.className = "post-sticky-wrapper";
+    stickyWrapper.style.zIndex = 100 + index;
 
-        wrap.appendChild(contentWrap);
-        container.appendChild(wrap);
+    const title = document.createElement("h2");
+    title.innerHTML = post.title;
+    stickyWrapper.appendChild(title);
+
+    const date = document.createElement("p");
+    date.className = "datetime";
+    date.textContent = post.date;
+    stickyWrapper.appendChild(date);
+
+    post.content.forEach(block => {
+        let elem;
+        if(block.type === "text"){
+            elem = document.createElement("p");
+            elem.innerHTML = block.value;
+            elem.style.fontSize = block.size || "1em";
+        }
+        if(block.type === "image"){
+            elem = document.createElement("img");
+            elem.src = block.value;
+        }
+        if(block.type === "video"){
+            elem = document.createElement("video");
+            elem.src = block.value;
+            elem.controls = true;
+            elem.autoplay = true;
+            elem.muted = true;
+            elem.loop = true;
+        }
+        if(block.type === "audio"){
+            elem = document.createElement("audio");
+            elem.src = block.value;
+            elem.controls = true;
+        }
+        if(elem) stickyWrapper.appendChild(elem);
     });
+
+    wrap.appendChild(stickyWrapper);
+    container.appendChild(wrap);
+});
 
     renderPagination();
 }
