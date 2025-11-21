@@ -48,18 +48,17 @@ nav a:hover {
 /* CONTENT (TEXT) ALWAYS ABOVE IMAGES */
 .post-content {
     position: relative;
-    z-index: 20;
 }
 
 .post-content p,
-.audio-container {
+.audio-container,
+h1, h2, p,
+.datetime {
     background: white;
-    display: block;
-    margin: 0.5em 0;
-    padding: 0.2em 0.4em;
     position: relative;
     z-index: 20;
 }
+
 
 /* DATE STYLE */
 .datetime {
@@ -79,6 +78,7 @@ nav a:hover {
     z-index: 0;
     margin-bottom: 1em;
 }
+
 
 
 /* OBSOLETE — fixed-image not used anymore but kept if needed */
