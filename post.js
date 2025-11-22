@@ -225,7 +225,7 @@ function renderPagination() {
 }
 
 // --------------------------
-// STICKY ENGINE (fixed clones, unstick on scroll up)
+// STICKY ENGINE
 // --------------------------
 function initStickyEngine() {
   const stack = document.getElementById("sticky-stack");
@@ -248,7 +248,6 @@ function initStickyEngine() {
           stack.appendChild(wrapper);
         }
       } else {
-        // UNSTICK: restore original, remove clone
         if (entry) {
           entry.wrapper.remove();
           stickyMap.delete(stickId);
@@ -256,7 +255,6 @@ function initStickyEngine() {
         }
       }
 
-      // always update left in case of resize
       if (entry) {
         entry.wrapper.style.left = el.getBoundingClientRect().left + "px";
       }
@@ -269,7 +267,7 @@ function initStickyEngine() {
 }
 
 // --------------------------
-// Create clone that sits BEHIND
+// CREATE CLONE BEHIND
 // --------------------------
 function createCloneBehind(el) {
   const wrapper = document.createElement("div");
@@ -286,6 +284,17 @@ function createCloneBehind(el) {
     clone.style.backgroundColor = "white";
     clone.style.padding = "0.15em 0.25em";
     clone.style.margin = "0";
+    clone.style.display = "inline-block";
+    clone.style.boxSizing = "border-box";
+    clone.style.whiteSpace = "pre-wrap";
+
+    // match font styles for exact width
+    const computed = getComputedStyle(el);
+    clone.style.fontSize = computed.fontSize;
+    clone.style.fontFamily = computed.fontFamily;
+    clone.style.fontWeight = computed.fontWeight;
+    clone.style.lineHeight = computed.lineHeight;
+
     clone.classList.add("cloned-text");
   } else {
     clone.style.margin = "0";
