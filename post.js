@@ -1,8 +1,7 @@
 // --------------------------
-// POSTS DATA
+// POSTS DATA (unchanged)
 // --------------------------
 const posts = [
-    // your posts data unchanged
     {
         title: "",
         date: "11/21/2025 11:39pm",
@@ -92,15 +91,30 @@ let stickIdCounter = 0;
 function nextStickId() { return "stick-" + (stickIdCounter++); }
 
 // --------------------------
+// GLOBAL STICKY STATE
+// --------------------------
+let stickyMap = new Map();         // map stickId -> { wrapper, originalRectLeft, originalRectTop }
+let stickyScrollHandler = null;    // reference to current scroll handler (so we can remove it)
+
+// --------------------------
 // RENDER POSTS
 // --------------------------
 function renderPosts() {
   const container = document.getElementById("posts-container");
   const stack = document.getElementById("sticky-stack");
-  if (!container) return;
+  if (!container || !stack) return;
+
+  // clear previous page's DOM and stickies
   container.innerHTML = "";
   stack.innerHTML = "";
   stickyMap.clear();
+
+  // remove previous listeners if present
+  if (stickyScrollHandler) {
+    window.removeEventListener('scroll', stickyScrollHandler);
+    window.removeEventListener('resize', stickyScrollHandler);
+    stickyScrollHandler = null;
+  }
 
   const start = (currentPage - 1) * postsPerPage;
   const end = start + postsPerPage;
@@ -110,7 +124,7 @@ function renderPosts() {
     const wrap = document.createElement("div");
     wrap.className = "post-container";
 
-    // Title
+    // Title (stickable)
     const title = document.createElement("h2");
     title.innerHTML = post.title || "";
     title.className = "stickable stick-title";
@@ -118,7 +132,7 @@ function renderPosts() {
     title.dataset.stickType = "title";
     wrap.appendChild(title);
 
-    // Date
+    // Date (stickable)
     if (post.date) {
       const date = document.createElement("p");
       date.className = "datetime stickable stick-date";
@@ -147,10 +161,11 @@ function renderPosts() {
       if (block.type === "image") {
         el = document.createElement("img");
         el.src = block.value;
-        el.style.width = block.width || "auto";
+        // don't force width here; keep the same behaviour as before
+        if (block.width) el.style.width = block.width;
         el.dataset.stickId = stickId;
         el.dataset.stickType = "image";
-        el.className = "stickable stick-image";
+        el.className = "stickable stick-image post-image";
       }
 
       if (block.type === "video") {
@@ -158,15 +173,15 @@ function renderPosts() {
         el.src = block.value;
         el.controls = true;
         el.loop = true;
-        el.style.width = block.width || "auto";
+        if (block.width) el.style.width = block.width;
         el.dataset.stickId = stickId;
         el.dataset.stickType = "video";
-        el.className = "stickable stick-video";
+        el.className = "stickable stick-video post-video";
       }
 
       if (block.type === "audio") {
         const audioWrap = document.createElement("div");
-        audioWrap.className = "stickable stick-audio";
+        audioWrap.className = "stickable stick-audio audio-container";
         audioWrap.dataset.stickId = stickId;
         audioWrap.dataset.stickType = "audio";
 
@@ -187,11 +202,11 @@ function renderPosts() {
   });
 
   renderPagination();
-  initStickyEngine();
+  initStickyEngine(); // (re)initialize sticky behavior for this page
 }
 
 // --------------------------
-// PAGINATION
+// RENDER PAGINATION
 // --------------------------
 function renderPagination() {
   const pagination = document.getElementById("pagination");
@@ -213,88 +228,98 @@ function renderPagination() {
 }
 
 // --------------------------
-// STICKY ENGINE
+// STICKY ENGINE (Option A: fixed-to-screen wallpaper, clones behind content)
 // --------------------------
-let stickyMap = new Map();
-
 function initStickyEngine() {
   const stack = document.getElementById("sticky-stack");
   const stickables = Array.from(document.querySelectorAll(".stickable"));
 
-  function getNextStickable(el) {
-    let next = el.nextElementSibling;
-    while (next) {
-      if (next.classList.contains("stickable")) return next;
-      next = next.nextElementSibling;
-    }
-    return null;
-  }
-
-  function checkStickables() {
-    const viewportTop = 0;
+  // our scroll handler (recreated every page)
+  stickyScrollHandler = function() {
+    const vpTop = 0;
 
     stickables.forEach(el => {
       const stickId = el.dataset.stickId;
       if (!stickId) return;
       const rect = el.getBoundingClientRect();
 
-      if (rect.top < viewportTop) {
+      // if scrolled past top -> create clone (if not already)
+      if (rect.top < vpTop) {
         if (!stickyMap.has(stickId)) {
-          const clone = createClone(el);
-          stack.appendChild(clone);
-          stickyMap.set(stickId, { clone, original: el });
-        }
-
-        // Push down if next stickable overlaps
-        const entry = stickyMap.get(stickId);
-        if (entry) {
-          const nextEl = getNextStickable(el);
-          if (nextEl) {
-            const nextRect = nextEl.getBoundingClientRect();
-            const distance = nextRect.top - entry.clone.offsetHeight;
-            entry.clone.style.top = distance < 0 ? distance + "px" : "0px";
+          const wrapper = createCloneBehind(el);
+          // record original left so subsequent resize/scroll can keep it accurate
+          stickyMap.set(stickId, { wrapper, originalLeft: el.getBoundingClientRect().left });
+          stack.appendChild(wrapper);
+        } else {
+          // update left in case of layout shifts/resizes
+          const entry = stickyMap.get(stickId);
+          if (entry) {
+            entry.wrapper.style.left = el.getBoundingClientRect().left + "px";
           }
         }
       } else {
+        // if original is back in view, remove clone
         if (stickyMap.has(stickId)) {
           const entry = stickyMap.get(stickId);
-          if (entry.clone.parentNode) entry.clone.parentNode.removeChild(entry.clone);
+          if (entry.wrapper.parentNode) entry.wrapper.parentNode.removeChild(entry.wrapper);
           stickyMap.delete(stickId);
         }
       }
     });
-  }
+  };
 
-  checkStickables();
-  window.removeEventListener("scroll", checkStickables);
-  window.removeEventListener("resize", checkStickables);
-  window.addEventListener("scroll", checkStickables, { passive: true });
-  window.addEventListener("resize", checkStickables);
+  // run once now
+  stickyScrollHandler();
+
+  // attach listeners
+  window.addEventListener('scroll', stickyScrollHandler, { passive: true });
+  window.addEventListener('resize', stickyScrollHandler);
 }
 
-function createClone(el) {
+// --------------------------
+// Create clone that sits BEHIND (wallpaper) — not in front of content
+// --------------------------
+function createCloneBehind(el) {
   const wrapper = document.createElement("div");
   wrapper.className = "stacked-item";
 
+  // clone node itself
   const clone = el.cloneNode(true);
-  clone.style.margin = "0";
-  clone.style.padding = "0";
-  clone.style.width = el.offsetWidth + "px";
-  clone.style.height = el.offsetHeight + "px";
-  clone.style.opacity = "1";
-  clone.style.pointerEvents = "auto";
 
+  // For media (image/video) we match the rendered size so it looks identical.
+  // Use offsetWidth/offsetHeight (current rendered size).
+  const w = el.offsetWidth;
+  const h = el.offsetHeight;
+
+  // Apply sizes to clone so it doesn't scale unpredictably
+  if (w) clone.style.width = w + "px";
+  if (h) clone.style.height = h + "px";
+
+  // Ensure clone is fully opaque and doesn't accept pointer events
+  clone.style.opacity = "1";
+  clone.style.pointerEvents = "none";
+
+  // Text/title/date: give them an opaque white background (no transparency)
   if (el.dataset.stickType === "text" || el.dataset.stickType === "title" || el.dataset.stickType === "date") {
     clone.style.backgroundColor = "white";
     clone.style.padding = "0.15em 0.25em";
+    clone.style.margin = "0";
+  } else {
+    // media specific tweaks (remove margins)
+    clone.style.margin = "0";
+    clone.style.display = "block";
   }
 
+  // Put the clone inside wrapper. Wrapper will be positioned fixed and placed behind content.
   wrapper.appendChild(clone);
-  wrapper.style.top = "0px";
-  wrapper.style.left = el.getBoundingClientRect().left + "px";
+
+  // Position wrapper at the top of viewport, at the same X coordinate as the original element.
+  const rect = el.getBoundingClientRect();
   wrapper.style.position = "fixed";
-  wrapper.style.zIndex = "999";
-  wrapper.style.pointerEvents = "auto";
+  wrapper.style.top = "0px"; // fixed-to-screen at top
+  wrapper.style.left = rect.left + "px"; // important: same horizontal position as original
+  wrapper.style.zIndex = "0"; // **LOW** z-index — behind main (main has z-index:100)
+  wrapper.style.pointerEvents = "none";
 
   return wrapper;
 }
