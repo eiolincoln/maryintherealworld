@@ -256,7 +256,8 @@ function initStickyEngine() {
       }
 
       if (entry) {
-        entry.wrapper.style.left = el.getBoundingClientRect().left + "px";
+        // use offsetLeft to match flush-left exactly
+        entry.wrapper.style.left = el.offsetLeft + "px";
       }
     });
   };
@@ -305,7 +306,7 @@ function createCloneBehind(el) {
   wrapper.appendChild(clone);
   wrapper.style.position = "fixed";
   wrapper.style.top = "0px";
-  wrapper.style.left = rect.left + "px";
+  wrapper.style.left = el.offsetLeft + "px"; // flush-left using offsetLeft
 
   cloneStackCounter += 1;
   wrapper.style.zIndex = String(10 + cloneStackCounter);
