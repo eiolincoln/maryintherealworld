@@ -1,6 +1,6 @@
 const posts = [
     {
-        title: "<u>school event</u>",
+        title: "<u>This House Has People in It</u>",
         date: "11/22/2025 12:18am",
         content: [
             { type: "image", value: "images/Niche1.png", width: "25%" },
