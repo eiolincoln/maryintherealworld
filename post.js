@@ -1,5 +1,8 @@
-// posts data (unchanged, your original content)
+// --------------------------
+// POSTS DATA
+// --------------------------
 const posts = [
+    // your posts data unchanged
     {
         title: "",
         date: "11/21/2025 11:39pm",
@@ -144,7 +147,7 @@ function renderPosts() {
       if (block.type === "image") {
         el = document.createElement("img");
         el.src = block.value;
-        el.style.width = block.width || "100%";
+        el.style.width = block.width || "auto";
         el.dataset.stickId = stickId;
         el.dataset.stickType = "image";
         el.className = "stickable stick-image";
@@ -155,7 +158,7 @@ function renderPosts() {
         el.src = block.value;
         el.controls = true;
         el.loop = true;
-        el.style.width = block.width || "100%";
+        el.style.width = block.width || "auto";
         el.dataset.stickId = stickId;
         el.dataset.stickType = "video";
         el.className = "stickable stick-video";
@@ -229,12 +232,6 @@ function initStickyEngine() {
       if (rect.top <= viewportTop) {
         if (!stickyMap.has(stickId)) {
           const clone = createClone(el);
-          clone.style.top = rect.top + "px";
-          clone.style.left = "0px"; // flush left
-          clone.style.zIndex = "999"; // all sticked elements overlay each other
-          if(el.dataset.stickType === "text" || el.dataset.stickType === "title" || el.dataset.stickType === "date"){
-            clone.style.backgroundColor = "rgba(255,255,255,0.8)";
-          }
           stack.appendChild(clone);
           stickyMap.set(stickId, { clone, original: el });
         }
@@ -258,18 +255,31 @@ function initStickyEngine() {
 function createClone(el) {
   const wrapper = document.createElement("div");
   wrapper.className = "stacked-item";
-  wrapper.style.position = "fixed";
-  wrapper.style.margin = "0";
-  wrapper.style.padding = "0";
-  wrapper.style.width = el.offsetWidth + "px";
-  wrapper.style.height = el.offsetHeight + "px";
 
+  // clone element
   const clone = el.cloneNode(true);
   clone.style.margin = "0";
   clone.style.padding = "0";
+  clone.style.width = el.style.width || "auto";
+  clone.style.height = el.style.height || "auto";
+
+  // text/title/date highlight
+  if (el.dataset.stickType === "text" || el.dataset.stickType === "title" || el.dataset.stickType === "date") {
+    clone.style.backgroundColor = "white"; // opaque
+    clone.style.padding = "0.15em 0.25em";
+  } else {
+    clone.className = "cloned-media";
+  }
+
   wrapper.appendChild(clone);
 
+  // position on screen
+  wrapper.style.top = el.getBoundingClientRect().top + "px";
+  wrapper.style.left = "0px"; // flush left
+  wrapper.style.zIndex = "999";
+  wrapper.style.position = "fixed";
   wrapper.addEventListener("click", e => e.stopPropagation());
+
   return wrapper;
 }
 
