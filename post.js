@@ -34,10 +34,8 @@ const posts = [
     {
         title: "video test on website",
         date:"11/21/2025 3:19pm",
-        content:[
-            { type: "video", value: "videos/sparkleinjamen.mp4", width: "50%" },
-            { type: "text", value: "11/21/2025 3:19pm anonymous", size: "1em" },
-        ]
+        content:[{ type: "video", value: "videos/sparkleinjamen.mp4", width: "50%" },
+                { type: "text", value: "11/21/2025 3:19pm anonymous", size: "1em" }]
     },
     {
         title: "hoooly poop Ninajirachi just won ARIAs Best Solo Artist",
@@ -95,7 +93,7 @@ function nextStickId() { return "stick-" + (stickIdCounter++); }
 // --------------------------
 function renderPosts() {
     const container = document.getElementById("posts-container");
-    if (!container) return; // safety check
+    if (!container) return;
     container.innerHTML = "";
 
     const start = (currentPage - 1) * postsPerPage;
@@ -213,11 +211,13 @@ function initStickyEngine() {
     const stack = document.getElementById("sticky-stack");
     if (!stack) return;
     stack.innerHTML = "";
+    stickyMap.clear();
 
     const stickables = Array.from(document.querySelectorAll(".stickable"));
 
     function checkStickables() {
         const viewportTop = 0;
+
         stickables.forEach(el => {
             const stickId = el.dataset.stickId;
             if (!stickId) return;
@@ -226,8 +226,12 @@ function initStickyEngine() {
             if (rect.top <= viewportTop) {
                 if (!stickyMap.has(stickId)) {
                     const clone = createCloneFor(el);
-                    stack.appendChild(clone);
+                    clone.style.position = "absolute";
+                    clone.style.top = "0";
+                    clone.style.left = "0";
+                    clone.style.width = "100%";
                     clone.style.zIndex = 100 + stack.children.length;
+                    stack.appendChild(clone);
                     hideOriginal(el);
                     stickyMap.set(stickId, { clone, original: el });
                 }
