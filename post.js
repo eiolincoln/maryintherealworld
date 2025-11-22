@@ -93,8 +93,8 @@ function nextStickId() { return "stick-" + (stickIdCounter++); }
 // --------------------------
 // GLOBAL STICKY STATE
 // --------------------------
-let stickyMap = new Map();         // map stickId -> { wrapper, originalRectLeft, originalRectTop }
-let stickyScrollHandler = null;    // reference to current scroll handler (so we can remove it)
+let stickyMap = new Map();         // map stickId -> { wrapper, originalLeft }
+let stickyScrollHandler = null;    // current scroll handler reference
 
 // --------------------------
 // RENDER POSTS
@@ -161,7 +161,6 @@ function renderPosts() {
       if (block.type === "image") {
         el = document.createElement("img");
         el.src = block.value;
-        // don't force width here; keep the same behaviour as before
         if (block.width) el.style.width = block.width;
         el.dataset.stickId = stickId;
         el.dataset.stickType = "image";
@@ -220,8 +219,9 @@ function renderPagination() {
     a.onclick = e => {
       e.preventDefault();
       currentPage = i;
+      // when changing pages we also reset scroll to top and render
+      window.scrollTo(0, 0);
       renderPosts();
-      window.scrollTo(0,0);
     };
     pagination.appendChild(a);
   }
@@ -234,7 +234,7 @@ function initStickyEngine() {
   const stack = document.getElementById("sticky-stack");
   const stickables = Array.from(document.querySelectorAll(".stickable"));
 
-  // our scroll handler (recreated every page)
+  // scroll handler (one per page)
   stickyScrollHandler = function() {
     const vpTop = 0;
 
@@ -243,32 +243,28 @@ function initStickyEngine() {
       if (!stickId) return;
       const rect = el.getBoundingClientRect();
 
-      // if scrolled past top -> create clone (if not already)
+      // create clone once when original scrolls past top
       if (rect.top < vpTop) {
         if (!stickyMap.has(stickId)) {
           const wrapper = createCloneBehind(el);
-          // record original left so subsequent resize/scroll can keep it accurate
+          // hide original (visibility hidden so layout preserves spacing)
+          el.style.visibility = "hidden";
           stickyMap.set(stickId, { wrapper, originalLeft: el.getBoundingClientRect().left });
           stack.appendChild(wrapper);
         } else {
-          // update left in case of layout shifts/resizes
+          // update left in case of resize/layout shifts
           const entry = stickyMap.get(stickId);
           if (entry) {
             entry.wrapper.style.left = el.getBoundingClientRect().left + "px";
           }
         }
-      } else {
-        // if original is back in view, remove clone
-        if (stickyMap.has(stickId)) {
-          const entry = stickyMap.get(stickId);
-          if (entry.wrapper.parentNode) entry.wrapper.parentNode.removeChild(entry.wrapper);
-          stickyMap.delete(stickId);
-        }
       }
+      // NOTE: clones intentionally do NOT get removed when element returns to view.
+      // They persist until page change (per your spec).
     });
   };
 
-  // run once now
+  // run once immediately
   stickyScrollHandler();
 
   // attach listeners
@@ -283,42 +279,40 @@ function createCloneBehind(el) {
   const wrapper = document.createElement("div");
   wrapper.className = "stacked-item";
 
-  // clone node itself
+  // clone the node
   const clone = el.cloneNode(true);
 
-  // For media (image/video) we match the rendered size so it looks identical.
-  // Use offsetWidth/offsetHeight (current rendered size).
+  // match the rendered size so it looks identical
   const w = el.offsetWidth;
   const h = el.offsetHeight;
-
-  // Apply sizes to clone so it doesn't scale unpredictably
   if (w) clone.style.width = w + "px";
   if (h) clone.style.height = h + "px";
 
-  // Ensure clone is fully opaque and doesn't accept pointer events
+  // fully opaque, no pointer events
   clone.style.opacity = "1";
   clone.style.pointerEvents = "none";
 
-  // Text/title/date: give them an opaque white background (no transparency)
+  // text/title/date: ensure white background for readability (clone)
   if (el.dataset.stickType === "text" || el.dataset.stickType === "title" || el.dataset.stickType === "date") {
     clone.style.backgroundColor = "white";
     clone.style.padding = "0.15em 0.25em";
     clone.style.margin = "0";
+    clone.classList.add("cloned-text");
   } else {
-    // media specific tweaks (remove margins)
+    // media tweaks
     clone.style.margin = "0";
     clone.style.display = "block";
+    clone.classList.add("cloned-media");
   }
 
-  // Put the clone inside wrapper. Wrapper will be positioned fixed and placed behind content.
   wrapper.appendChild(clone);
 
-  // Position wrapper at the top of viewport, at the same X coordinate as the original element.
+  // position wrapper fixed at top, same X as original
   const rect = el.getBoundingClientRect();
   wrapper.style.position = "fixed";
-  wrapper.style.top = "0px"; // fixed-to-screen at top
-  wrapper.style.left = rect.left + "px"; // important: same horizontal position as original
-  wrapper.style.zIndex = "0"; // **LOW** z-index — behind main (main has z-index:100)
+  wrapper.style.top = "0px";
+  wrapper.style.left = rect.left + "px"; // **same horizontal position** as original
+  wrapper.style.zIndex = "0";            // LOW z-index so main content overlays clones
   wrapper.style.pointerEvents = "none";
 
   return wrapper;
