@@ -1,4 +1,4 @@
-// posts data (replace or edit these entries as you like)
+// posts data (unchanged, your original content)
 const posts = [
     {
         title: "",
@@ -220,7 +220,17 @@ function initStickyEngine() {
       if (rect.top <= viewportTop) {
         if (!stickyMap.has(stickId)) {
           const clone = createCloneFor(el);
-          clone.style.top = rect.top + "px"; // illusion of sticking in place
+          // illusion of sticking in same place
+          clone.style.top = rect.top + "px";
+          // flush to left
+          clone.style.left = "0px";
+          // z-index: images/videos go to back, text on top
+          if(el.dataset.stickType === "image" || el.dataset.stickType === "video" || el.dataset.stickType === "audio"){
+            clone.style.zIndex = "0";
+          } else {
+            clone.style.zIndex = "10";
+            clone.style.backgroundColor = "white"; // white highlight for text
+          }
           stack.appendChild(clone);
           stickyMap.set(stickId, { clone, original: el });
         }
@@ -244,6 +254,9 @@ function initStickyEngine() {
 function createCloneFor(el) {
   const wrapper = document.createElement("div");
   wrapper.className = "stacked-item";
+  wrapper.style.position = "fixed";
+  wrapper.style.margin = "0";
+  wrapper.style.padding = "0";
 
   const type = el.dataset.stickType;
 
