@@ -45,7 +45,7 @@ nav a {
    MAIN CONTENT
    ===================== */
 main {
-  padding: 0.8em;
+  padding: 0; /* flush left */
 }
 
 /* =====================
@@ -70,7 +70,7 @@ main {
   display: block;
   margin: 0.6em 0;
   max-width: 100%;
-  width: auto;
+  height: auto;
 }
 
 .audio-container {
@@ -91,24 +91,25 @@ main {
 }
 
 .stacked-item {
-  position: absolute;
+  position: fixed;
   left: 0;
   pointer-events: auto;
   margin: 0;
-  width: 100%;
 }
 
-.stacked-item .cloned-text {
+.stacked-item .cloned-text,
+.stacked-item .cloned-title,
+.stacked-item .cloned-date {
   display: block;
   padding: 0.15em 0.25em;
-  background: white; /* highlight */
+  background: white; /* opaque highlight */
 }
 
 .stacked-item .cloned-media {
   display: block;
+  margin: 0.15em 0;
   max-width: 100%;
   height: auto;
-  margin: 0.15em 0;
 }
 
 /* =====================
