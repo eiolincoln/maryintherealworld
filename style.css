@@ -56,7 +56,7 @@ main {
   width: 100%;
 }
 
-/* Originals: readable opaque white highlight (as requested) */
+/* Originals: readable opaque white highlight (hug letters only) */
 .post-container h2,
 .post-container p,
 .post-container .datetime,
@@ -65,7 +65,9 @@ main {
   background: white;       /* ORIGINALS have white highlight */
   padding: 0.15em 0.25em;
   margin: 0.4em 0;
-  display: block;
+  display: inline;         /* hug text width */
+  line-height: 1.2em;
+  white-space: pre-wrap;   /* preserve line breaks */
 }
 
 /* Ensure no left gap */
@@ -101,7 +103,6 @@ main {
 /* =====================
    STICKY STACK (WALLPAPER, BEHIND CONTENT)
    ===================== */
-/* container sits behind main content (main z-index:200) */
 #sticky-stack {
   position: fixed;
   top: 0;
@@ -113,24 +114,31 @@ main {
   overflow: visible;
 }
 
-/* each clone wrapper will be positioned by JS */
 .stacked-item {
   position: fixed;
-  pointer-events: none; /* never intercept clicks */
+  pointer-events: none;
   margin: 0;
   padding: 0;
   will-change: transform;
-  transition: none;     /* clones appear immediately */
+  transition: none;
 }
 
-/* cloned nodes will be styled inline by JS,
-   but provide a minimal fallback */
+/* cloned nodes fallback */
 .stacked-item > * {
   display: block;
   pointer-events: none;
   background: white;
   margin: 0;
   padding: 0;
+}
+
+/* Cloned text style (hug text) */
+.cloned-text {
+  display: inline-block;      /* hug content exactly */
+  padding: 0.15em 0.25em;
+  margin: 0;
+  white-space: pre-wrap;      /* preserve line breaks */
+  box-sizing: border-box;     /* prevent extra gap */
 }
 
 /* =====================
