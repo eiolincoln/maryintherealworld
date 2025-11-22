@@ -1,5 +1,14 @@
 const posts = [
     {
+        title: "school event",
+        date: "11/22/2025 12:18am",
+        content: [
+            { type: "image", value:"images/Niche1.png", width: "45%" },
+            { type: "text", value: "<br>", size: "1em" },
+            { type: "image", value:"images/Niche2.png", width: "20%" },
+        ]
+    },
+    {
         title: "",
         date: "11/21/2025 11:39pm",
         content: [
