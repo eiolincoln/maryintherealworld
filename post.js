@@ -3,8 +3,8 @@ const posts = [
         title: "<u>This House Has People in It</u>",
         date: "11/22/2025 12:18am",
         content: [
-            { type: "image", value: "images/Niche1.png", width: "25%" },
-            { type: "image", value: "images/Niche2.png", width: "30%" }
+            { type: "image", value: "images/niche1.png", width: "25%" },
+            { type: "image", value: "images/niche2.png", width: "30%" }
         ]
     },
     {
