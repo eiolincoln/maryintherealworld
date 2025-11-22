@@ -1,23 +1,30 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>mary in the real world</title>
-    <link rel="stylesheet" href="style.css">
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>mary in the real world</title>
+  <link rel="stylesheet" href="style.css" />
+  <link rel="icon" href="favicon.png" type="image/png" />
 </head>
 <body>
+  <header>
+    <h1>mary <span>in <span>the </span>real <span>world</span></h1>
+    <nav>
+      <a href="index.html">home</a>
+      <a href="ask.html">ask</a>
+      <a href="about.html">about</a>
+    </nav>
+  </header>
 
-<div id="header">
-    <div id="sitename">mary in the real world</div>
-    <div id="nav">
-        <a href="index.html">home</a>
-        <a href="ask.html">ask</a>
-        <a href="about.html">about</a>
-    </div>
-</div>
+  <main>
+    <div id="posts-container"></div>
+    <div id="pagination"></div>
+  </main>
 
-<div id="posts-container"></div>
+  <!-- sticky stack sits above page content -->
+  <div id="sticky-stack" aria-hidden="true"></div>
 
-<script src="post.js"></script>
+  <script src="post.js"></script>
 </body>
 </html>
