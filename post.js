@@ -215,14 +215,20 @@ function renderPagination() {
 // --------------------------
 // STICKY ENGINE
 // --------------------------
-// --------------------------
-// STICKY ENGINE FIXED
-// --------------------------
 let stickyMap = new Map();
 
 function initStickyEngine() {
   const stack = document.getElementById("sticky-stack");
   const stickables = Array.from(document.querySelectorAll(".stickable"));
+
+  function getNextStickable(el) {
+    let next = el.nextElementSibling;
+    while (next) {
+      if (next.classList.contains("stickable")) return next;
+      next = next.nextElementSibling;
+    }
+    return null;
+  }
 
   function checkStickables() {
     const viewportTop = 0;
@@ -233,11 +239,21 @@ function initStickyEngine() {
       const rect = el.getBoundingClientRect();
 
       if (rect.top < viewportTop) {
-        // Only stick if the original element is scrolled past
         if (!stickyMap.has(stickId)) {
           const clone = createClone(el);
           stack.appendChild(clone);
           stickyMap.set(stickId, { clone, original: el });
+        }
+
+        // Push down if next stickable overlaps
+        const entry = stickyMap.get(stickId);
+        if (entry) {
+          const nextEl = getNextStickable(el);
+          if (nextEl) {
+            const nextRect = nextEl.getBoundingClientRect();
+            const distance = nextRect.top - entry.clone.offsetHeight;
+            entry.clone.style.top = distance < 0 ? distance + "px" : "0px";
+          }
         }
       } else {
         if (stickyMap.has(stickId)) {
@@ -260,36 +276,28 @@ function createClone(el) {
   const wrapper = document.createElement("div");
   wrapper.className = "stacked-item";
 
-  // clone element
   const clone = el.cloneNode(true);
   clone.style.margin = "0";
   clone.style.padding = "0";
-  clone.style.width = el.offsetWidth + "px"; // use natural/current width
-  clone.style.height = el.offsetHeight + "px"; // use natural/current height
+  clone.style.width = el.offsetWidth + "px";
+  clone.style.height = el.offsetHeight + "px";
+  clone.style.opacity = "1";
+  clone.style.pointerEvents = "auto";
 
-  // remove transparency for media
-  if (el.dataset.stickType === "image" || el.dataset.stickType === "video" || el.dataset.stickType === "audio") {
-    clone.style.opacity = "1"; // fully opaque
-    clone.style.pointerEvents = "auto";
-  }
-
-  // highlight for text/title/date
   if (el.dataset.stickType === "text" || el.dataset.stickType === "title" || el.dataset.stickType === "date") {
-    clone.style.backgroundColor = "white"; // opaque
+    clone.style.backgroundColor = "white";
     clone.style.padding = "0.15em 0.25em";
   }
 
   wrapper.appendChild(clone);
-
-  // position at top of viewport
   wrapper.style.top = "0px";
   wrapper.style.left = el.getBoundingClientRect().left + "px";
-  wrapper.style.zIndex = "999";
   wrapper.style.position = "fixed";
+  wrapper.style.zIndex = "999";
+  wrapper.style.pointerEvents = "auto";
 
   return wrapper;
 }
-
 
 // --------------------------
 // INITIALIZE
