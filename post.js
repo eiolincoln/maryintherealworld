@@ -238,32 +238,36 @@ function initStickyEngine() {
 
   // scroll handler (one per page)
   stickyScrollHandler = function() {
-    const vpTop = 0;
+  const vpTop = 0;
 
-    stickables.forEach(el => {
-      const stickId = el.dataset.stickId;
-      if (!stickId) return;
-      const rect = el.getBoundingClientRect();
+  stickables.forEach(el => {
+    const stickId = el.dataset.stickId;
+    if (!stickId) return;
+    const rect = el.getBoundingClientRect();
+    const entry = stickyMap.get(stickId);
 
-      // create clone once when original scrolls past top
-      if (rect.top < vpTop) {
-        if (!stickyMap.has(stickId)) {
-          const wrapper = createCloneBehind(el);
-          // hide original (visibility hidden so layout preserves spacing)
-          el.style.visibility = "hidden";
-          stickyMap.set(stickId, { wrapper, originalLeft: el.getBoundingClientRect().left });
-          stack.appendChild(wrapper);
-        } else {
-          // update left in case of resize/layout shifts
-          const entry = stickyMap.get(stickId);
-          if (entry) {
-            entry.wrapper.style.left = el.getBoundingClientRect().left + "px";
-          }
-        }
+    if (rect.top < vpTop) {
+      if (!entry) {
+        const wrapper = createCloneBehind(el);
+        // hide original (visibility hidden so layout preserves spacing)
+        el.style.visibility = "hidden";
+        stickyMap.set(stickId, { wrapper, originalLeft: el.getBoundingClientRect().left });
+        stack.appendChild(wrapper);
+      } else {
+        // update left in case of resize/layout shifts
+        entry.wrapper.style.left = el.getBoundingClientRect().left + "px";
       }
-      // NOTE: clones intentionally persist until page change.
-    });
+    } else {
+      // UNSTICK: remove clone and show original
+      if (entry) {
+        entry.wrapper.remove();
+        stickyMap.delete(stickId);
+        el.style.visibility = "visible";
+      }
+    }
+  });
   };
+
 
   // run once immediately
   stickyScrollHandler();
