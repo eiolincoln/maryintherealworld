@@ -48,6 +48,8 @@ nav a {
    ===================== */
 main {
   padding: 0.8em 0.6em;
+  max-width: 60vw; /* match the sticky stack width */
+  margin: 0 auto;
 }
 
 /* =====================
@@ -65,8 +67,8 @@ main {
   background: white;
   padding: 0.15em 0.25em;
   margin: 0.4em 0;
-  z-index: 20;
   position: relative;
+  z-index: 1;
 }
 
 .datetime {
@@ -75,7 +77,7 @@ main {
   color: #555;
   font-size: 0.9em;
   position: relative;
-  z-index: 20;
+  z-index: 1;
 }
 
 .post-image,
@@ -84,7 +86,7 @@ main {
   position: relative;
   z-index: 1;
   margin: 0.6em 0 1em 0;
-  max-width: 60vw;
+  max-width: 100%;
   width: auto;
 }
 
@@ -92,7 +94,7 @@ main {
   display: block;
   background: white;
   margin: 0.5em 0;
-  z-index: 20;
+  z-index: 1;
 }
 
 /* =====================
@@ -101,27 +103,45 @@ main {
 #sticky-stack {
   position: fixed;
   top: 0;
-  left: 0;
-  max-width: 60vw;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 60vw;
   pointer-events: none;
   z-index: 9999;
 }
+
 .stacked-item {
-  position: relative;
+  width: 100%;
+  margin-bottom: 0.5em;
   pointer-events: auto;
-  background: transparent;
-  margin: 0;
+  background: rgba(255, 255, 255, 0.95);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+  padding: 0.25em 0.5em;
+  box-sizing: border-box;
+  position: relative;
+  top: 0;
 }
-.stacked-item .cloned-text {
-  display: block;
-  padding: 0.15em 0.25em;
-  background: white;
+
+.cloned-text {
+  font-size: 1em;
+  line-height: 1.4em;
+  word-wrap: break-word;
 }
-.stacked-item .cloned-media {
+
+.cloned-media {
   display: block;
+  margin: 0 auto;
   max-width: 100%;
   height: auto;
-  margin: 0.15em 0;
+}
+
+/* Optional: fade out original when stuck */
+.stickable {
+  transition: opacity 0.2s ease;
+}
+
+.stickable.stuck {
+  opacity: 0;
 }
 
 /* =====================
@@ -145,6 +165,10 @@ main {
    RESPONSIVE
    ===================== */
 @media (max-width: 640px) {
+  main {
+    max-width: 95vw;
+  }
+
   .post-image,
   .post-video,
   #sticky-stack {
