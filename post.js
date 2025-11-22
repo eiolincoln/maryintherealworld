@@ -3,69 +3,9 @@ const posts = [
         title: "school event",
         date: "11/22/2025 12:18am",
         content: [
-            { type: "image", value:"images/niche1.png", width: "25%" },
+            { type: "image", value: "https://raw.githubusercontent.com/eiolincoln/maryintherealworld/main/images/niche1.png", width: "25%" },
             { type: "text", value: "<br>", size: "1em" },
-            { type: "image", value:"images/niche2.png", width: "30%" },
-            { 
-    type: "text", 
-    value: `
-Ice u out - Ninajirachi, Kota Banks
-boyfriend - 2charm
-G.I.R.L - - 8485, Danny Brown
-Love Takes Miles - Cameron Winter
-Labour Of Love - Theodore Shapiro
-The Flower Duet - Léo Delibes, Katherine Jenkins, Kiri Te Kanawa, Philharmonic Orchestra, Anthony Inglis
-gigolo - bbno$
-Laura Palmer's Theme - Instrumental
-Main Titles - Theodore Shapiro
-Labour Of Love - Theodore Shapiro
-Kimono Hallway - Theodore Shapiro
-Hall Of Eagans - Theodore Shapiro
-V Day Baby - Cristobal Tapia De Veer
-Promised Land Utopia - Cristobal Tapia De Veer
-Ecstatic Vibrations, Totally Transcendent - Sea Power
-Call Me Maybe - Kidz Bop Kids
-It's You - Ninajirachi, daine
-this very thing - FELIVAND
-want more! - cristal ventura
-Make Believe - Dugui HG, KJ King of Hearts
-Please let me try again - Ella Papo
-want more! - cristal ventura
-Take Your Mask Off - Tyler, The Creator, Daniel Caesar, LaToiya Williams
-Ice u out - Ninajirachi, Kota Banks
-Love Takes Miles - Cameron Winter
-CSIRAC - Ninajirachi
-Zenosyne - Willow Kayne
-Ninajirachi - Fuck My Computer
-Pivot & Scrape - Sophie Thatcher
-Big Thief - Velvet Ring - 2023 Remaster
-JUGGENAUT - Tyler, The Creator, Lil Uzi Vert, Pharrel Williams
-Lift Yourself - Kanye West
-Locals (Girls like us) - underscores, gabby start
-Lover Girl - Laufey
-Lovesick - Laufey
-Strangers - Kenya Grace
-Memory Reboot - VØJ, Narvent
-Lost Memory - VØJ, Narvent
-Interlinked - Lonely Lies, GOLDKID$
-Lover Girl - Laufey
-8-Bit Trauma - Cristobal Tapia De Veer
-The Moaning Pyramid - Cristobal Tapia De Veer
-V Day Baby - Cristobal Tapia De Veer
-To You All Kids Will Come... (Metamorphosis Complete) - Cristobal Tapia De Veer
-The Monarch's Pyramid - Cristobal Tapia De Veer
-Sun Bleached Flies - Ethel Cain
-Televangelism - Ethel Cain
-Sun Bleached Flies - Ethel Cain
-Labour Of Love - Theodore Shapiro
-her - JVKE
-her - JVKE, Annika Wells
-golden hour - JVKE
-The Flower Duet - Léo Delibes, Katherine Jenkins, Kiri Te Kanawa, Philharmonic Orchestra, Anthony Inglis
-this is what falling in love feels like - JVKE
-`, 
-    size: "1em" 
-},
+            { type: "image", value: "https://raw.githubusercontent.com/eiolincoln/maryintherealworld/main/images/niche2.png", width: "30%" }
         ]
     },
     {
