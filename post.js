@@ -215,6 +215,9 @@ function renderPagination() {
 // --------------------------
 // STICKY ENGINE
 // --------------------------
+// --------------------------
+// STICKY ENGINE FIXED
+// --------------------------
 let stickyMap = new Map();
 
 function initStickyEngine() {
@@ -229,7 +232,8 @@ function initStickyEngine() {
       if (!stickId) return;
       const rect = el.getBoundingClientRect();
 
-      if (rect.top <= viewportTop) {
+      if (rect.top < viewportTop) {
+        // Only stick if the original element is scrolled past
         if (!stickyMap.has(stickId)) {
           const clone = createClone(el);
           stack.appendChild(clone);
@@ -260,28 +264,32 @@ function createClone(el) {
   const clone = el.cloneNode(true);
   clone.style.margin = "0";
   clone.style.padding = "0";
-  clone.style.width = el.style.width || "auto";
-  clone.style.height = el.style.height || "auto";
+  clone.style.width = el.offsetWidth + "px"; // use natural/current width
+  clone.style.height = el.offsetHeight + "px"; // use natural/current height
 
-  // text/title/date highlight
+  // remove transparency for media
+  if (el.dataset.stickType === "image" || el.dataset.stickType === "video" || el.dataset.stickType === "audio") {
+    clone.style.opacity = "1"; // fully opaque
+    clone.style.pointerEvents = "auto";
+  }
+
+  // highlight for text/title/date
   if (el.dataset.stickType === "text" || el.dataset.stickType === "title" || el.dataset.stickType === "date") {
     clone.style.backgroundColor = "white"; // opaque
     clone.style.padding = "0.15em 0.25em";
-  } else {
-    clone.className = "cloned-media";
   }
 
   wrapper.appendChild(clone);
 
-  // position on screen
-  wrapper.style.top = el.getBoundingClientRect().top + "px";
-  wrapper.style.left = "0px"; // flush left
+  // position at top of viewport
+  wrapper.style.top = "0px";
+  wrapper.style.left = el.getBoundingClientRect().left + "px";
   wrapper.style.zIndex = "999";
   wrapper.style.position = "fixed";
-  wrapper.addEventListener("click", e => e.stopPropagation());
 
   return wrapper;
 }
+
 
 // --------------------------
 // INITIALIZE
