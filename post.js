@@ -295,4 +295,6 @@ function createCloneFor(el) {
 // =====================
 // INITIAL RENDER
 // =====================
-renderPosts();
+document.addEventListener("DOMContentLoaded", () => {
+    renderPosts();
+});
