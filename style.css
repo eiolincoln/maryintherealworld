@@ -23,6 +23,8 @@ html, body {
 header {
   padding: 0.8em;
   text-align: left;
+  position: relative;
+  z-index: 100; /* ensure header sits above wallpaper clones */
 }
 header h1 {
   font-size: 1.6rem;
@@ -46,6 +48,8 @@ nav a {
    ===================== */
 main {
   padding: 0; /* flush left */
+  position: relative;
+  z-index: 100; /* main content must be above clones */
 }
 
 /* =====================
@@ -58,13 +62,27 @@ main {
 
 .post-content p,
 .post-content h2,
-.post-content .audio-container {
+.post-content .audio-container,
+.datetime {
   display: block;
   padding: 0.15em 0.25em;
   margin: 0.4em 0;
   position: relative;
 }
 
+/* Ensure everything is flush-left */
+.post-container,
+.post-content,
+.post-content p,
+.post-content h2,
+.datetime,
+.post-image,
+.post-video {
+  margin-left: 0;
+  margin-right: 0;
+}
+
+/* media sizing: use natural sizing (JS will match) */
 .post-image,
 .post-video {
   display: block;
@@ -79,37 +97,46 @@ main {
 }
 
 /* =====================
-   STICKY STACK
+   STICKY STACK (WALLPAPER)
    ===================== */
+/* stack container sits behind page content (low z-index) */
 #sticky-stack {
   position: fixed;
   top: 0;
   left: 0;
   width: 100%;
-  pointer-events: none;
-  z-index: 9999;
+  height: 100%;
+  pointer-events: none; /* clones won't block clicks */
+  z-index: 0; /* below main/header which are 100 */
+  overflow: visible;
 }
 
+/* each clone wrapper is fixed and positioned by JS */
 .stacked-item {
   position: fixed;
-  left: 0;
-  pointer-events: auto;
+  pointer-events: none; /* don't intercept clicks */
   margin: 0;
+  padding: 0;
+  will-change: transform; /* hint for smoother rendering */
 }
 
+/* cloned text/title/date highlight (opaque) */
 .stacked-item .cloned-text,
 .stacked-item .cloned-title,
 .stacked-item .cloned-date {
   display: block;
-  padding: 0.15em 0.25em;
   background: white; /* opaque highlight */
+  padding: 0.15em 0.25em;
+  margin: 0;
+  pointer-events: none;
 }
 
+/* cloned media keep natural size; JS will set width/height to match original */
 .stacked-item .cloned-media {
   display: block;
-  margin: 0.15em 0;
-  max-width: 100%;
-  height: auto;
+  margin: 0;
+  pointer-events: none;
+  object-fit: contain;
 }
 
 /* =====================
@@ -117,6 +144,8 @@ main {
    ===================== */
 #pagination {
   margin: 1.2em 0 2em;
+  position: relative;
+  z-index: 100;
 }
 #pagination a {
   margin-right: 0.6em;
