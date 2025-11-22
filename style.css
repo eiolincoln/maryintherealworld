@@ -24,7 +24,7 @@ header {
   padding: 0.8em;
   text-align: left;
   position: relative;
-  z-index: 100; /* header above wallpaper clones */
+  z-index: 200; /* header above wallpaper clones */
 }
 header h1 { font-size: 1.6rem; }
 header h1 span { display: inline-block; }
@@ -38,12 +38,12 @@ nav a {
 }
 
 /* =====================
-   MAIN CONTENT
+   MAIN CONTENT (flush-left)
    ===================== */
 main {
   padding: 0; /* flush left */
   position: relative;
-  z-index: 100; /* above wallpaper clones */
+  z-index: 200; /* main content above clones */
 }
 
 /* =====================
@@ -52,15 +52,17 @@ main {
 .post-container {
   position: relative;
   margin-bottom: 2em;
+  padding: 0; /* ensure flush-left */
+  width: 100%;
 }
 
-/* Real (original) texts/titles/dates: flush-left, readable */
+/* Originals: readable opaque white highlight (as requested) */
 .post-container h2,
 .post-container p,
 .post-container .datetime,
 .post-content > * {
   text-align: left;        /* flush left */
-  background: white;       /* readable opaque background */
+  background: white;       /* ORIGINALS have white highlight */
   padding: 0.15em 0.25em;
   margin: 0.4em 0;
   display: block;
@@ -76,9 +78,10 @@ main {
 .post-video {
   margin-left: 0;
   margin-right: 0;
+  padding-left: 0;
 }
 
-/* Media natural behavior (JS will match actual rendered size for clones) */
+/* Media natural behavior */
 .post-image,
 .post-video {
   display: block;
@@ -87,6 +90,7 @@ main {
   height: auto;
 }
 
+/* audio container style */
 .audio-container {
   display: block;
   margin: 0.5em 0;
@@ -97,7 +101,7 @@ main {
 /* =====================
    STICKY STACK (WALLPAPER, BEHIND CONTENT)
    ===================== */
-/* container sits behind main content (main z-index:100) */
+/* container sits behind main content (main z-index:200) */
 #sticky-stack {
   position: fixed;
   top: 0;
@@ -105,7 +109,7 @@ main {
   width: 100%;
   height: 100%;
   pointer-events: none; /* clones won't block clicks */
-  z-index: 0;           /* behind main/header (100) */
+  z-index: 0;           /* behind main/header */
   overflow: visible;
 }
 
@@ -116,16 +120,17 @@ main {
   margin: 0;
   padding: 0;
   will-change: transform;
+  transition: none;     /* clones appear immediately */
 }
 
-/* clones: text/title/date and media will be styled inline by JS as needed */
-/* provide a basic fallback */
+/* cloned nodes will be styled inline by JS,
+   but provide a minimal fallback */
 .stacked-item > * {
   display: block;
   pointer-events: none;
   background: white;
-  padding: 0;
   margin: 0;
+  padding: 0;
 }
 
 /* =====================
@@ -134,7 +139,7 @@ main {
 #pagination {
   margin: 1.2em 0 2em;
   position: relative;
-  z-index: 100;
+  z-index: 200;
 }
 #pagination a {
   margin-right: 0.6em;
