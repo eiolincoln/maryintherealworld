@@ -1,5 +1,5 @@
 // --------------------------
-// POSTS DATA (unchanged)
+// POSTS DATA
 // --------------------------
 const posts = [
     {
@@ -93,239 +93,203 @@ function nextStickId() { return "stick-" + (stickIdCounter++); }
 // --------------------------
 // GLOBAL STICKY STATE
 // --------------------------
-let stickyMap = new Map();         // map stickId -> { wrapper, clone, zIndex }
-let stickyScrollHandler = null;    // current scroll handler reference
-let cloneStackCounter = 0;         // incremental z-index inside wallpaper (keeps newer clones above older, but still behind main)
+let stickyMap = new Map(); // stickId -> { clone, originalOffsetTop }
+let stickyScrollHandler = null;
+let cloneZIndexCounter = 10;
 
 // --------------------------
 // RENDER POSTS
 // --------------------------
 function renderPosts() {
-  const container = document.getElementById("posts-container");
-  const stack = document.getElementById("sticky-stack");
-  if (!container || !stack) return;
+    const container = document.getElementById("posts-container");
+    const stack = document.getElementById("sticky-stack");
+    if (!container || !stack) return;
 
-  // clear previous page's DOM and stickies
-  container.innerHTML = "";
-  stack.innerHTML = "";
-  stickyMap.clear();
-  cloneStackCounter = 0;
+    container.innerHTML = "";
+    stack.innerHTML = "";
+    stickyMap.clear();
+    cloneZIndexCounter = 10;
 
-  // remove previous listeners if present
-  if (stickyScrollHandler) {
-    window.removeEventListener('scroll', stickyScrollHandler);
-    window.removeEventListener('resize', stickyScrollHandler);
-    stickyScrollHandler = null;
-  }
-
-  const start = (currentPage - 1) * postsPerPage;
-  const end = start + postsPerPage;
-  const pagePosts = posts.slice(start, end);
-
-  pagePosts.forEach(post => {
-    const wrap = document.createElement("div");
-    wrap.className = "post-container";
-
-    // Title (stickable)
-    const title = document.createElement("h2");
-    title.innerHTML = post.title || "";
-    title.className = "stickable stick-title";
-    title.dataset.stickId = nextStickId();
-    title.dataset.stickType = "title";
-    wrap.appendChild(title);
-
-    // Date (stickable)
-    if (post.date) {
-      const date = document.createElement("p");
-      date.className = "datetime stickable stick-date";
-      date.textContent = post.date;
-      date.dataset.stickId = nextStickId();
-      date.dataset.stickType = "date";
-      wrap.appendChild(date);
+    if (stickyScrollHandler) {
+        window.removeEventListener('scroll', stickyScrollHandler);
+        window.removeEventListener('resize', stickyScrollHandler);
+        stickyScrollHandler = null;
     }
 
-    const contentWrap = document.createElement("div");
-    contentWrap.className = "post-content";
+    const start = (currentPage - 1) * postsPerPage;
+    const end = start + postsPerPage;
+    const pagePosts = posts.slice(start, end);
 
-    post.content.forEach(block => {
-      let el;
-      const stickId = nextStickId();
+    pagePosts.forEach(post => {
+        const wrap = document.createElement("div");
+        wrap.className = "post-container";
 
-      if (block.type === "text") {
-        el = document.createElement("p");
-        el.innerHTML = block.value;
-        el.style.fontSize = block.size || "1em";
-        el.dataset.stickId = stickId;
-        el.dataset.stickType = "text";
-        el.className = "stickable stick-text";
-      }
+        const title = document.createElement("h2");
+        title.innerHTML = post.title || "";
+        title.className = "stickable stick-title";
+        title.dataset.stickId = nextStickId();
+        title.dataset.stickType = "title";
+        wrap.appendChild(title);
 
-      if (block.type === "image") {
-        el = document.createElement("img");
-        el.src = block.value;
-        if (block.width) el.style.width = block.width;
-        el.dataset.stickId = stickId;
-        el.dataset.stickType = "image";
-        el.className = "stickable stick-image post-image";
-      }
+        if (post.date) {
+            const date = document.createElement("p");
+            date.className = "datetime stickable stick-date";
+            date.textContent = post.date;
+            date.dataset.stickId = nextStickId();
+            date.dataset.stickType = "date";
+            wrap.appendChild(date);
+        }
 
-      if (block.type === "video") {
-        el = document.createElement("video");
-        el.src = block.value;
-        el.controls = true;
-        el.loop = true;
-        if (block.width) el.style.width = block.width;
-        el.dataset.stickId = stickId;
-        el.dataset.stickType = "video";
-        el.className = "stickable stick-video post-video";
-      }
+        const contentWrap = document.createElement("div");
+        contentWrap.className = "post-content";
 
-      if (block.type === "audio") {
-        const audioWrap = document.createElement("div");
-        audioWrap.className = "stickable stick-audio audio-container";
-        audioWrap.dataset.stickId = stickId;
-        audioWrap.dataset.stickType = "audio";
+        post.content.forEach(block => {
+            let el;
+            const stickId = nextStickId();
 
-        const audio = document.createElement("audio");
-        audio.src = block.value;
-        audio.controls = true;
-        audio.style.width = "100%";
+            if (block.type === "text") {
+                el = document.createElement("p");
+                el.innerHTML = block.value;
+                el.style.fontSize = block.size || "1em";
+                el.dataset.stickId = stickId;
+                el.dataset.stickType = "text";
+                el.className = "stickable stick-text";
+            }
 
-        audioWrap.appendChild(audio);
-        el = audioWrap;
-      }
+            if (block.type === "image") {
+                el = document.createElement("img");
+                el.src = block.value;
+                if (block.width) el.style.width = block.width;
+                el.dataset.stickId = stickId;
+                el.dataset.stickType = "image";
+                el.className = "stickable stick-image post-image";
+            }
 
-      if (el) contentWrap.appendChild(el);
+            if (block.type === "video") {
+                el = document.createElement("video");
+                el.src = block.value;
+                el.controls = true;
+                el.loop = true;
+                if (block.width) el.style.width = block.width;
+                el.dataset.stickId = stickId;
+                el.dataset.stickType = "video";
+                el.className = "stickable stick-video post-video";
+            }
+
+            if (block.type === "audio") {
+                const audioWrap = document.createElement("div");
+                audioWrap.className = "stickable stick-audio audio-container";
+                audioWrap.dataset.stickId = stickId;
+                audioWrap.dataset.stickType = "audio";
+
+                const audio = document.createElement("audio");
+                audio.src = block.value;
+                audio.controls = true;
+                audio.style.width = "100%";
+
+                audioWrap.appendChild(audio);
+                el = audioWrap;
+            }
+
+            if (el) contentWrap.appendChild(el);
+        });
+
+        wrap.appendChild(contentWrap);
+        container.appendChild(wrap);
     });
 
-    wrap.appendChild(contentWrap);
-    container.appendChild(wrap);
-  });
-
-  renderPagination();
-  initStickyEngine(); // (re)initialize sticky behavior for this page
+    renderPagination();
+    initStickyEngine();
 }
 
 // --------------------------
 // RENDER PAGINATION
 // --------------------------
 function renderPagination() {
-  const pagination = document.getElementById("pagination");
-  pagination.innerHTML = "";
+    const pagination = document.getElementById("pagination");
+    pagination.innerHTML = "";
 
-  for (let i = 1; i <= totalPages; i++) {
-    const a = document.createElement("a");
-    a.href = "#";
-    a.textContent = i;
-    a.className = i === currentPage ? "current" : "";
-    a.onclick = e => {
-      e.preventDefault();
-      currentPage = i;
-      // when changing pages we also reset scroll to top and render
-      window.scrollTo(0, 0);
-      renderPosts();
-    };
-    pagination.appendChild(a);
-  }
+    for (let i = 1; i <= totalPages; i++) {
+        const a = document.createElement("a");
+        a.href = "#";
+        a.textContent = i;
+        a.className = i === currentPage ? "current" : "";
+        a.onclick = e => {
+            e.preventDefault();
+            currentPage = i;
+            window.scrollTo(0, 0);
+            renderPosts();
+        };
+        pagination.appendChild(a);
+    }
 }
 
 // --------------------------
-// STICKY ENGINE (Option A: fixed-to-screen wallpaper, clones behind content)
+// STICKY ENGINE (sticks on scroll down, unsticks on scroll up)
 // --------------------------
 function initStickyEngine() {
-  const stack = document.getElementById("sticky-stack");
-  const stickables = Array.from(document.querySelectorAll(".stickable"));
+    const stack = document.getElementById("sticky-stack");
+    const stickables = Array.from(document.querySelectorAll(".stickable"));
 
-  // scroll handler (one per page)
-  stickyScrollHandler = function() {
-    const vpTop = 0;
-
+    // precompute original offsetTop
     stickables.forEach(el => {
-      const stickId = el.dataset.stickId;
-      if (!stickId) return;
-      const rect = el.getBoundingClientRect();
-
-      // create clone once when original scrolls past top
-      if (rect.top < vpTop) {
-        if (!stickyMap.has(stickId)) {
-          const wrapper = createCloneBehind(el);
-          // hide original (visibility hidden so layout preserves spacing)
-          el.style.visibility = "hidden";
-          stickyMap.set(stickId, { wrapper, originalLeft: el.getBoundingClientRect().left });
-          stack.appendChild(wrapper);
-        } else {
-          // update left in case of resize/layout shifts
-          const entry = stickyMap.get(stickId);
-          if (entry) {
-            entry.wrapper.style.left = el.getBoundingClientRect().left + "px";
-          }
-        }
-      }
-      // NOTE: clones intentionally persist until page change.
+        el.dataset.originalTop = el.offsetTop;
     });
-  };
 
-  // run once immediately
-  stickyScrollHandler();
+    stickyScrollHandler = function() {
+        const scrollTop = window.scrollY;
 
-  // attach listeners
-  window.addEventListener('scroll', stickyScrollHandler, { passive: true });
-  window.addEventListener('resize', stickyScrollHandler);
+        stickables.forEach(el => {
+            const stickId = el.dataset.stickId;
+            if (!stickId) return;
+
+            const originalTop = parseFloat(el.dataset.originalTop);
+            const entry = stickyMap.get(stickId);
+
+            if (scrollTop >= originalTop) {
+                if (!entry) {
+                    const clone = createClone(el);
+                    el.style.visibility = "hidden";
+                    stickyMap.set(stickId, { clone });
+                    stack.appendChild(clone);
+                }
+            } else {
+                if (entry) {
+                    entry.clone.remove();
+                    stickyMap.delete(stickId);
+                    el.style.visibility = "visible";
+                }
+            }
+        });
+    };
+
+    stickyScrollHandler();
+    window.addEventListener('scroll', stickyScrollHandler, { passive: true });
+    window.addEventListener('resize', stickyScrollHandler);
 }
 
 // --------------------------
-// Create clone that sits BEHIND (wallpaper) — not in front of content
+// CREATE CLONE ELEMENT
 // --------------------------
-function createCloneBehind(el) {
-  const wrapper = document.createElement("div");
-  wrapper.className = "stacked-item";
+function createClone(el) {
+    const clone = el.cloneNode(true);
+    const rect = el.getBoundingClientRect();
 
-  // clone the node
-  const clone = el.cloneNode(true);
+    clone.style.position = "fixed";
+    clone.style.top = "0px";
+    clone.style.left = rect.left + "px";
+    clone.style.width = rect.width + "px";
+    clone.style.height = rect.height + "px";
+    clone.style.pointerEvents = "none";
+    clone.style.backgroundColor = (el.dataset.stickType === "text" || el.dataset.stickType === "title" || el.dataset.stickType === "date") ? "white" : "transparent";
+    clone.style.zIndex = cloneZIndexCounter++;
 
-  // match the rendered size so it looks identical
-  const rect = el.getBoundingClientRect();
-  const w = rect.width;
-  const h = rect.height;
-  if (w) clone.style.width = w + "px";
-  if (h) clone.style.height = h + "px";
-
-  // fully opaque, no pointer events
-  clone.style.opacity = "1";
-  clone.style.pointerEvents = "none";
-
-  // text/title/date: ensure white background for readability (clone)
-  if (el.dataset.stickType === "text" || el.dataset.stickType === "title" || el.dataset.stickType === "date") {
-    clone.style.backgroundColor = "white";
-    clone.style.padding = "0.15em 0.25em";
-    clone.style.margin = "0";
-    clone.classList.add("cloned-text");
-  } else {
-    // media tweaks
-    clone.style.margin = "0";
-    clone.style.display = "block";
-    clone.classList.add("cloned-media");
-  }
-
-  wrapper.appendChild(clone);
-
-  // position wrapper fixed at top, same X as original
-  wrapper.style.position = "fixed";
-  wrapper.style.top = "0px";
-  wrapper.style.left = rect.left + "px"; // same horizontal position as original
-
-  // place clones behind main content but allow newer clones to sit above older clones
-  cloneStackCounter += 1;
-  // base z-index is below main/header (main z-index = 200). Use small numbers here.
-  wrapper.style.zIndex = String(10 + cloneStackCounter); // e.g. 11,12,13...
-  wrapper.style.pointerEvents = "none";
-
-  return wrapper;
+    return clone;
 }
 
 // --------------------------
 // INITIALIZE
 // --------------------------
 document.addEventListener("DOMContentLoaded", () => {
-  renderPosts();
+    renderPosts();
 });
