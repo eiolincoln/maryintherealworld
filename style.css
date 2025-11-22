@@ -1,19 +1,19 @@
-/* layout flush-left */
+/* --- layout flush-left --- */
 html, body {
   margin: 0 !important;
   padding: 0 !important;
   width: 100%;
   height: 100%;
-  -webkit-text-size-adjust: 100%;
-  -ms-text-size-adjust: 100%;
   font-family: Arial, Helvetica, sans-serif;
   background: #fff;
   color: #000;
+  -webkit-text-size-adjust: 100%;
+  -ms-text-size-adjust: 100%;
 }
 
 /* header & nav flush-left */
 header {
-  padding: 0.8em 0.6em;
+  padding: 0.6em 0.6em;
   text-align: left;
 }
 header h1 {
@@ -23,19 +23,20 @@ header h1 {
 }
 header h1 span { display: inline-block; }
 nav {
-  margin-top: 0.6em;
+  margin-top: 0.45em;
 }
 nav a {
   display: block;
   text-decoration: underline;
   color: black;
   text-transform: lowercase;
-  margin: 0.15em 0;
+  margin: 0.12em 0;
+  padding-left: 0; /* ensure flush-left */
 }
 
 /* main content flush-left */
 main {
-  padding: 0.8em 0.6em;
+  padding: 0.6em 0.6em;
 }
 
 /* posts */
@@ -53,7 +54,7 @@ main {
   left: 0;
 }
 
-/* make text blocks have white background so they don't visually overlap images */
+/* text blocks (title/date/text) have white background so they appear above media */
 .post-content p,
 .post-content h2,
 .post-content .audio-container {
@@ -64,17 +65,25 @@ main {
   z-index: 20;
 }
 
-/* date style */
+/* title & date (they are stickable too) */
+.post-container > h2 {
+  margin: 0.2em 0;
+  padding: 0.15em 0.25em;
+  display: block;
+  background: white;
+  z-index: 20;
+}
 .datetime {
   display: block;
-  margin-top: 0.2em;
+  margin-top: 0.1em;
   color: #555;
   font-size: 0.9em;
   position: relative;
   z-index: 20;
+  padding-left: 0.15em;
 }
 
-/* images stick behavior - each image is treated stickable (stacking works via JS) */
+/* images style (originals in content) */
 .post-image {
   display: block;
   width: auto;
@@ -82,9 +91,10 @@ main {
   margin: 0.6em 0 1em 0;
   position: relative;
   z-index: 1;
+  left: 0;
 }
 
-/* video style (will be stickable by JS) */
+/* video style (originals in content) */
 .post-video {
   display: block;
   width: auto;
@@ -92,6 +102,7 @@ main {
   margin: 0.6em 0 1em 0;
   position: relative;
   z-index: 1;
+  left: 0;
 }
 
 /* audio container style */
@@ -102,33 +113,36 @@ main {
   z-index: 20;
 }
 
-/* STICKY STACK (fixed at top-left, items stack downwards) */
+/* STICKY STACK (fixed at top-left, Option A: layer stack) */
 #sticky-stack {
   position: fixed;
   top: 0;
   left: 0;
   width: auto;
-  max-width: 60vw;
-  pointer-events: none; /* so clicks pass through to page — controls inside clones will enable pointer-events */
+  max-width: 60vw; /* clones will be constrained here at most - clones will use pixel size by default */
+  pointer-events: none; /* clones enable pointer-events themselves */
   z-index: 9999;
 }
 
-/* each stacked clone */
+/* each stacked clone (absolute positioned inside the stack) */
 .stacked-item {
-  position: relative;
-  margin: 0;
-  pointer-events: auto; /* allow interaction with controls inside */
+  position: absolute;
+  top: 0;
+  left: 0;
+  pointer-events: auto; /* allow interaction with controls inside clones */
   background: transparent;
+  margin: 0;
+  padding: 0;
 }
 
-/* ensure text clones appear above image clones inside stack unless z-index changed by JS */
+/* text clone inside stacked item */
 .stacked-item .cloned-text {
   background: white;
   display: block;
   padding: 0.15em 0.25em;
 }
 
-/* image clones should fill the clone width but not overflow */
+/* media clones should not overflow the clone wrapper */
 .stacked-item .cloned-media {
   display: block;
   max-width: 100%;
@@ -152,7 +166,7 @@ main {
   text-decoration: none;
 }
 
-/* helpers for flush-left: force everything to start at left edge */
+/* helpers for flush-left */
 *, *::before, *::after { box-sizing: border-box; }
 
 /* small responsive tweak */
