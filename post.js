@@ -1,4 +1,3 @@
-// posts data (replace or edit these entries as you like)
 const posts = [
     {
         title: "",
@@ -122,7 +121,6 @@ function renderPosts() {
         const wrap = document.createElement("div");
         wrap.className = "post-container";
 
-        // Title
         const title = document.createElement("h2");
         title.innerHTML = post.title || "";
         title.className = "stickable stick-title";
@@ -130,7 +128,6 @@ function renderPosts() {
         title.dataset.stickType = "title";
         wrap.appendChild(title);
 
-        // Date BELOW title
         if (post.date) {
             const date = document.createElement("p");
             date.className = "datetime stickable stick-date";
@@ -268,7 +265,7 @@ function initStickyEngine() {
 }
 
 // --------------------------
-// CREATE PIXEL-PERFECT CLONE
+// CREATE CLONE BEHIND (PIXEL-PERFECT)
 // --------------------------
 function createCloneBehind(el) {
     const wrapper = document.createElement("div");
@@ -276,30 +273,34 @@ function createCloneBehind(el) {
 
     const clone = el.cloneNode(true);
     const rect = el.getBoundingClientRect();
-    const computed = getComputedStyle(el);
     const docLeft = rect.left + window.scrollX;
     const docTop = rect.top + window.scrollY;
 
-    // Preserve exact pixel size
-    clone.style.width = el.offsetWidth + "px";
-    clone.style.height = el.offsetHeight + "px";
-
-    // Preserve display type
-    clone.style.display = computed.display;
-    clone.style.margin = "0";
-    clone.style.padding = computed.padding;
-    clone.style.background = computed.backgroundColor;
-    clone.style.boxSizing = "border-box";
-    clone.style.pointerEvents = "none";
+    clone.style.width = rect.width + "px";
+    clone.style.height = rect.height + "px";
     clone.style.opacity = "1";
-    clone.style.fontSize = computed.fontSize;
-    clone.style.fontFamily = computed.fontFamily;
-    clone.style.fontWeight = computed.fontWeight;
-    clone.style.lineHeight = computed.lineHeight;
-    clone.style.whiteSpace = "pre-wrap";
+    clone.style.pointerEvents = "none";
+
+    if (["text","title","date"].includes(el.dataset.stickType)) {
+        const computed = getComputedStyle(el);
+        clone.style.backgroundColor = computed.backgroundColor;
+        clone.style.padding = computed.padding;
+        clone.style.margin = "0";
+        clone.style.display = "block";
+        clone.style.boxSizing = "border-box";
+        clone.style.whiteSpace = "pre-wrap";
+        clone.style.fontSize = computed.fontSize;
+        clone.style.fontFamily = computed.fontFamily;
+        clone.style.fontWeight = computed.fontWeight;
+        clone.style.lineHeight = computed.lineHeight;
+        clone.classList.add("cloned-text");
+    } else {
+        clone.style.margin = "0";
+        clone.style.display = "block";
+        clone.classList.add("cloned-media");
+    }
 
     wrapper.appendChild(clone);
-
     wrapper.style.position = "fixed";
     wrapper.style.top = docTop + "px";
     wrapper.style.left = docLeft + "px";
