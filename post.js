@@ -3,9 +3,9 @@ const posts = [
         title: "school event",
         date: "11/22/2025 12:18am",
         content: [
-            { type: "image", value:"images/niche1.png", width: "45%" },
+            { type: "image", value:"images/niche1.png", width: "25%" },
             { type: "text", value: "<br>", size: "1em" },
-            { type: "image", value:"images/niche2.png", width: "20%" },
+            { type: "image", value:"images/niche2.png", width: "30%" },
         ]
     },
     {
