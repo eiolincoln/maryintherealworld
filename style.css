@@ -11,7 +11,7 @@
 
 html, body {
   width: 100%;
-  min-height: 100%;
+  height: 100%;
   font-family: Arial, Helvetica, sans-serif;
   background: #fff;
   color: #000;
@@ -21,7 +21,7 @@ html, body {
    HEADER & NAV
    ===================== */
 header {
-  padding: 0.8em 0.6em;
+  padding: 0.8em;
   text-align: left;
 }
 header h1 {
@@ -45,7 +45,7 @@ nav a {
    MAIN CONTENT
    ===================== */
 main {
-  padding: 0.8em 0.6em;
+  padding: 0.8em;
 }
 
 /* =====================
@@ -53,33 +53,22 @@ main {
    ===================== */
 .post-container {
   position: relative;
-  margin-bottom: 4em;
+  margin-bottom: 2em;
 }
 
 .post-content p,
 .post-content h2,
 .post-content .audio-container {
   display: block;
-  background: transparent;
   padding: 0.15em 0.25em;
   margin: 0.4em 0;
   position: relative;
-  z-index: 1;
-}
-
-.datetime {
-  display: block;
-  margin-top: 0.2em;
-  color: #555;
-  font-size: 0.9em;
-  position: relative;
-  z-index: 1;
 }
 
 .post-image,
 .post-video {
   display: block;
-  margin: 0.6em 0 1em 0;
+  margin: 0.6em 0;
   max-width: 100%;
   width: auto;
 }
@@ -102,26 +91,24 @@ main {
 }
 
 .stacked-item {
-  position: absolute; /* stays exactly where it should */
+  position: absolute;
   left: 0;
-  width: 100%;
   pointer-events: auto;
-  box-sizing: border-box;
-  padding: 0.15em 0.25em;
+  margin: 0;
+  width: 100%;
 }
 
-.cloned-text {
-  background: rgba(255,255,255,0.9);
-  padding: 0.15em 0.25em;
-  line-height: 1.4em;
-  word-wrap: break-word;
-}
-
-.cloned-media {
+.stacked-item .cloned-text {
   display: block;
-  margin: 0.2em 0;
+  padding: 0.15em 0.25em;
+  background: white; /* highlight */
+}
+
+.stacked-item .cloned-media {
+  display: block;
   max-width: 100%;
   height: auto;
+  margin: 0.15em 0;
 }
 
 /* =====================
