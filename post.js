@@ -97,7 +97,7 @@ function renderPosts() {
   if (!container) return;
   container.innerHTML = "";
   stack.innerHTML = "";
-  stickyMap.clear(); // reset sticky stack on page change
+  stickyMap.clear();
 
   const start = (currentPage - 1) * postsPerPage;
   const end = start + postsPerPage;
@@ -107,14 +107,21 @@ function renderPosts() {
     const wrap = document.createElement("div");
     wrap.className = "post-container";
 
+    // Title
     const title = document.createElement("h2");
     title.innerHTML = post.title || "";
+    title.className = "stickable stick-title";
+    title.dataset.stickId = nextStickId();
+    title.dataset.stickType = "title";
     wrap.appendChild(title);
 
+    // Date
     if (post.date) {
       const date = document.createElement("p");
-      date.className = "datetime";
+      date.className = "datetime stickable stick-date";
       date.textContent = post.date;
+      date.dataset.stickId = nextStickId();
+      date.dataset.stickType = "date";
       wrap.appendChild(date);
     }
 
@@ -128,6 +135,7 @@ function renderPosts() {
       if (block.type === "text") {
         el = document.createElement("p");
         el.innerHTML = block.value;
+        el.style.fontSize = block.size || "1em";
         el.dataset.stickId = stickId;
         el.dataset.stickType = "text";
         el.className = "stickable stick-text";
@@ -139,7 +147,7 @@ function renderPosts() {
         el.style.width = block.width || "100%";
         el.dataset.stickId = stickId;
         el.dataset.stickType = "image";
-        el.className = "post-image stickable stick-image";
+        el.className = "stickable stick-image";
       }
 
       if (block.type === "video") {
@@ -150,12 +158,12 @@ function renderPosts() {
         el.style.width = block.width || "100%";
         el.dataset.stickId = stickId;
         el.dataset.stickType = "video";
-        el.className = "post-video stickable stick-video";
+        el.className = "stickable stick-video";
       }
 
       if (block.type === "audio") {
         const audioWrap = document.createElement("div");
-        audioWrap.className = "audio-container stickable stick-audio";
+        audioWrap.className = "stickable stick-audio";
         audioWrap.dataset.stickId = stickId;
         audioWrap.dataset.stickType = "audio";
 
@@ -180,7 +188,7 @@ function renderPosts() {
 }
 
 // --------------------------
-// RENDER PAGINATION
+// PAGINATION
 // --------------------------
 function renderPagination() {
   const pagination = document.getElementById("pagination");
@@ -202,7 +210,7 @@ function renderPagination() {
 }
 
 // --------------------------
-// STICKY STACK ENGINE
+// STICKY ENGINE
 // --------------------------
 let stickyMap = new Map();
 
@@ -212,6 +220,7 @@ function initStickyEngine() {
 
   function checkStickables() {
     const viewportTop = 0;
+
     stickables.forEach(el => {
       const stickId = el.dataset.stickId;
       if (!stickId) return;
@@ -219,17 +228,12 @@ function initStickyEngine() {
 
       if (rect.top <= viewportTop) {
         if (!stickyMap.has(stickId)) {
-          const clone = createCloneFor(el);
-          // illusion of sticking in same place
+          const clone = createClone(el);
           clone.style.top = rect.top + "px";
-          // flush to left
-          clone.style.left = "0px";
-          // z-index: images/videos go to back, text on top
-          if(el.dataset.stickType === "image" || el.dataset.stickType === "video" || el.dataset.stickType === "audio"){
-            clone.style.zIndex = "0";
-          } else {
-            clone.style.zIndex = "10";
-            clone.style.backgroundColor = "white"; // white highlight for text
+          clone.style.left = "0px"; // flush left
+          clone.style.zIndex = "999"; // all sticked elements overlay each other
+          if(el.dataset.stickType === "text" || el.dataset.stickType === "title" || el.dataset.stickType === "date"){
+            clone.style.backgroundColor = "rgba(255,255,255,0.8)";
           }
           stack.appendChild(clone);
           stickyMap.set(stickId, { clone, original: el });
@@ -251,32 +255,26 @@ function initStickyEngine() {
   window.addEventListener("resize", checkStickables);
 }
 
-function createCloneFor(el) {
+function createClone(el) {
   const wrapper = document.createElement("div");
   wrapper.className = "stacked-item";
   wrapper.style.position = "fixed";
   wrapper.style.margin = "0";
   wrapper.style.padding = "0";
+  wrapper.style.width = el.offsetWidth + "px";
+  wrapper.style.height = el.offsetHeight + "px";
 
-  const type = el.dataset.stickType;
-
-  if (type === "text") {
-    const textClone = document.createElement("div");
-    textClone.className = "cloned-text";
-    textClone.innerHTML = el.innerHTML;
-    wrapper.appendChild(textClone);
-  } else if (type === "image" || type === "video" || type === "audio") {
-    const mediaClone = el.cloneNode(true);
-    mediaClone.className = "cloned-media";
-    wrapper.appendChild(mediaClone);
-  }
+  const clone = el.cloneNode(true);
+  clone.style.margin = "0";
+  clone.style.padding = "0";
+  wrapper.appendChild(clone);
 
   wrapper.addEventListener("click", e => e.stopPropagation());
   return wrapper;
 }
 
 // --------------------------
-// INITIAL RENDER ON DOM READY
+// INITIALIZE
 // --------------------------
 document.addEventListener("DOMContentLoaded", () => {
   renderPosts();
