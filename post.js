@@ -3,9 +3,8 @@ const posts = [
         title: "<u>school event</u>",
         date: "11/22/2025 12:18am",
         content: [
-            { type: "image", value: "https://raw.githubusercontent.com/eiolincoln/maryintherealworld/main/images/niche1.png", width: "25%" },
-            { type: "text", value: "<br>", size: "1em" },
-            { type: "image", value: "https://raw.githubusercontent.com/eiolincoln/maryintherealworld/main/images/niche2.png", width: "30%" }
+            { type: "image", value: "images/Niche1.png", width: "25%" },
+            { type: "image", value: "images/Niche2.png", width: "30%" }
         ]
     },
     {
@@ -176,6 +175,9 @@ function renderPosts() {
         el.src = block.value;
         el.controls = true;
         el.loop = true;
+        el.autoplay = true;  // <-- add this
+        el.muted = true;     // <-- add this
+        el.playsInline = true; // optional, good for mobile
         if (block.width) el.style.width = block.width;
         el.dataset.stickId = stickId;
         el.dataset.stickType = "video";
