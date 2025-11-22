@@ -93,9 +93,9 @@ function nextStickId() { return "stick-" + (stickIdCounter++); }
 // --------------------------
 // GLOBAL STICKY STATE
 // --------------------------
-let stickyMap = new Map();         // map stickId -> { wrapper, clone, zIndex }
-let stickyScrollHandler = null;    // current scroll handler reference
-let cloneStackCounter = 0;         // incremental z-index inside wallpaper (keeps newer clones above older, but still behind main)
+let stickyMap = new Map();
+let stickyScrollHandler = null;
+let cloneStackCounter = 0;
 
 // --------------------------
 // RENDER POSTS
@@ -105,13 +105,11 @@ function renderPosts() {
   const stack = document.getElementById("sticky-stack");
   if (!container || !stack) return;
 
-  // clear previous page's DOM and stickies
   container.innerHTML = "";
   stack.innerHTML = "";
   stickyMap.clear();
   cloneStackCounter = 0;
 
-  // remove previous listeners if present
   if (stickyScrollHandler) {
     window.removeEventListener('scroll', stickyScrollHandler);
     window.removeEventListener('resize', stickyScrollHandler);
@@ -126,7 +124,6 @@ function renderPosts() {
     const wrap = document.createElement("div");
     wrap.className = "post-container";
 
-    // Title (stickable)
     const title = document.createElement("h2");
     title.innerHTML = post.title || "";
     title.className = "stickable stick-title";
@@ -134,7 +131,6 @@ function renderPosts() {
     title.dataset.stickType = "title";
     wrap.appendChild(title);
 
-    // Date (stickable)
     if (post.date) {
       const date = document.createElement("p");
       date.className = "datetime stickable stick-date";
@@ -203,7 +199,7 @@ function renderPosts() {
   });
 
   renderPagination();
-  initStickyEngine(); // (re)initialize sticky behavior for this page
+  initStickyEngine();
 }
 
 // --------------------------
@@ -221,7 +217,6 @@ function renderPagination() {
     a.onclick = e => {
       e.preventDefault();
       currentPage = i;
-      // when changing pages we also reset scroll to top and render
       window.scrollTo(0, 0);
       renderPosts();
     };
@@ -230,99 +225,81 @@ function renderPagination() {
 }
 
 // --------------------------
-// STICKY ENGINE (Option A: fixed-to-screen wallpaper, clones behind content)
+// STICKY ENGINE (fixed clones, unstick on scroll up)
 // --------------------------
 function initStickyEngine() {
   const stack = document.getElementById("sticky-stack");
   const stickables = Array.from(document.querySelectorAll(".stickable"));
 
-  // scroll handler (one per page)
   stickyScrollHandler = function() {
-  const vpTop = 0;
+    const vpTop = 0;
 
-  stickables.forEach(el => {
-    const stickId = el.dataset.stickId;
-    if (!stickId) return;
-    const rect = el.getBoundingClientRect();
-    const entry = stickyMap.get(stickId);
+    stickables.forEach(el => {
+      const stickId = el.dataset.stickId;
+      if (!stickId) return;
+      const rect = el.getBoundingClientRect();
+      const entry = stickyMap.get(stickId);
 
-    if (rect.top < vpTop) {
-      if (!entry) {
-        const wrapper = createCloneBehind(el);
-        // hide original (visibility hidden so layout preserves spacing)
-        el.style.visibility = "hidden";
-        stickyMap.set(stickId, { wrapper, originalLeft: el.getBoundingClientRect().left });
-        stack.appendChild(wrapper);
+      if (rect.top <= vpTop) {
+        if (!entry) {
+          const wrapper = createCloneBehind(el);
+          el.style.visibility = "hidden";
+          stickyMap.set(stickId, { wrapper });
+          stack.appendChild(wrapper);
+        }
       } else {
-        // update left in case of resize/layout shifts
+        // UNSTICK: restore original, remove clone
+        if (entry) {
+          entry.wrapper.remove();
+          stickyMap.delete(stickId);
+          el.style.visibility = "visible";
+        }
+      }
+
+      // always update left in case of resize
+      if (entry) {
         entry.wrapper.style.left = el.getBoundingClientRect().left + "px";
       }
-    } else {
-      // UNSTICK: remove clone and show original
-      if (entry) {
-        entry.wrapper.remove();
-        stickyMap.delete(stickId);
-        el.style.visibility = "visible";
-      }
-    }
-  });
+    });
   };
 
-
-  // run once immediately
   stickyScrollHandler();
-
-  // attach listeners
   window.addEventListener('scroll', stickyScrollHandler, { passive: true });
   window.addEventListener('resize', stickyScrollHandler);
 }
 
 // --------------------------
-// Create clone that sits BEHIND (wallpaper) — not in front of content
+// Create clone that sits BEHIND
 // --------------------------
 function createCloneBehind(el) {
   const wrapper = document.createElement("div");
   wrapper.className = "stacked-item";
 
-  // clone the node
   const clone = el.cloneNode(true);
-
-  // match the rendered size so it looks identical
   const rect = el.getBoundingClientRect();
-  const w = rect.width;
-  const h = rect.height;
-  if (w) clone.style.width = w + "px";
-  if (h) clone.style.height = h + "px";
-
-  // fully opaque, no pointer events
+  clone.style.width = rect.width + "px";
+  clone.style.height = rect.height + "px";
   clone.style.opacity = "1";
   clone.style.pointerEvents = "none";
 
-  // text/title/date: ensure white background for readability (clone)
-  if (el.dataset.stickType === "text" || el.dataset.stickType === "title" || el.dataset.stickType === "date") {
+  if (["text","title","date"].includes(el.dataset.stickType)) {
     clone.style.backgroundColor = "white";
     clone.style.padding = "0.15em 0.25em";
     clone.style.margin = "0";
     clone.classList.add("cloned-text");
   } else {
-    // media tweaks
     clone.style.margin = "0";
     clone.style.display = "block";
     clone.classList.add("cloned-media");
   }
 
   wrapper.appendChild(clone);
-
-  // position wrapper fixed at top, same X as original
   wrapper.style.position = "fixed";
   wrapper.style.top = "0px";
-  wrapper.style.left = rect.left + "px"; // same horizontal position as original
+  wrapper.style.left = rect.left + "px";
 
-  // place clones behind main content but allow newer clones to sit above older clones
   cloneStackCounter += 1;
-  // base z-index is below main/header (main z-index = 200). Use small numbers here.
-  wrapper.style.zIndex = String(10 + cloneStackCounter); // e.g. 11,12,13...
-  wrapper.style.pointerEvents = "none";
+  wrapper.style.zIndex = String(10 + cloneStackCounter);
 
   return wrapper;
 }
