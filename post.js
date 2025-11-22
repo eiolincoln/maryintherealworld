@@ -1,6 +1,3 @@
-// --------------------------
-// POSTS DATA (unchanged)
-// --------------------------
 const posts = [
     {
         title: "",
@@ -101,222 +98,222 @@ let cloneStackCounter = 0;
 // RENDER POSTS
 // --------------------------
 function renderPosts() {
-  const container = document.getElementById("posts-container");
-  const stack = document.getElementById("sticky-stack");
-  if (!container || !stack) return;
+    const container = document.getElementById("posts-container");
+    const stack = document.getElementById("sticky-stack");
+    if (!container || !stack) return;
 
-  container.innerHTML = "";
-  stack.innerHTML = "";
-  stickyMap.clear();
-  cloneStackCounter = 0;
+    container.innerHTML = "";
+    stack.innerHTML = "";
+    stickyMap.clear();
+    cloneStackCounter = 0;
 
-  if (stickyScrollHandler) {
-    window.removeEventListener('scroll', stickyScrollHandler);
-    window.removeEventListener('resize', stickyScrollHandler);
-    stickyScrollHandler = null;
-  }
-
-  const start = (currentPage - 1) * postsPerPage;
-  const end = start + postsPerPage;
-  const pagePosts = posts.slice(start, end);
-
-  pagePosts.forEach(post => {
-    const wrap = document.createElement("div");
-    wrap.className = "post-container";
-
-    const title = document.createElement("h2");
-    title.innerHTML = post.title || "";
-    title.className = "stickable stick-title";
-    title.dataset.stickId = nextStickId();
-    title.dataset.stickType = "title";
-    wrap.appendChild(title);
-
-    if (post.date) {
-      const date = document.createElement("p");
-      date.className = "datetime stickable stick-date";
-      date.textContent = post.date;
-      date.dataset.stickId = nextStickId();
-      date.dataset.stickType = "date";
-      wrap.appendChild(date);
+    if (stickyScrollHandler) {
+        window.removeEventListener('scroll', stickyScrollHandler);
+        window.removeEventListener('resize', stickyScrollHandler);
+        stickyScrollHandler = null;
     }
 
-    const contentWrap = document.createElement("div");
-    contentWrap.className = "post-content";
+    const start = (currentPage - 1) * postsPerPage;
+    const end = start + postsPerPage;
+    const pagePosts = posts.slice(start, end);
 
-    post.content.forEach(block => {
-      let el;
-      const stickId = nextStickId();
+    pagePosts.forEach(post => {
+        const wrap = document.createElement("div");
+        wrap.className = "post-container";
 
-      if (block.type === "text") {
-        el = document.createElement("p");
-        el.innerHTML = block.value;
-        el.style.fontSize = block.size || "1em";
-        el.dataset.stickId = stickId;
-        el.dataset.stickType = "text";
-        el.className = "stickable stick-text";
-      }
+        const title = document.createElement("h2");
+        title.innerHTML = post.title || "";
+        title.className = "stickable stick-title";
+        title.dataset.stickId = nextStickId();
+        title.dataset.stickType = "title";
+        wrap.appendChild(title);
 
-      if (block.type === "image") {
-        el = document.createElement("img");
-        el.src = block.value;
-        if (block.width) el.style.width = block.width;
-        el.dataset.stickId = stickId;
-        el.dataset.stickType = "image";
-        el.className = "stickable stick-image post-image";
-      }
+        if (post.date) {
+            const date = document.createElement("p");
+            date.className = "datetime stickable stick-date";
+            date.textContent = post.date;
+            date.dataset.stickId = nextStickId();
+            date.dataset.stickType = "date";
+            wrap.appendChild(date);
+        }
 
-      if (block.type === "video") {
-        el = document.createElement("video");
-        el.src = block.value;
-        el.controls = true;
-        el.loop = true;
-        if (block.width) el.style.width = block.width;
-        el.dataset.stickId = stickId;
-        el.dataset.stickType = "video";
-        el.className = "stickable stick-video post-video";
-      }
+        const contentWrap = document.createElement("div");
+        contentWrap.className = "post-content";
 
-      if (block.type === "audio") {
-        const audioWrap = document.createElement("div");
-        audioWrap.className = "stickable stick-audio audio-container";
-        audioWrap.dataset.stickId = stickId;
-        audioWrap.dataset.stickType = "audio";
+        post.content.forEach(block => {
+            let el;
+            const stickId = nextStickId();
 
-        const audio = document.createElement("audio");
-        audio.src = block.value;
-        audio.controls = true;
-        audio.style.width = "100%";
+            if (block.type === "text") {
+                el = document.createElement("p");
+                el.innerHTML = block.value;
+                el.style.fontSize = block.size || "1em";
+                el.dataset.stickId = stickId;
+                el.dataset.stickType = "text";
+                el.className = "stickable stick-text";
+            }
 
-        audioWrap.appendChild(audio);
-        el = audioWrap;
-      }
+            if (block.type === "image") {
+                el = document.createElement("img");
+                el.src = block.value;
+                if (block.width) el.style.width = block.width;
+                el.dataset.stickId = stickId;
+                el.dataset.stickType = "image";
+                el.className = "stickable stick-image post-image";
+            }
 
-      if (el) contentWrap.appendChild(el);
+            if (block.type === "video") {
+                el = document.createElement("video");
+                el.src = block.value;
+                el.controls = true;
+                el.loop = true;
+                if (block.width) el.style.width = block.width;
+                el.dataset.stickId = stickId;
+                el.dataset.stickType = "video";
+                el.className = "stickable stick-video post-video";
+            }
+
+            if (block.type === "audio") {
+                const audioWrap = document.createElement("div");
+                audioWrap.className = "stickable stick-audio audio-container";
+                audioWrap.dataset.stickId = stickId;
+                audioWrap.dataset.stickType = "audio";
+
+                const audio = document.createElement("audio");
+                audio.src = block.value;
+                audio.controls = true;
+                audio.style.width = "100%";
+
+                audioWrap.appendChild(audio);
+                el = audioWrap;
+            }
+
+            if (el) contentWrap.appendChild(el);
+        });
+
+        wrap.appendChild(contentWrap);
+        container.appendChild(wrap);
     });
 
-    wrap.appendChild(contentWrap);
-    container.appendChild(wrap);
-  });
-
-  renderPagination();
-  initStickyEngine();
+    renderPagination();
+    initStickyEngine();
 }
 
 // --------------------------
 // RENDER PAGINATION
 // --------------------------
 function renderPagination() {
-  const pagination = document.getElementById("pagination");
-  pagination.innerHTML = "";
+    const pagination = document.getElementById("pagination");
+    pagination.innerHTML = "";
 
-  for (let i = 1; i <= totalPages; i++) {
-    const a = document.createElement("a");
-    a.href = "#";
-    a.textContent = i;
-    a.className = i === currentPage ? "current" : "";
-    a.onclick = e => {
-      e.preventDefault();
-      currentPage = i;
-      window.scrollTo(0, 0);
-      renderPosts();
-    };
-    pagination.appendChild(a);
-  }
+    for (let i = 1; i <= totalPages; i++) {
+        const a = document.createElement("a");
+        a.href = "#";
+        a.textContent = i;
+        a.className = i === currentPage ? "current" : "";
+        a.onclick = e => {
+            e.preventDefault();
+            currentPage = i;
+            window.scrollTo(0, 0);
+            renderPosts();
+        };
+        pagination.appendChild(a);
+    }
 }
 
 // --------------------------
 // STICKY ENGINE
 // --------------------------
 function initStickyEngine() {
-  const stack = document.getElementById("sticky-stack");
-  const stickables = Array.from(document.querySelectorAll(".stickable"));
+    const stack = document.getElementById("sticky-stack");
+    const stickables = Array.from(document.querySelectorAll(".stickable"));
 
-  stickyScrollHandler = function() {
-    const vpTop = 0;
+    stickyScrollHandler = function() {
+        const vpTop = 0;
 
-    stickables.forEach(el => {
-      const stickId = el.dataset.stickId;
-      if (!stickId) return;
-      const rect = el.getBoundingClientRect();
-      const entry = stickyMap.get(stickId);
+        stickables.forEach(el => {
+            const stickId = el.dataset.stickId;
+            if (!stickId) return;
+            const rect = el.getBoundingClientRect();
+            const entry = stickyMap.get(stickId);
 
-      if (rect.top <= vpTop) {
-        if (!entry) {
-          const wrapper = createCloneBehind(el);
-          el.style.visibility = "hidden";
-          stickyMap.set(stickId, { wrapper });
-          stack.appendChild(wrapper);
-        }
-      } else {
-        if (entry) {
-          entry.wrapper.remove();
-          stickyMap.delete(stickId);
-          el.style.visibility = "visible";
-        }
-      }
+            if (rect.top <= vpTop) {
+                if (!entry) {
+                    const wrapper = createCloneBehind(el);
+                    el.style.visibility = "hidden";
+                    stickyMap.set(stickId, { wrapper });
+                    stack.appendChild(wrapper);
+                }
+            } else {
+                if (entry) {
+                    entry.wrapper.remove();
+                    stickyMap.delete(stickId);
+                    el.style.visibility = "visible";
+                }
+            }
 
-      if (entry) {
-        // use offsetLeft to match flush-left exactly
-        entry.wrapper.style.left = el.offsetLeft + "px";
-      }
-    });
-  };
+            if (entry) {
+                const docLeft = el.getBoundingClientRect().left + window.scrollX;
+                entry.wrapper.style.left = docLeft + "px";
+            }
+        });
+    };
 
-  stickyScrollHandler();
-  window.addEventListener('scroll', stickyScrollHandler, { passive: true });
-  window.addEventListener('resize', stickyScrollHandler);
+    stickyScrollHandler();
+    window.addEventListener('scroll', stickyScrollHandler, { passive: true });
+    window.addEventListener('resize', stickyScrollHandler);
 }
 
 // --------------------------
-// CREATE CLONE BEHIND
+// CREATE CLONE BEHIND (PIXEL-PERFECT)
 // --------------------------
 function createCloneBehind(el) {
-  const wrapper = document.createElement("div");
-  wrapper.className = "stacked-item";
+    const wrapper = document.createElement("div");
+    wrapper.className = "stacked-item";
 
-  const clone = el.cloneNode(true);
-  const rect = el.getBoundingClientRect();
-  clone.style.width = rect.width + "px";
-  clone.style.height = rect.height + "px";
-  clone.style.opacity = "1";
-  clone.style.pointerEvents = "none";
+    const clone = el.cloneNode(true);
+    const rect = el.getBoundingClientRect();
+    const docLeft = rect.left + window.scrollX;
+    const docTop = rect.top + window.scrollY;
 
-  if (["text","title","date"].includes(el.dataset.stickType)) {
-    clone.style.backgroundColor = "white";
-    clone.style.padding = "0.15em 0.25em";
-    clone.style.margin = "0";
-    clone.style.display = "inline-block";
-    clone.style.boxSizing = "border-box";
-    clone.style.whiteSpace = "pre-wrap";
+    clone.style.width = rect.width + "px";
+    clone.style.height = rect.height + "px";
+    clone.style.opacity = "1";
+    clone.style.pointerEvents = "none";
 
-    // match font styles for exact width
-    const computed = getComputedStyle(el);
-    clone.style.fontSize = computed.fontSize;
-    clone.style.fontFamily = computed.fontFamily;
-    clone.style.fontWeight = computed.fontWeight;
-    clone.style.lineHeight = computed.lineHeight;
+    if (["text","title","date"].includes(el.dataset.stickType)) {
+        const computed = getComputedStyle(el);
+        clone.style.backgroundColor = computed.backgroundColor;
+        clone.style.padding = computed.padding;
+        clone.style.margin = "0";
+        clone.style.display = "block";
+        clone.style.boxSizing = "border-box";
+        clone.style.whiteSpace = "pre-wrap";
+        clone.style.fontSize = computed.fontSize;
+        clone.style.fontFamily = computed.fontFamily;
+        clone.style.fontWeight = computed.fontWeight;
+        clone.style.lineHeight = computed.lineHeight;
+        clone.classList.add("cloned-text");
+    } else {
+        clone.style.margin = "0";
+        clone.style.display = "block";
+        clone.classList.add("cloned-media");
+    }
 
-    clone.classList.add("cloned-text");
-  } else {
-    clone.style.margin = "0";
-    clone.style.display = "block";
-    clone.classList.add("cloned-media");
-  }
+    wrapper.appendChild(clone);
+    wrapper.style.position = "fixed";
+    wrapper.style.top = docTop + "px";
+    wrapper.style.left = docLeft + "px";
 
-  wrapper.appendChild(clone);
-  wrapper.style.position = "fixed";
-  wrapper.style.top = "0px";
-  wrapper.style.left = el.offsetLeft + "px"; // flush-left using offsetLeft
+    cloneStackCounter += 1;
+    wrapper.style.zIndex = String(10 + cloneStackCounter);
 
-  cloneStackCounter += 1;
-  wrapper.style.zIndex = String(10 + cloneStackCounter);
-
-  return wrapper;
+    return wrapper;
 }
 
 // --------------------------
 // INITIALIZE
 // --------------------------
 document.addEventListener("DOMContentLoaded", () => {
-  renderPosts();
+    renderPosts();
 });
