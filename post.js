@@ -1,6 +1,6 @@
 const posts = [
     {
-        title: "school event",
+        title: "<u>school event</u>",
         date: "11/22/2025 12:18am",
         content: [
             { type: "image", value: "https://raw.githubusercontent.com/eiolincoln/maryintherealworld/main/images/niche1.png", width: "25%" },
