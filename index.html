@@ -7,7 +7,6 @@
   <link rel="stylesheet" href="style.css" />
   <link rel="icon" href="favicon.png" type="image/png" />
 </head>
-
 <body>
   <header>
     <h1>mary <span>in <span>the </span>real <span>world</span></h1>
@@ -19,12 +18,12 @@
   </header>
 
   <main>
-    <div id="posts"></div>
+    <div id="posts-container"></div>
     <div id="pagination"></div>
   </main>
 
-  <!-- single universal sticky stack -->
-  <div id="sticky-stack"></div>
+  <!-- sticky stack sits above page content -->
+  <div id="sticky-stack" aria-hidden="true"></div>
 
   <script src="post.js"></script>
 </body>
