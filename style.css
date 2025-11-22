@@ -24,7 +24,7 @@ header {
   padding: 0.8em;
   text-align: left;
   position: relative;
-  z-index: 200; /* header above wallpaper clones */
+  z-index: 200;
 }
 header h1 { font-size: 1.6rem; }
 header h1 span { display: inline-block; }
@@ -41,9 +41,9 @@ nav a {
    MAIN CONTENT (flush-left)
    ===================== */
 main {
-  padding: 0; /* flush left */
+  padding: 0;
   position: relative;
-  z-index: 200; /* main content above clones */
+  z-index: 200;
 }
 
 /* =====================
@@ -52,7 +52,7 @@ main {
 .post-container {
   position: relative;
   margin-bottom: 2em;
-  padding: 0; /* ensure flush-left */
+  padding: 0;
   width: 100%;
 }
 
@@ -61,8 +61,8 @@ main {
 .post-container p,
 .post-container .datetime,
 .post-content > * {
-  text-align: left;        /* flush left */
-  background: white;       /* ORIGINALS have white highlight */
+  text-align: left;
+  background: white;
   padding: 0.15em 0.25em;
   margin: 0.4em 0;
   display: inline;         /* hug text width */
@@ -109,8 +109,8 @@ main {
   left: 0;
   width: 100%;
   height: 100%;
-  pointer-events: none; /* clones won't block clicks */
-  z-index: 0;           /* behind main/header */
+  pointer-events: none;
+  z-index: 0;
   overflow: visible;
 }
 
@@ -134,11 +134,11 @@ main {
 
 /* Cloned text style (hug text) */
 .cloned-text {
-  display: inline-block;      /* hug content exactly */
+  display: inline-block;
   padding: 0.15em 0.25em;
   margin: 0;
-  white-space: pre-wrap;      /* preserve line breaks */
-  box-sizing: border-box;     /* prevent extra gap */
+  white-space: pre-wrap;
+  box-sizing: border-box;
 }
 
 /* =====================
