@@ -93,8 +93,9 @@ function nextStickId() { return "stick-" + (stickIdCounter++); }
 // --------------------------
 // GLOBAL STICKY STATE
 // --------------------------
-let stickyMap = new Map();         // map stickId -> { wrapper, originalLeft }
+let stickyMap = new Map();         // map stickId -> { wrapper, clone, zIndex }
 let stickyScrollHandler = null;    // current scroll handler reference
+let cloneStackCounter = 0;         // incremental z-index inside wallpaper (keeps newer clones above older, but still behind main)
 
 // --------------------------
 // RENDER POSTS
@@ -108,6 +109,7 @@ function renderPosts() {
   container.innerHTML = "";
   stack.innerHTML = "";
   stickyMap.clear();
+  cloneStackCounter = 0;
 
   // remove previous listeners if present
   if (stickyScrollHandler) {
@@ -259,8 +261,7 @@ function initStickyEngine() {
           }
         }
       }
-      // NOTE: clones intentionally do NOT get removed when element returns to view.
-      // They persist until page change (per your spec).
+      // NOTE: clones intentionally persist until page change.
     });
   };
 
@@ -283,8 +284,9 @@ function createCloneBehind(el) {
   const clone = el.cloneNode(true);
 
   // match the rendered size so it looks identical
-  const w = el.offsetWidth;
-  const h = el.offsetHeight;
+  const rect = el.getBoundingClientRect();
+  const w = rect.width;
+  const h = rect.height;
   if (w) clone.style.width = w + "px";
   if (h) clone.style.height = h + "px";
 
@@ -308,11 +310,14 @@ function createCloneBehind(el) {
   wrapper.appendChild(clone);
 
   // position wrapper fixed at top, same X as original
-  const rect = el.getBoundingClientRect();
   wrapper.style.position = "fixed";
   wrapper.style.top = "0px";
-  wrapper.style.left = rect.left + "px"; // **same horizontal position** as original
-  wrapper.style.zIndex = "0";            // LOW z-index so main content overlays clones
+  wrapper.style.left = rect.left + "px"; // same horizontal position as original
+
+  // place clones behind main content but allow newer clones to sit above older clones
+  cloneStackCounter += 1;
+  // base z-index is below main/header (main z-index = 200). Use small numbers here.
+  wrapper.style.zIndex = String(10 + cloneStackCounter); // e.g. 11,12,13...
   wrapper.style.pointerEvents = "none";
 
   return wrapper;
