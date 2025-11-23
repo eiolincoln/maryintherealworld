@@ -69,6 +69,11 @@ main {
   line-height: 1.2em;
   white-space: pre-wrap;   /* preserve line breaks */
 }
+/* Override: make date appear under title */
+.datetime {
+  display: block !important;
+}
+
 
 /* Ensure no left gap */
 .post-container,
