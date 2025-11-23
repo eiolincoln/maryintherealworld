@@ -1,21 +1,12 @@
 // --------------------------
-// POSTS DATA (unchanged content you provided)
-// --------------------------
+// POSTS DATA (your posts)
 const posts = [
     {
         title: "<u>This House Has People in It</u>",
         date: "11/22/2025 12:18am",
         content: [
-            { 
-                type: "image", 
-                value: "https://raw.githubusercontent.com/eiolincoln/maryintherealworld/main/images/niche1.png", 
-                width: "25%" 
-            },
-            { 
-                type: "image", 
-                value: "https://raw.githubusercontent.com/eiolincoln/maryintherealworld/main/images/niche2.png", 
-                width: "30%" 
-            }
+            { type: "image", value: "https://raw.githubusercontent.com/eiolincoln/maryintherealworld/main/images/niche1.png", width: "25%" },
+            { type: "image", value: "https://raw.githubusercontent.com/eiolincoln/maryintherealworld/main/images/niche2.png", width: "30%" }
         ]
     },
     {
@@ -93,42 +84,35 @@ const posts = [
     }
 ];
 
-
 // --------------------------
 // PAGINATION CONFIG
-// --------------------------
 const postsPerPage = 10;
 let currentPage = 1;
 const totalPages = Math.ceil(posts.length / postsPerPage);
 
 // --------------------------
 // UNIQUE STICK ID HELPER
-// --------------------------
 let stickIdCounter = 0;
 function nextStickId() { return "stick-" + (stickIdCounter++); }
 
 // --------------------------
 // GLOBAL STICKY STATE
-// --------------------------
-let stickyMap = new Map();        // stickId -> { wrapper, clone, frozenWidth, frozenHeight }
+let stickyMap = new Map();        // stickId -> { wrapper, frozenWidth, frozenHeight }
 let stickyScrollHandler = null;
 let cloneStackCounter = 0;
 
 // --------------------------
 // RENDER POSTS
-// --------------------------
 function renderPosts() {
     const container = document.getElementById("posts-container");
     const stack = document.getElementById("sticky-stack");
     if (!container || !stack) return;
 
-    // clear
     container.innerHTML = "";
     stack.innerHTML = "";
     stickyMap.clear();
     cloneStackCounter = 0;
 
-    // remove previous listeners (if any)
     if (stickyScrollHandler) {
         window.removeEventListener('scroll', stickyScrollHandler);
         window.removeEventListener('resize', stickyScrollHandler);
@@ -142,23 +126,23 @@ function renderPosts() {
         const wrap = document.createElement("div");
         wrap.className = "post-container";
 
-        // Title (force display:block so date sits below)
+        // Title (block so date sits below)
         const title = document.createElement("h2");
         title.innerHTML = post.title || "";
         title.className = "stickable stick-title";
         title.dataset.stickId = nextStickId();
         title.dataset.stickType = "title";
-        title.style.display = "block";       // ensure it's a block so date appears under it
+        title.style.display = "block";
         wrap.appendChild(title);
 
-        // Date (below title)
+        // Date below title
         if (post.date) {
             const date = document.createElement("p");
             date.className = "datetime stickable stick-date";
             date.textContent = post.date;
             date.dataset.stickId = nextStickId();
             date.dataset.stickType = "date";
-            date.style.display = "block";   // ensure block
+            date.style.display = "block";
             wrap.appendChild(date);
         }
 
@@ -176,8 +160,7 @@ function renderPosts() {
                 el.className = "stickable stick-text";
                 el.dataset.stickId = stickId;
                 el.dataset.stickType = "text";
-                // text should be inline so highlight hugs text — but for layout we keep it block internally
-                el.style.display = "inline-block";
+                el.style.display = "inline-block"; // hugging highlight
             }
 
             if (block.type === "image") {
@@ -187,7 +170,7 @@ function renderPosts() {
                 el.className = "stickable stick-image post-image";
                 el.dataset.stickId = stickId;
                 el.dataset.stickType = "image";
-                // make sure object-fit doesn't change aspect when cloned
+                // natural display for original media
                 el.style.display = "block";
                 el.style.maxWidth = "100%";
                 el.style.height = "auto";
@@ -240,7 +223,6 @@ function renderPosts() {
 
 // --------------------------
 // RENDER PAGINATION
-// --------------------------
 function renderPagination() {
     const pagination = document.getElementById("pagination");
     pagination.innerHTML = "";
@@ -262,10 +244,6 @@ function renderPagination() {
 
 // --------------------------
 // STICKY ENGINE
-// - create clone when element's top <= 0
-// - remove clone when element's top > 0
-// - freeze original element size while cloned to avoid layout jumps
-// --------------------------
 function initStickyEngine() {
     const stack = document.getElementById("sticky-stack");
     const stickables = Array.from(document.querySelectorAll(".stickable"));
@@ -280,32 +258,30 @@ function initStickyEngine() {
             const rect = el.getBoundingClientRect();
             const entry = stickyMap.get(stickId);
 
-            // should be stuck when its top is at or above viewport top
             if (rect.top <= vpTop) {
                 if (!entry) {
-                    // freeze original's computed size to prevent it collapsing/scaling
+                    // freeze original size to avoid jump/scale while clone shown
                     const freezeRect = el.getBoundingClientRect();
                     el.style.minWidth = freezeRect.width + "px";
                     el.style.minHeight = freezeRect.height + "px";
                     el.style.boxSizing = "border-box";
 
                     const wrapper = createCloneBehind(el);
-                    // hide original AFTER we froze its size
+
+                    // hide original AFTER freezing it
                     el.style.visibility = "hidden";
 
                     stickyMap.set(stickId, { wrapper, frozenWidth: freezeRect.width, frozenHeight: freezeRect.height });
                     stack.appendChild(wrapper);
                 } else {
-                    // update wrapper left to follow layout shifts
+                    // update wrapper left so it stays aligned if layout shifts
                     const left = el.getBoundingClientRect().left;
                     entry.wrapper.style.left = Math.round(left) + "px";
                 }
             } else {
-                // unstick
                 if (entry) {
                     entry.wrapper.remove();
                     stickyMap.delete(stickId);
-                    // restore original
                     el.style.visibility = "visible";
                     el.style.minWidth = "";
                     el.style.minHeight = "";
@@ -315,45 +291,41 @@ function initStickyEngine() {
         });
     };
 
-    // run once immediately to create any stickies already past top
     stickyScrollHandler();
-
     window.addEventListener('scroll', stickyScrollHandler, { passive: true });
     window.addEventListener('resize', stickyScrollHandler);
 }
 
 // --------------------------
-// CREATE CLONE BEHIND (pixel-accurate)
-// - clone is sized in pixels to match original exactly
-// - for images/videos we copy pixel width/height and preserve aspect using objectFit
-// - for videos we force muted/paused/non-interactive clone
-// --------------------------
+// CREATE CLONE BEHIND
 function createCloneBehind(el) {
     const wrapper = document.createElement("div");
     wrapper.className = "stacked-item";
 
     const rect = el.getBoundingClientRect();
     const computed = getComputedStyle(el);
-
-    // Build a pixel-perfect clone depending on tag
     let clone;
 
     if (el.tagName === "IMG") {
+        // create a fresh img so it doesn't carry original classes
         clone = document.createElement("img");
-        clone.src = el.src;
-        // set pixel width/height to match rendered size
+        clone.src = el.currentSrc || el.src || el.getAttribute('src');
+        // explicit pixel size to match rendered size
         clone.style.width = Math.round(rect.width) + "px";
         clone.style.height = Math.round(rect.height) + "px";
         clone.style.display = "block";
         clone.style.objectFit = "contain";
         clone.style.background = "transparent";
+        // prevent external CSS from resizing clones
+        clone.style.maxWidth = "none";
+        clone.style.maxHeight = "none";
     } else if (el.tagName === "VIDEO") {
         clone = document.createElement("video");
         clone.src = el.currentSrc || el.src;
-        // force-muted, paused, non-interactive
+        // force safe clone state
         clone.muted = true;
         clone.volume = 0;
-        clone.pause();
+        try { clone.pause(); } catch(e) {}
         clone.removeAttribute("controls");
         clone.setAttribute("playsinline", "");
         clone.style.pointerEvents = "none";
@@ -363,17 +335,19 @@ function createCloneBehind(el) {
         clone.style.display = "block";
         clone.style.objectFit = "contain";
         clone.style.background = "transparent";
+        clone.style.maxWidth = "none";
+        clone.style.maxHeight = "none";
     } else {
-        // Generic clone for text or other element types (use cloneNode to preserve inner markup)
+        // generic element (text/title/date etc.)
         clone = el.cloneNode(true);
-        // Ensure the clone is inline-block so highlight hugs the text
+        // remove classes that might apply global layout rules to clone
+        clone.classList.remove('post-image','post-video','post-content','stickable');
+        // pixel-size it so highlight and box match exactly
         clone.style.display = "inline-block";
         clone.style.whiteSpace = "pre-wrap";
-        // set pixel width/height to match rendered box
         clone.style.width = Math.round(rect.width) + "px";
         clone.style.height = Math.round(rect.height) + "px";
-
-        // copy important text styles to avoid visual differences
+        // copy text styles
         clone.style.fontSize = computed.fontSize;
         clone.style.fontFamily = computed.fontFamily;
         clone.style.fontWeight = computed.fontWeight;
@@ -383,13 +357,13 @@ function createCloneBehind(el) {
         clone.style.boxSizing = "border-box";
     }
 
-    // Make sure clone can't capture pointer events or reflow unexpectedly
+    // final safety settings for all clones
     clone.style.pointerEvents = "none";
     clone.style.margin = "0";
     clone.style.opacity = "1";
 
-    // Add class for CSS fallbacks
-    if (["text", "title", "date"].includes(el.dataset.stickType)) {
+    // tag clone type for CSS rules
+    if (["text","title","date"].includes(el.dataset.stickType)) {
         clone.classList.add("cloned-text");
     } else {
         clone.classList.add("cloned-media");
@@ -397,14 +371,11 @@ function createCloneBehind(el) {
 
     wrapper.appendChild(clone);
 
-    // Position wrapper fixed at top of viewport to give "stuck to top" illusion,
-    // and set left to the element's current left so it lines up exactly.
-    // Use rect.left (viewport-relative) for fixed positioning.
+    // position at the top (stuck) and align x exactly
     wrapper.style.position = "fixed";
     wrapper.style.top = "0px";
     wrapper.style.left = Math.round(rect.left) + "px";
 
-    // ensure wrapper sits behind page content (but in your CSS #main has z-index 200)
     cloneStackCounter += 1;
     wrapper.style.zIndex = String(10 + cloneStackCounter);
 
@@ -413,7 +384,6 @@ function createCloneBehind(el) {
 
 // --------------------------
 // INITIALIZE
-// --------------------------
 document.addEventListener("DOMContentLoaded", () => {
     renderPosts();
 });
