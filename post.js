@@ -272,10 +272,6 @@ function initStickyEngine() {
             
                 stickyMap.set(stickId, { wrapper, frozenWidth: rect.width, frozenHeight: rect.height });
                 stack.appendChild(wrapper);
-            }
-
-
-
             } else {
                 if (entry) {
                     entry.wrapper.remove();
