@@ -260,11 +260,20 @@ function initStickyEngine() {
             const entry = stickyMap.get(stickId);
 
             if (!entry) {
+                // FREEZE SIZE OF ORIGINAL ELEMENT
+                const rect = el.getBoundingClientRect();
+                el.style.width = rect.width + "px";
+                el.style.height = rect.height + "px";
+            
                 const wrapper = createCloneBehind(el);
+            
+                // now hide it AFTER freezing the size
                 el.style.visibility = "hidden";
-                stickyMap.set(stickId, { wrapper });
+            
+                stickyMap.set(stickId, { wrapper, frozenWidth: rect.width, frozenHeight: rect.height });
                 stack.appendChild(wrapper);
             }
+
 
 
             } else {
