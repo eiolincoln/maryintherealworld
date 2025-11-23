@@ -57,7 +57,6 @@ main {
 }
 
 /* Originals: readable opaque white highlight (hug letters only) */
-/* keep originals inline so highlight hugs the text */
 .post-container h2,
 .post-container p,
 .post-container .datetime,
@@ -70,11 +69,11 @@ main {
   line-height: 1.2em;
   white-space: pre-wrap;   /* preserve line breaks */
 }
-
-/* Ensure date sits below title in document flow */
+/* Override: make date appear under title */
 .datetime {
   display: block !important;
 }
+
 
 /* Ensure no left gap */
 .post-container,
@@ -129,39 +128,22 @@ main {
   transition: none;
 }
 
-/* IMPORTANT: don't force a white background for every cloned node.
-   Instead only style text clones explicitly. */
+/* cloned nodes fallback */
 .stacked-item > * {
   display: block;
   pointer-events: none;
+  background: white;
   margin: 0;
   padding: 0;
-  background: transparent; /* don't force full-width white */
 }
 
 /* Cloned text style (hug text) */
 .cloned-text {
-  display: inline-block;      /* hug content exactly */
+  display: inline-block;
   padding: 0.15em 0.25em;
   margin: 0;
   white-space: pre-wrap;
   box-sizing: border-box;
-  background: white;          /* ONLY text clones get white highlight */
-}
-
-/* Cloned media fallback — clones must not be affected by original .post-image rules */
-.cloned-media,
-.stacked-item img,
-.stacked-item video {
-  display: block !important;
-  margin: 0 !important;
-  padding: 0 !important;
-  background: transparent !important;
-  object-fit: contain !important;
-  max-width: none !important;   /* important: prevent scaling by site rules */
-  max-height: none !important;
-  width: auto !important;       /* we set pixel widths inline on the clone */
-  height: auto !important;      /* we set pixel heights inline on the clone */
 }
 
 /* =====================
