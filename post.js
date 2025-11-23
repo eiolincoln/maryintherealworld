@@ -293,6 +293,14 @@ function createCloneBehind(el) {
     wrapper.className = "stacked-item";
 
     const clone = el.cloneNode(true);
+    if (clone.tagName === "VIDEO") {
+        clone.muted = true;
+        clone.volume = 0;
+        clone.pause();
+        clone.removeAttribute("controls");
+        clone.setAttribute("playsinline", "");
+        clone.style.pointerEvents = "none";
+    }
     const rect = el.getBoundingClientRect();
     clone.style.width = rect.width + "px";
     clone.style.height = rect.height + "px";
