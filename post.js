@@ -48,7 +48,7 @@ const posts = [
         title: "video test on website",
         date:"11/21/2025 3:19pm",
         content:[
-            { type: "video", value: "videos/sparkleinjamen.mp4", width: "30%" },
+            { type: "video", value: "videos/sparkleinjamen.mp4", width: "50%" },
             { type: "text", value: "11/21/2025 3:19pm anonymous", size: "1em" },
         ]
     },
