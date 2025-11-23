@@ -280,9 +280,6 @@ function initStickyEngine() {
                     entry.wrapper.remove();
                     stickyMap.delete(stickId);
                     el.style.visibility = "visible";
-                    el.style.width = "";
-                    el.style.height = "";
-
                 }
             }
 
