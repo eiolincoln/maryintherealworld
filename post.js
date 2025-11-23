@@ -3,6 +3,13 @@
 // --------------------------
 const posts = [
     {
+        title: "ideal artist for the happiness of society",
+        date: "11/24/2025 1:57am",
+        content: [
+            { type: "text", value: "", size: "1em" }
+        ]
+    },
+    {
         title: "",
         date: "11/23/2025 11:07pm",
         content: [
