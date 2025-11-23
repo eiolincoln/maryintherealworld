@@ -26,7 +26,7 @@ const posts = [
         title: "<u><b>got that water in my еye eye еye</b></u>",
         date: "11/21/2025 10:43pm",
         content: [
-            { type: "image", value:"images/Beauty.png", width: "25%" },
+            { type: "image", value:"images/Beauty.png", width: "10%" },
             { type: "text", value: "not mine, looks like my grandfathers, but his is green", size: "1em" },
         ]
     },
