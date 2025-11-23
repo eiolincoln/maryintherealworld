@@ -3,6 +3,17 @@
 // --------------------------
 const posts = [
     {
+        title: "good channel",
+        date: "11/24/2025 1:57am",
+        content: [
+            { 
+                type: "image", 
+                value: "https://raw.githubusercontent.com/eiolincoln/maryintherealworld/main/images/Melitta.png", 
+                width: "25%" 
+            },
+        ]
+    },
+    {
         title: "ideal artist for the happiness of society",
         date: "11/24/2025 1:57am",
         content: [
