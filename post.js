@@ -259,21 +259,13 @@ function initStickyEngine() {
             const rect = el.getBoundingClientRect();
             const entry = stickyMap.get(stickId);
 
-            if (rect.top <= vpTop) {
-                if (!entry) {
-                    // FREEZE SIZE OF ORIGINAL ELEMENT
-                    const rect = el.getBoundingClientRect();
-                    el.style.width = rect.width + "px";
-                    el.style.height = rect.height + "px";
-                
-                    const wrapper = createCloneBehind(el);
-                
-                    // now hide it AFTER freezing the size
-                    el.style.visibility = "hidden";
-                
-                    stickyMap.set(stickId, { wrapper, frozenWidth: rect.width, frozenHeight: rect.height });
-                    stack.appendChild(wrapper);
+            if (!entry) {
+                const wrapper = createCloneBehind(el);
+                el.style.visibility = "hidden";
+                stickyMap.set(stickId, { wrapper });
+                stack.appendChild(wrapper);
             }
+
 
             } else {
                 if (entry) {
