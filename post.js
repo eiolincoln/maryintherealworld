@@ -1,6 +1,3 @@
-/* ============================================================
-   POSTS DATA
-   ============================================================ */
 const posts = [
     {
         title: "Weight of Two Crimes I Only Dreamed",
@@ -198,87 +195,105 @@ const posts = [
     }
 ];
 
-/* ============================================================
-   PAGINATION SETUP
-   ============================================================ */
+
+// --------------------------
+// PAGINATION CONFIG
+// --------------------------
 const postsPerPage = 10;
 let currentPage = 1;
 const totalPages = Math.ceil(posts.length / postsPerPage);
 
-/* ============================================================
-   STICKY ENGINE STORAGE
-   ============================================================ */
+// --------------------------
+// UNIQUE STICK ID HELPER
+// --------------------------
 let stickIdCounter = 0;
 function nextStickId() { return "stick-" + (stickIdCounter++); }
 
-let stickyMap = new Map();
+// --------------------------
+// GLOBAL STICKY STATE
+// --------------------------
+let stickyMap = new Map();        // stickId -> { wrapper, clone, frozenWidth, frozenHeight }
 let stickyScrollHandler = null;
 let cloneStackCounter = 0;
 
-/* ============================================================
-   RENDER POSTS
-   ============================================================ */
+// --------------------------
+// RENDER POSTS
+// --------------------------
 function renderPosts() {
     const container = document.getElementById("posts-container");
     const stack = document.getElementById("sticky-stack");
+    if (!container || !stack) return;
 
+    // clear
     container.innerHTML = "";
     stack.innerHTML = "";
     stickyMap.clear();
     cloneStackCounter = 0;
 
+    // remove previous listeners (if any)
     if (stickyScrollHandler) {
-        window.removeEventListener("scroll", stickyScrollHandler);
-        window.removeEventListener("resize", stickyScrollHandler);
+        window.removeEventListener('scroll', stickyScrollHandler);
+        window.removeEventListener('resize', stickyScrollHandler);
         stickyScrollHandler = null;
     }
 
     const start = (currentPage - 1) * postsPerPage;
-    const visible = posts.slice(start, start + postsPerPage);
+    const pagePosts = posts.slice(start, start + postsPerPage);
 
-    visible.forEach(post => {
+    pagePosts.forEach(post => {
         const wrap = document.createElement("div");
         wrap.className = "post-container";
 
+        // Title (force display:block so date sits below)
         const title = document.createElement("h2");
         title.innerHTML = post.title || "";
         title.className = "stickable stick-title";
         title.dataset.stickId = nextStickId();
         title.dataset.stickType = "title";
+        title.style.display = "block";       // ensure it's a block so date appears under it
         wrap.appendChild(title);
 
+        // Date (below title)
         if (post.date) {
             const date = document.createElement("p");
             date.className = "datetime stickable stick-date";
             date.textContent = post.date;
             date.dataset.stickId = nextStickId();
             date.dataset.stickType = "date";
+            date.style.display = "block";   // ensure block
             wrap.appendChild(date);
         }
 
-        const cont = document.createElement("div");
-        cont.className = "post-content";
+        const contentWrap = document.createElement("div");
+        contentWrap.className = "post-content";
 
         post.content.forEach(block => {
-            const id = nextStickId();
-            let el = null;
+            let el;
+            const stickId = nextStickId();
 
             if (block.type === "text") {
                 el = document.createElement("p");
                 el.innerHTML = block.value;
-                el.style.fontSize = block.size;
-                el.className = "stickable";
-                el.dataset.stickId = id;
+                el.style.fontSize = block.size || "1em";
+                el.className = "stickable stick-text";
+                el.dataset.stickId = stickId;
                 el.dataset.stickType = "text";
+                // text should be inline so highlight hugs text — but for layout we keep it block internally
+                el.style.display = "inline-block";
             }
 
             if (block.type === "image") {
                 el = document.createElement("img");
                 el.src = block.value;
                 if (block.width) el.style.width = block.width;
-                el.className = "stickable";
-                el.dataset.stickId = id;
+                el.className = "stickable stick-image post-image";
+                el.dataset.stickId = stickId;
                 el.dataset.stickType = "image";
+                // make sure object-fit doesn't change aspect when cloned
+                el.style.display = "block";
+                el.style.maxWidth = "100%";
+                el.style.height = "auto";
+                el.style.background = "transparent";
             }
 
             if (block.type === "video") {
@@ -290,30 +305,34 @@ function renderPosts() {
                 el.muted = true;
                 el.playsInline = true;
                 if (block.width) el.style.width = block.width;
-                el.className = "stickable";
-                el.dataset.stickId = id;
+                el.className = "stickable stick-video post-video";
+                el.dataset.stickId = stickId;
                 el.dataset.stickType = "video";
+                el.style.display = "block";
+                el.style.maxWidth = "100%";
+                el.style.height = "auto";
+                el.style.background = "transparent";
             }
 
             if (block.type === "audio") {
-                const w = document.createElement("div");
-                w.className = "stickable audio-container";
-                w.dataset.stickId = id;
-                w.dataset.stickType = "audio";
+                const audioWrap = document.createElement("div");
+                audioWrap.className = "stickable stick-audio audio-container";
+                audioWrap.dataset.stickId = stickId;
+                audioWrap.dataset.stickType = "audio";
 
                 const audio = document.createElement("audio");
                 audio.src = block.value;
                 audio.controls = true;
                 audio.style.width = "100%";
 
-                w.appendChild(audio);
-                el = w;
+                audioWrap.appendChild(audio);
+                el = audioWrap;
             }
 
-            if (el) cont.appendChild(el);
+            if (el) contentWrap.appendChild(el);
         });
 
-        wrap.appendChild(cont);
+        wrap.appendChild(contentWrap);
         container.appendChild(wrap);
     });
 
@@ -321,75 +340,191 @@ function renderPosts() {
     initStickyEngine();
 }
 
-/* ============================================================
-   PAGINATION RENDER
-   ============================================================ */
+// --------------------------
+// RENDER PAGINATION
+// --------------------------
 function renderPagination() {
-    const p = document.getElementById("pagination");
-    p.innerHTML = "";
+    const pagination = document.getElementById("pagination");
+    pagination.innerHTML = "";
 
     for (let i = 1; i <= totalPages; i++) {
         const a = document.createElement("a");
         a.href = "#";
         a.textContent = i;
-        if (i === currentPage) a.className = "current";
-
+        a.className = i === currentPage ? "current" : "";
         a.onclick = e => {
             e.preventDefault();
             currentPage = i;
             window.scrollTo(0, 0);
             renderPosts();
         };
-
-        p.appendChild(a);
+        pagination.appendChild(a);
     }
 }
 
-/* ============================================================
-   STICKY ENGINE
-   ============================================================ */
+// --------------------------
+// STICKY ENGINE
+// - create clone when element's top <= 0
+// - remove clone when element's top > 0
+// - freeze original element size while cloned to avoid layout jumps
+// --------------------------
 function initStickyEngine() {
     const stack = document.getElementById("sticky-stack");
-    const items = [...document.querySelectorAll(".stickable")];
+    const stickables = Array.from(document.querySelectorAll(".stickable"));
 
-    stickyScrollHandler = function () {
-        items.forEach(el => {
-            const id = el.dataset.stickId;
+    stickyScrollHandler = function() {
+        const vpTop = 0;
+
+        stickables.forEach(el => {
+            const stickId = el.dataset.stickId;
+            if (!stickId) return;
+
             const rect = el.getBoundingClientRect();
-            const entry = stickyMap.get(id);
+            const entry = stickyMap.get(stickId);
 
-            const shouldStick = rect.top <= 0;
+            // should be stuck when its top is at or above viewport top
+            if (rect.top <= vpTop) {
+                if (!entry) {
+                    // freeze original's computed size to prevent it collapsing/scaling
+                    const freezeRect = el.getBoundingClientRect();
+                    el.style.minWidth = freezeRect.width + "px";
+                    el.style.minHeight = freezeRect.height + "px";
+                    el.style.boxSizing = "border-box";
 
-            // make sticky
-            if (shouldStick && !entry) {
-                const clone = el.cloneNode(true);
-                clone.classList.add("sticky-clone");
-                clone.style.position = "sticky";
-                clone.style.top = cloneStackCounter * 30 + "px";
-                cloneStackCounter++;
+                    const wrapper = createCloneBehind(el);
+                    // hide original AFTER we froze its size
+                    el.style.visibility = "hidden";
 
-                el.style.visibility = "hidden";
-
-                stack.appendChild(clone);
-                stickyMap.set(id, { clone });
-            }
-
-            // unstick
-            if (!shouldStick && entry) {
-                el.style.visibility = "visible";
-                entry.clone.remove();
-                stickyMap.delete(id);
-                cloneStackCounter--;
+                    stickyMap.set(stickId, { wrapper, frozenWidth: freezeRect.width, frozenHeight: freezeRect.height });
+                    stack.appendChild(wrapper);
+                } else {
+                    // update wrapper left to follow layout shifts
+                    const left = el.getBoundingClientRect().left;
+                    entry.wrapper.style.left = Math.round(left) + "px";
+                }
+            } else {
+                // unstick
+                if (entry) {
+                    entry.wrapper.remove();
+                    stickyMap.delete(stickId);
+                    // restore original
+                    el.style.visibility = "visible";
+                    el.style.minWidth = "";
+                    el.style.minHeight = "";
+                    el.style.boxSizing = "";
+                }
             }
         });
     };
 
-    window.addEventListener("scroll", stickyScrollHandler);
-    window.addEventListener("resize", stickyScrollHandler);
+    // run once immediately to create any stickies already past top
     stickyScrollHandler();
+
+    window.addEventListener('scroll', stickyScrollHandler, { passive: true });
+    window.addEventListener('resize', stickyScrollHandler);
 }
 
-/* ============================================================
-   INITIAL LOAD
-   ============================================================ */
-document.addEventListener("DOMContentLoaded", renderPosts);
+// --------------------------
+// CREATE CLONE BEHIND (pixel-accurate)
+// - clone is sized in pixels to match original exactly
+// - for images/videos we copy pixel width/height and preserve aspect using objectFit
+// - for videos we force muted/paused/non-interactive clone
+// --------------------------
+function createCloneBehind(el) {
+    const wrapper = document.createElement("div");
+    wrapper.className = "stacked-item";
+
+    const rect = el.getBoundingClientRect();
+    const computed = getComputedStyle(el);
+
+    // Build a pixel-perfect clone depending on tag
+    let clone;
+
+    if (el.tagName === "IMG") {
+        clone = document.createElement("img");
+        clone.src = el.src;
+        // set pixel width/height to match rendered size
+        clone.style.width = Math.round(rect.width) + "px";
+        clone.style.height = Math.round(rect.height) + "px";
+        clone.style.display = "block";
+        clone.style.objectFit = "contain";
+        clone.style.background = "transparent";
+    } else if (el.tagName === "VIDEO") {
+        clone = document.createElement("video");
+        clone.src = el.currentSrc || el.src;
+        // force-muted, paused, non-interactive
+        clone.muted = true;
+        clone.volume = 0;
+        clone.pause();
+        clone.removeAttribute("controls");
+        clone.setAttribute("playsinline", "");
+        clone.style.pointerEvents = "none";
+
+        clone.style.width = Math.round(rect.width) + "px";
+        clone.style.height = Math.round(rect.height) + "px";
+        clone.style.display = "block";
+        clone.style.objectFit = "contain";
+        clone.style.background = "transparent";
+    } else {
+        clone = el.cloneNode(true);
+    
+        // Copy text styling
+        clone.style.fontSize = computed.fontSize;
+        clone.style.fontFamily = computed.fontFamily;
+        clone.style.fontWeight = computed.fontWeight;
+        clone.style.lineHeight = computed.lineHeight;
+        clone.style.whiteSpace = "pre-wrap";
+    
+        // --- FIX START ---
+        // If original element is inline or inline-block → hug text
+        const isInline = ["inline", "inline-block"].includes(computed.display);
+    
+        if (isInline) {
+            clone.style.display = "inline-block";
+            clone.style.width = Math.round(rect.width) + "px";
+        } else {
+            // Block elements (titles, dates) = no forced width
+            clone.style.display = "block";
+            clone.style.width = "fit-content";   // Hug the text
+        }
+    
+        // Height should always match original height
+        clone.style.height = Math.round(rect.height) + "px";
+        // --- FIX END ---
+    }
+
+
+    // Make sure clone can't capture pointer events or reflow unexpectedly
+    clone.style.pointerEvents = "none";
+    clone.style.margin = "0";
+    clone.style.opacity = "1";
+
+    // Add class for CSS fallbacks
+    if (["text", "title", "date"].includes(el.dataset.stickType)) {
+        clone.classList.add("cloned-text");
+    } else {
+        clone.classList.add("cloned-media");
+    }
+
+    wrapper.appendChild(clone);
+
+    // Position wrapper fixed at top of viewport to give "stuck to top" illusion,
+    // and set left to the element's current left so it lines up exactly.
+    // Use rect.left (viewport-relative) for fixed positioning.
+    wrapper.style.position = "fixed";
+    wrapper.style.top = "0px";
+    wrapper.style.left = Math.round(rect.left) + "px";
+
+    // ensure wrapper sits behind page content (but in your CSS #main has z-index 200)
+    cloneStackCounter += 1;
+    wrapper.style.zIndex = String(10 + cloneStackCounter);
+
+    return wrapper;
+}
+
+// --------------------------
+// INITIALIZE
+// --------------------------
+document.addEventListener("DOMContentLoaded", () => {
+    renderPosts();
+});
