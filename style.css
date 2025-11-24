@@ -174,3 +174,22 @@ main {
     max-width: 100%;
   }
 }
+
+#infinite-text-marquee {
+    white-space: nowrap;
+    overflow: hidden;
+    width: 100%;
+    border-bottom: 1px solid #ccc;
+    padding: 0.5em 0;
+    background: #111;
+    color: #fff;
+    font-size: 1.2em;
+    position: relative;
+    height: 2em;
+}
+
+.marquee-text {
+    display: inline-block;
+    position: absolute;
+    will-change: transform;
+}
