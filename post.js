@@ -16,7 +16,7 @@ const posts = [
             { 
                 type: "image", 
                 value: "https://raw.githubusercontent.com/eiolincoln/maryintherealworld/main/images/EllaPapo666.png", 
-                width: "40%" 
+                width: "20%" 
             },
             { 
                 type: "image", 
