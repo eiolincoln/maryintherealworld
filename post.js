@@ -298,6 +298,63 @@ function renderPosts() {
 }
 
 // --------------------------
+// SEARCH FUNCTIONALITY
+// --------------------------
+function searchPosts() {
+    const query = document.getElementById("search-input").value.trim();
+    const mode = document.getElementById("search-mode").value;
+
+    // clear previous highlights
+    document.querySelectorAll(".highlight").forEach(el => {
+        el.classList.remove("highlight");
+    });
+
+    if (!query) return;
+
+    // loop through all posts on current page
+    const postsOnPage = document.querySelectorAll(".post-container");
+    postsOnPage.forEach(postEl => {
+        // title
+        const titleEl = postEl.querySelector("h2");
+        const dateEl = postEl.querySelector(".datetime");
+        const textEls = postEl.querySelectorAll(".post-content p");
+
+        [titleEl, dateEl, ...textEls].forEach(el => {
+            if (!el) return;
+            const content = el.textContent || "";
+            let match = false;
+
+            if (mode === "exact") {
+                match = content === query;
+            } else {
+                match = content.toLowerCase().includes(query.toLowerCase());
+            }
+
+            if (match) {
+                el.classList.add("highlight");
+            }
+        });
+    });
+}
+
+// --------------------------
+// EVENT LISTENERS
+// --------------------------
+document.addEventListener("DOMContentLoaded", () => {
+    renderPosts();
+
+    document.getElementById("search-button").addEventListener("click", searchPosts);
+    document.getElementById("clear-search-button").addEventListener("click", () => {
+        document.getElementById("search-input").value = "";
+        searchPosts();
+    });
+
+    document.getElementById("search-input").addEventListener("keydown", e => {
+        if (e.key === "Enter") searchPosts();
+    });
+});
+
+// --------------------------
 // RENDER PAGINATION
 // --------------------------
 function renderPagination() {
