@@ -174,26 +174,3 @@ main {
     max-width: 100%;
   }
 }
-
-
-#search-bar-container {
-    display: flex;
-    gap: 0.5em;
-    margin-bottom: 1em;
-    align-items: center;
-}
-
-#search-input {
-    flex: 1;
-    padding: 0.4em;
-    font-size: 1em;
-}
-
-#search-mode, #search-button, #clear-search-button {
-    padding: 0.4em;
-    font-size: 1em;
-}
-
-.highlight {
-    background-color: orange;
-}
