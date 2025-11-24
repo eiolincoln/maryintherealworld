@@ -13,7 +13,7 @@ const posts = [
             { 
                 type: "image", 
                 value: "https://raw.githubusercontent.com/eiolincoln/maryintherealworld/main/images/eerilyrealisticfunnymoments.png", 
-                width: "20%" 
+                width: "40%" 
             },
         ]
     },
