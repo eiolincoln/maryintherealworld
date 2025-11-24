@@ -11,7 +11,7 @@ const posts = [
                 value: "https://raw.githubusercontent.com/eiolincoln/maryintherealworld/main/images/Melitta.png", 
                 width: "40%" 
             },
-            { type: "text", value: "titles are a little pretentious but the videos are good", size: "1em" },
+            { type: "text", value: "titles may feel pretentious but the videos are good", size: "1em" },
         ]
     },
     {
