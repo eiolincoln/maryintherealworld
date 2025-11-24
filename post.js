@@ -515,3 +515,38 @@ function startMarquee() {
 document.addEventListener("DOMContentLoaded", startMarquee);
 
 });
+
+function getCurrentPageFromURL() {
+    const path = window.location.pathname; // e.g., /page/2
+    const match = path.match(/\/page\/(\d+)/);
+    if (match) return parseInt(match[1], 10);
+    return 1;
+}
+
+function updateURLPage(page) {
+    history.pushState(null, "", `/page/${page}`);
+}
+
+// At the top of your script
+currentPage = getCurrentPageFromURL();
+
+// Update renderPagination
+function renderPagination() {
+    const pagination = document.getElementById("pagination");
+    pagination.innerHTML = "";
+
+    for (let i = 1; i <= totalPages; i++) {
+        const a = document.createElement("a");
+        a.href = "#";
+        a.textContent = i;
+        a.className = i === currentPage ? "current" : "";
+        a.onclick = e => {
+            e.preventDefault();
+            currentPage = i;
+            window.scrollTo(0, 0);
+            updateURLPage(i);
+            renderPosts();
+        };
+        pagination.appendChild(a);
+    }
+}
