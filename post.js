@@ -135,7 +135,7 @@ const posts = [
     },
     {
         title: "inventions and ideas",
-        date: "19/11/2025 7:24pm",
+        date: "20/11/2025 7:24pm",
         content: [
             { type: "text", value: "New bread i think it would be a good idea like most people eat bread in the mornings and i people might not like it after 5000000000000 Times of eating the same bread so imagine if there were new Bread", size: "1.1em" }
         ]
