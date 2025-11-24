@@ -3,6 +3,30 @@
 // --------------------------
 const posts = [
     {
+        title: "Weight of Two Crimes I Only Dreamed",
+        date: "11/21/2025 7:16pm",
+        content: [
+            { type: "text", value: "<i>77</i>", size: "1em" }
+        ]
+    },
+    {
+        title: "THIS IS A SIGN",
+        date: "11/25/2025 9:11pm",
+        content: [
+            { 
+                type: "image", 
+                value: "https://raw.githubusercontent.com/eiolincoln/maryintherealworld/main/images/EllaPapo666.png", 
+                width: "40%" 
+            },
+            { 
+                type: "image", 
+                value: "https://raw.githubusercontent.com/eiolincoln/maryintherealworld/main/images/Angel666NumberNoBackground.png", 
+                width: "40%" 
+            },
+            { type: "text", value: "A SIGN", size: "1em" },
+        ]
+    },
+    {
         title: "good channel",
         date: "11/24/2025 1:57am",
         content: [
