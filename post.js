@@ -385,13 +385,11 @@ function createCloneBehind(el) {
     const rect = el.getBoundingClientRect();
     const computed = getComputedStyle(el);
 
-    // Build a pixel-perfect clone depending on tag
     let clone;
 
     if (el.tagName === "IMG") {
         clone = document.createElement("img");
         clone.src = el.src;
-        // set pixel width/height to match rendered size
         clone.style.width = Math.round(rect.width) + "px";
         clone.style.height = Math.round(rect.height) + "px";
         clone.style.display = "block";
@@ -400,7 +398,6 @@ function createCloneBehind(el) {
     } else if (el.tagName === "VIDEO") {
         clone = document.createElement("video");
         clone.src = el.currentSrc || el.src;
-        // force-muted, paused, non-interactive
         clone.muted = true;
         clone.volume = 0;
         clone.pause();
@@ -415,39 +412,32 @@ function createCloneBehind(el) {
         clone.style.background = "transparent";
     } else {
         clone = el.cloneNode(true);
-    
+
         // Copy text styling
         clone.style.fontSize = computed.fontSize;
         clone.style.fontFamily = computed.fontFamily;
         clone.style.fontWeight = computed.fontWeight;
         clone.style.lineHeight = computed.lineHeight;
-        clone.style.whiteSpace = "pre-wrap";
-    
-        // --- FIX START ---
-        // If original element is inline or inline-block → hug text
+        clone.style.whiteSpace = "pre-wrap";  // allow wrapping if needed
+        clone.style.wordBreak = "break-word"; // prevent overflow cutoffs
+
         const isInline = ["inline", "inline-block"].includes(computed.display);
-    
+
         if (isInline) {
-            clone.style.display = "inline-block";
-            clone.style.width = Math.round(rect.width) + "px";
+            clone.style.display = "inline";           // hug text naturally
+            clone.style.minWidth = Math.round(rect.width) + "px"; // prevent collapsing
         } else {
-            // Block elements (titles, dates) = no forced width
             clone.style.display = "block";
-            clone.style.width = "fit-content";   // Hug the text
+            clone.style.width = "fit-content";        // hug content
         }
-    
-        // Height should always match original height
+
         clone.style.height = Math.round(rect.height) + "px";
-        // --- FIX END ---
     }
 
-
-    // Make sure clone can't capture pointer events or reflow unexpectedly
     clone.style.pointerEvents = "none";
     clone.style.margin = "0";
     clone.style.opacity = "1";
 
-    // Add class for CSS fallbacks
     if (["text", "title", "date"].includes(el.dataset.stickType)) {
         clone.classList.add("cloned-text");
     } else {
@@ -456,19 +446,15 @@ function createCloneBehind(el) {
 
     wrapper.appendChild(clone);
 
-    // Position wrapper fixed at top of viewport to give "stuck to top" illusion,
-    // and set left to the element's current left so it lines up exactly.
-    // Use rect.left (viewport-relative) for fixed positioning.
     wrapper.style.position = "fixed";
     wrapper.style.top = "0px";
     wrapper.style.left = Math.round(rect.left) + "px";
-
-    // ensure wrapper sits behind page content (but in your CSS #main has z-index 200)
     cloneStackCounter += 1;
     wrapper.style.zIndex = String(10 + cloneStackCounter);
 
     return wrapper;
 }
+
 
 // --------------------------
 // INITIALIZE
