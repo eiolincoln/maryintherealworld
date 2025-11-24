@@ -9,7 +9,7 @@ const posts = [
             { 
                 type: "image", 
                 value: "https://raw.githubusercontent.com/eiolincoln/maryintherealworld/main/images/Melitta.png", 
-                width: "25%" 
+                width: "40%" 
             },
         ]
     },
