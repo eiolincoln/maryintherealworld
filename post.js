@@ -471,51 +471,6 @@ function createCloneBehind(el) {
 document.addEventListener("DOMContentLoaded", () => {
     renderPosts();
 
-const marqueeTexts = [
-    "This is a random thought.",
-    "Another weird dream from last night.",
-    "Hello world, scrolling forever.",
-    "Eerily realistic vibes.",
-    "You can put anything here..."
-];
-
-function startMarquee() {
-    const container = document.getElementById("infinite-text-marquee");
-    let lastWidth = container.offsetWidth;
-
-    function spawnText() {
-        const textEl = document.createElement("span");
-        textEl.className = "marquee-text";
-        textEl.textContent = marqueeTexts[Math.floor(Math.random() * marqueeTexts.length)];
-        
-        // start position: right outside container
-        let left = container.offsetWidth;
-        textEl.style.transform = `translateX(${left}px)`;
-        container.appendChild(textEl);
-
-        function animate() {
-            left -= 2; // speed
-            textEl.style.transform = `translateX(${left}px)`;
-            if (left + textEl.offsetWidth < 0) {
-                textEl.remove();
-            } else {
-                requestAnimationFrame(animate);
-            }
-        }
-
-        animate();
-
-        // spawn next text after a random delay
-        setTimeout(spawnText, 1000 + Math.random() * 2000);
-    }
-
-    spawnText();
-}
-
-document.addEventListener("DOMContentLoaded", startMarquee);
-
-});
-
 function getCurrentPageFromURL() {
     const path = window.location.pathname; // e.g., /page/2
     const match = path.match(/\/page\/(\d+)/);
