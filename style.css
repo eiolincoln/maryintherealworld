@@ -65,17 +65,18 @@ main {
   background: white;
   padding: 0.15em 0.25em;
   margin: 0.4em 0;
-  display: inline;         /* hug text width */
+  display: inline-block;      /* hug text width */
   line-height: 1.2em;
-  white-space: pre-wrap;   /* preserve line breaks */
+  white-space: pre-wrap;      /* preserve line breaks */
+  box-decoration-break: clone;
 }
+
 /* Override: make date appear under title */
 .datetime {
   display: block !important;
 }
 
-
-/* Ensure no left gap */
+/* Ensure no left/right gap */
 .post-container,
 .post-content,
 .post-content p,
@@ -86,6 +87,7 @@ main {
   margin-left: 0;
   margin-right: 0;
   padding-left: 0;
+  padding-right: 0;
 }
 
 /* Media natural behavior */
@@ -106,7 +108,7 @@ main {
 }
 
 /* =====================
-   STICKY STACK (WALLPAPER, BEHIND CONTENT)
+   STICKY STACK
    ===================== */
 #sticky-stack {
   position: fixed;
@@ -128,22 +130,29 @@ main {
   transition: none;
 }
 
-/* cloned nodes fallback */
 .stacked-item > * {
   display: block;
   pointer-events: none;
   background: white;
   margin: 0;
   padding: 0;
+  box-sizing: border-box;
 }
 
-/* Cloned text style (hug text) */
+/* Cloned text style (hug text, fix extra line width) */
 .cloned-text {
   display: inline-block;
   padding: 0.15em 0.25em;
   margin: 0;
   white-space: pre-wrap;
   box-sizing: border-box;
+}
+
+/* Cloned media */
+.cloned-media {
+  display: block;
+  max-width: 100%;
+  height: auto;
 }
 
 /* =====================
