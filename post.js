@@ -1,5 +1,5 @@
 // --------------------------
-// POSTS DATA (unchanged content you provided)
+// POSTS DATA (unchanged content)
 // --------------------------
 const posts = [
     {
@@ -143,7 +143,6 @@ const posts = [
     }
 ];
 
-
 // --------------------------
 // PAGINATION CONFIG
 // --------------------------
@@ -160,7 +159,7 @@ function nextStickId() { return "stick-" + (stickIdCounter++); }
 // --------------------------
 // GLOBAL STICKY STATE
 // --------------------------
-let stickyMap = new Map();        // stickId -> { wrapper, clone, frozenWidth, frozenHeight }
+let stickyMap = new Map();        
 let stickyScrollHandler = null;
 let cloneStackCounter = 0;
 
@@ -172,13 +171,11 @@ function renderPosts() {
     const stack = document.getElementById("sticky-stack");
     if (!container || !stack) return;
 
-    // clear
     container.innerHTML = "";
     stack.innerHTML = "";
     stickyMap.clear();
     cloneStackCounter = 0;
 
-    // remove previous listeners (if any)
     if (stickyScrollHandler) {
         window.removeEventListener('scroll', stickyScrollHandler);
         window.removeEventListener('resize', stickyScrollHandler);
@@ -192,23 +189,21 @@ function renderPosts() {
         const wrap = document.createElement("div");
         wrap.className = "post-container";
 
-        // Title (force display:block so date sits below)
+        // Title
         const title = document.createElement("h2");
         title.innerHTML = post.title || "";
         title.className = "stickable stick-title";
         title.dataset.stickId = nextStickId();
         title.dataset.stickType = "title";
-        title.style.display = "block";       // ensure it's a block so date appears under it
         wrap.appendChild(title);
 
-        // Date (below title)
+        // Date
         if (post.date) {
             const date = document.createElement("p");
             date.className = "datetime stickable stick-date";
             date.textContent = post.date;
             date.dataset.stickId = nextStickId();
             date.dataset.stickType = "date";
-            date.style.display = "block";   // ensure block
             wrap.appendChild(date);
         }
 
@@ -226,8 +221,7 @@ function renderPosts() {
                 el.className = "stickable stick-text";
                 el.dataset.stickId = stickId;
                 el.dataset.stickType = "text";
-                // text should be inline so highlight hugs text — but for layout we keep it block internally
-                el.style.display = "inline-block";
+                el.style.display = "inline"; 
             }
 
             if (block.type === "image") {
@@ -237,11 +231,6 @@ function renderPosts() {
                 el.className = "stickable stick-image post-image";
                 el.dataset.stickId = stickId;
                 el.dataset.stickType = "image";
-                // make sure object-fit doesn't change aspect when cloned
-                el.style.display = "block";
-                el.style.maxWidth = "100%";
-                el.style.height = "auto";
-                el.style.background = "transparent";
             }
 
             if (block.type === "video") {
@@ -256,10 +245,6 @@ function renderPosts() {
                 el.className = "stickable stick-video post-video";
                 el.dataset.stickId = stickId;
                 el.dataset.stickType = "video";
-                el.style.display = "block";
-                el.style.maxWidth = "100%";
-                el.style.height = "auto";
-                el.style.background = "transparent";
             }
 
             if (block.type === "audio") {
@@ -289,7 +274,7 @@ function renderPosts() {
 }
 
 // --------------------------
-// RENDER PAGINATION
+// PAGINATION
 // --------------------------
 function renderPagination() {
     const pagination = document.getElementById("pagination");
@@ -312,17 +297,12 @@ function renderPagination() {
 
 // --------------------------
 // STICKY ENGINE
-// - create clone when element's top <= 0
-// - remove clone when element's top > 0
-// - freeze original element size while cloned to avoid layout jumps
 // --------------------------
 function initStickyEngine() {
     const stack = document.getElementById("sticky-stack");
     const stickables = Array.from(document.querySelectorAll(".stickable"));
 
     stickyScrollHandler = function() {
-        const vpTop = 0;
-
         stickables.forEach(el => {
             const stickId = el.dataset.stickId;
             if (!stickId) return;
@@ -330,53 +310,40 @@ function initStickyEngine() {
             const rect = el.getBoundingClientRect();
             const entry = stickyMap.get(stickId);
 
-            // should be stuck when its top is at or above viewport top
-            if (rect.top <= vpTop) {
+            if (rect.top <= 0) {
                 if (!entry) {
-                    // freeze original's computed size to prevent it collapsing/scaling
                     const freezeRect = el.getBoundingClientRect();
                     el.style.minWidth = freezeRect.width + "px";
                     el.style.minHeight = freezeRect.height + "px";
                     el.style.boxSizing = "border-box";
 
                     const wrapper = createCloneBehind(el);
-                    // hide original AFTER we froze its size
                     el.style.visibility = "hidden";
 
                     stickyMap.set(stickId, { wrapper, frozenWidth: freezeRect.width, frozenHeight: freezeRect.height });
                     stack.appendChild(wrapper);
                 } else {
-                    // update wrapper left to follow layout shifts
                     const left = el.getBoundingClientRect().left;
                     entry.wrapper.style.left = Math.round(left) + "px";
                 }
-            } else {
-                // unstick
-                if (entry) {
-                    entry.wrapper.remove();
-                    stickyMap.delete(stickId);
-                    // restore original
-                    el.style.visibility = "visible";
-                    el.style.minWidth = "";
-                    el.style.minHeight = "";
-                    el.style.boxSizing = "";
-                }
+            } else if (entry) {
+                entry.wrapper.remove();
+                stickyMap.delete(stickId);
+                el.style.visibility = "visible";
+                el.style.minWidth = "";
+                el.style.minHeight = "";
+                el.style.boxSizing = "";
             }
         });
     };
 
-    // run once immediately to create any stickies already past top
     stickyScrollHandler();
-
     window.addEventListener('scroll', stickyScrollHandler, { passive: true });
     window.addEventListener('resize', stickyScrollHandler);
 }
 
 // --------------------------
-// CREATE CLONE BEHIND (pixel-accurate)
-// - clone is sized in pixels to match original exactly
-// - for images/videos we copy pixel width/height and preserve aspect using objectFit
-// - for videos we force muted/paused/non-interactive clone
+// CREATE PIXEL-EXACT CLONE
 // --------------------------
 function createCloneBehind(el) {
     const wrapper = document.createElement("div");
@@ -386,79 +353,39 @@ function createCloneBehind(el) {
     const computed = getComputedStyle(el);
 
     let clone;
-
-    if (el.tagName === "IMG") {
-        clone = document.createElement("img");
-        clone.src = el.src;
-        clone.style.width = Math.round(rect.width) + "px";
-        clone.style.height = Math.round(rect.height) + "px";
+    if (el.tagName === "IMG" || el.tagName === "VIDEO") {
+        clone = el.cloneNode(true);
+        clone.style.width = rect.width + "px";
+        clone.style.height = rect.height + "px";
         clone.style.display = "block";
         clone.style.objectFit = "contain";
-        clone.style.background = "transparent";
-    } else if (el.tagName === "VIDEO") {
-        clone = document.createElement("video");
-        clone.src = el.currentSrc || el.src;
-        clone.muted = true;
-        clone.volume = 0;
-        clone.pause();
-        clone.removeAttribute("controls");
-        clone.setAttribute("playsinline", "");
-        clone.style.pointerEvents = "none";
-
-        clone.style.width = Math.round(rect.width) + "px";
-        clone.style.height = Math.round(rect.height) + "px";
-        clone.style.display = "block";
-        clone.style.objectFit = "contain";
-        clone.style.background = "transparent";
     } else {
         clone = el.cloneNode(true);
-
-        // Copy text styling
         clone.style.fontSize = computed.fontSize;
         clone.style.fontFamily = computed.fontFamily;
         clone.style.fontWeight = computed.fontWeight;
         clone.style.lineHeight = computed.lineHeight;
-        clone.style.whiteSpace = "pre-wrap";  // allow wrapping if needed
-        clone.style.wordBreak = "break-word"; // prevent overflow cutoffs
-
-        const isInline = ["inline", "inline-block"].includes(computed.display);
-
-        if (isInline) {
-            clone.style.display = "inline";           // hug text naturally
-            clone.style.minWidth = Math.round(rect.width) + "px"; // prevent collapsing
-        } else {
-            clone.style.display = "block";
-            clone.style.width = "fit-content";        // hug content
-        }
-
-        clone.style.height = Math.round(rect.height) + "px";
+        clone.style.whiteSpace = "pre-wrap";
+        clone.style.wordBreak = "break-word";
+        clone.style.display = "inline"; 
+        clone.style.padding = "0.15em 0.25em";
     }
 
     clone.style.pointerEvents = "none";
-    clone.style.margin = "0";
-    clone.style.opacity = "1";
-
-    if (["text", "title", "date"].includes(el.dataset.stickType)) {
-        clone.classList.add("cloned-text");
-    } else {
-        clone.classList.add("cloned-media");
-    }
+    clone.style.margin = 0;
+    clone.style.opacity = 1;
 
     wrapper.appendChild(clone);
-
     wrapper.style.position = "fixed";
     wrapper.style.top = "0px";
     wrapper.style.left = Math.round(rect.left) + "px";
     cloneStackCounter += 1;
-    wrapper.style.zIndex = String(10 + cloneStackCounter);
+    wrapper.style.zIndex = 10 + cloneStackCounter;
 
     return wrapper;
 }
 
-
 // --------------------------
 // INITIALIZE
 // --------------------------
-document.addEventListener("DOMContentLoaded", () => {
-    renderPosts();
-});
+document.addEventListener("DOMContentLoaded", () => renderPosts());
