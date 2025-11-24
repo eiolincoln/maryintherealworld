@@ -3,7 +3,18 @@ const posts = [
         title: "Weight of Two Crimes I Only Dreamed",
         date: "11/21/2025 7:16pm",
         content: [
-            { type: "text", value: "<i>77</i>", size: "1em" }
+            { type: "text", value: "first dream, i had a dream where i stabbed someone in my school i vividly remember where but don't remember who i stabbed it was in my school it was like a hang out area for those in my school from the entrance go to the canteen, then forward to the lifts, go right and then left, go to the red block and go up by one floor the dream was i overheard between two people that in retrospect don't exist anywhere in my school nor country i for some reason overheard they were going to fight in that location after school and for some reason i went and waited there once it was time i remember sitting down and looking at the staircase and suddenly some short guy came up and shouted out HEY, WHOS FIGHTING ME? while looking left and right rapidly and on at the right side of my eye some tall guy came over like stomping and for some reason i stood up and had a knife and stabbed him around the stomach and then i suddenly felt huge pain in my stomach it was sudden and didn't carry long after waking up and i think, really think because i dont know exactly whether he actually had a knife or it was that tall guy or someone else but this whole discourse happened at the mouth of the staircase opening, then after stabbing him i felt this wave of sympathy for him and sadness for me because suddenly all of the blue his life and my life could end here, everything that we have done worked for had all came to an end because of this so i suddenly said im sorry im sorry lets go to the hospital and walked downwards the staircase while carrying each other, i think that's where the dream ended.", size: "1em" }
+        ]
+    },
+    {
+        title: "",
+        date: "11/21/2025 9:52pm",
+        content: [
+            { 
+                type: "image", 
+                value: "https://raw.githubusercontent.com/eiolincoln/maryintherealworld/main/images/eerilyrealisticfunnymoments.png", 
+                width: "20%" 
+            },
         ]
     },
     {
