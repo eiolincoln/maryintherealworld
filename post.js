@@ -414,24 +414,33 @@ function createCloneBehind(el) {
         clone.style.objectFit = "contain";
         clone.style.background = "transparent";
     } else {
-        // Generic clone for text or other element types (use cloneNode to preserve inner markup)
         clone = el.cloneNode(true);
-        // Ensure the clone is inline-block so highlight hugs the text
-        clone.style.display = "inline-block";
-        clone.style.whiteSpace = "pre-wrap";
-        // set pixel width/height to match rendered box
-        clone.style.width = Math.round(rect.width) + "px";
-        clone.style.height = Math.round(rect.height) + "px";
-
-        // copy important text styles to avoid visual differences
+    
+        // Copy text styling
         clone.style.fontSize = computed.fontSize;
         clone.style.fontFamily = computed.fontFamily;
         clone.style.fontWeight = computed.fontWeight;
         clone.style.lineHeight = computed.lineHeight;
-        clone.style.background = computed.backgroundColor || "white";
-        clone.style.padding = computed.padding;
-        clone.style.boxSizing = "border-box";
+        clone.style.whiteSpace = "pre-wrap";
+    
+        // --- FIX START ---
+        // If original element is inline or inline-block → hug text
+        const isInline = ["inline", "inline-block"].includes(computed.display);
+    
+        if (isInline) {
+            clone.style.display = "inline-block";
+            clone.style.width = Math.round(rect.width) + "px";
+        } else {
+            // Block elements (titles, dates) = no forced width
+            clone.style.display = "block";
+            clone.style.width = "fit-content";   // Hug the text
+        }
+    
+        // Height should always match original height
+        clone.style.height = Math.round(rect.height) + "px";
+        // --- FIX END ---
     }
+
 
     // Make sure clone can't capture pointer events or reflow unexpectedly
     clone.style.pointerEvents = "none";
