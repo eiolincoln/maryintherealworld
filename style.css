@@ -137,14 +137,6 @@ main {
   padding: 0;
 }
 
-/* Cloned text style (hug text) */
-.cloned-text {
-  display: inline-block;
-  padding: 0.15em 0.25em;
-  margin: 0;
-  white-space: pre-wrap;
-  box-sizing: border-box;
-}
 
 /* =====================
    PAGINATION
