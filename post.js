@@ -389,11 +389,6 @@ function initStickyEngine() {
         stickables.forEach(el => {
             const stickId = el.dataset.stickId;
             if (!stickId) return;
-            
-            if (el.dataset.stickType === "video") {
-                return; 
-            }
-            
 
             const rect = el.getBoundingClientRect();
             const entry = stickyMap.get(stickId);
