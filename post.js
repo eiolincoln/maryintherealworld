@@ -222,7 +222,7 @@ function nextStickId() { return "stick-" + (stickIdCounter++); }
 // --------------------------
 // GLOBAL STICKY STATE
 // --------------------------
-let stickyMap = new Map();
+let stickyMap = new Map();        // stickId -> { wrapper, originalStyles }
 let stickyScrollHandler = null;
 let cloneStackCounter = 0;
 
@@ -234,6 +234,7 @@ function renderPosts() {
     const stack = document.getElementById("sticky-stack");
     if (!container || !stack) return;
 
+    // clear
     container.innerHTML = "";
     stack.innerHTML = "";
     stickyMap.clear();
@@ -279,59 +280,60 @@ function renderPosts() {
             let el;
             const stickId = nextStickId();
 
-            switch (block.type) {
-                case "text":
-                    el = document.createElement("p");
-                    el.innerHTML = block.value;
-                    el.style.fontSize = block.size || "1em";
-                    el.className = "stickable stick-text";
-                    el.dataset.stickId = stickId;
-                    el.dataset.stickType = "text";
-                    el.style.display = "inline-block";
-                    break;
-                case "image":
-                    el = document.createElement("img");
-                    el.src = block.value;
-                    if (block.width) el.style.width = block.width;
-                    el.className = "stickable stick-image post-image";
-                    el.dataset.stickId = stickId;
-                    el.dataset.stickType = "image";
-                    el.style.display = "block";
-                    el.style.maxWidth = "100%";
-                    el.style.height = "auto";
-                    el.style.background = "transparent";
-                    break;
-                case "video":
-                    el = document.createElement("video");
-                    el.src = block.value;
-                    el.controls = true;
-                    el.loop = true;
-                    el.autoplay = true;
-                    el.muted = false; // keep sound
-                    el.playsInline = true;
-                    if (block.width) el.style.width = block.width;
-                    el.className = "stickable stick-video post-video";
-                    el.dataset.stickId = stickId;
-                    el.dataset.stickType = "video";
-                    el.style.display = "block";
-                    el.style.maxWidth = "100%";
-                    el.style.height = "auto";
-                    el.style.background = "transparent";
-                    break;
-                case "audio":
-                    const audioWrap = document.createElement("div");
-                    audioWrap.className = "stickable stick-audio audio-container";
-                    audioWrap.dataset.stickId = stickId;
-                    audioWrap.dataset.stickType = "audio";
+            if (block.type === "text") {
+                el = document.createElement("p");
+                el.innerHTML = block.value;
+                el.style.fontSize = block.size || "1em";
+                el.className = "stickable stick-text";
+                el.dataset.stickId = stickId;
+                el.dataset.stickType = "text";
+                el.style.display = "inline-block";
+            }
 
-                    const audio = document.createElement("audio");
-                    audio.src = block.value;
-                    audio.controls = true;
-                    audio.style.width = "100%";
+            if (block.type === "image") {
+                el = document.createElement("img");
+                el.src = block.value;
+                if (block.width) el.style.width = block.width;
+                el.className = "stickable stick-image post-image";
+                el.dataset.stickId = stickId;
+                el.dataset.stickType = "image";
+                el.style.display = "block";
+                el.style.maxWidth = "100%";
+                el.style.height = "auto";
+                el.style.background = "transparent";
+            }
 
-                    audioWrap.appendChild(audio);
-                    el = audioWrap;
-                    break;
+            if (block.type === "video") {
+                el = document.createElement("video");
+                el.src = block.value;
+                el.controls = true;
+                el.loop = true;
+                el.autoplay = true;
+                el.muted = false; // allow sound
+                el.playsInline = true;
+                if (block.width) el.style.width = block.width;
+                el.className = "stickable stick-video post-video";
+                el.dataset.stickId = stickId;
+                el.dataset.stickType = "video";
+                el.style.display = "block";
+                el.style.maxWidth = "100%";
+                el.style.height = "auto";
+                el.style.background = "transparent";
+            }
+
+            if (block.type === "audio") {
+                const audioWrap = document.createElement("div");
+                audioWrap.className = "stickable stick-audio audio-container";
+                audioWrap.dataset.stickId = stickId;
+                audioWrap.dataset.stickType = "audio";
+
+                const audio = document.createElement("audio");
+                audio.src = block.value;
+                audio.controls = true;
+                audio.style.width = "100%";
+
+                audioWrap.appendChild(audio);
+                el = audioWrap;
             }
 
             if (el) contentWrap.appendChild(el);
@@ -386,26 +388,54 @@ function initStickyEngine() {
 
             if (rect.top <= vpTop) {
                 if (!entry) {
-                    const freezeRect = el.getBoundingClientRect();
-                    el.style.minWidth = freezeRect.width + "px";
-                    el.style.minHeight = freezeRect.height + "px";
-                    el.style.boxSizing = "border-box";
+                    if (el.tagName === "VIDEO") {
+                        // Stick original video directly
+                        const origStyles = {
+                            position: el.style.position || "",
+                            top: el.style.top || "",
+                            left: el.style.left || "",
+                            width: el.style.width || "",
+                            height: el.style.height || "",
+                            zIndex: el.style.zIndex || ""
+                        };
 
-                    const wrapper = createCloneBehind(el);
-                    el.style.visibility = "hidden";
+                        const width = Math.round(rect.width);
+                        const height = Math.round(rect.height);
 
-                    stickyMap.set(stickId, { wrapper, frozenWidth: freezeRect.width, frozenHeight: freezeRect.height });
-                    stack.appendChild(wrapper);
-                } else {
-                    entry.wrapper.style.left = Math.round(el.getBoundingClientRect().left) + "px";
+                        el.style.position = "fixed";
+                        el.style.top = "0px";
+                        el.style.left = Math.round(rect.left) + "px";
+                        el.style.width = width + "px";
+                        el.style.height = height + "px";
+                        el.style.zIndex = 1000;
+
+                        stickyMap.set(stickId, { originalStyles: origStyles });
+                    } else {
+                        // Clone for text/images/audio
+                        const wrapper = createCloneBehind(el);
+                        stack.appendChild(wrapper);
+                        stickyMap.set(stickId, { wrapper });
+                    }
+                } else if (entry.wrapper) {
+                    // update left for clones
+                    entry.wrapper.style.left = Math.round(rect.left) + "px";
                 }
-            } else if (entry) {
-                entry.wrapper.remove();
-                stickyMap.delete(stickId);
-                el.style.visibility = "visible";
-                el.style.minWidth = "";
-                el.style.minHeight = "";
-                el.style.boxSizing = "";
+            } else {
+                if (entry) {
+                    if (el.tagName === "VIDEO") {
+                        // restore original video
+                        const s = entry.originalStyles;
+                        el.style.position = s.position;
+                        el.style.top = s.top;
+                        el.style.left = s.left;
+                        el.style.width = s.width;
+                        el.style.height = s.height;
+                        el.style.zIndex = s.zIndex;
+                    } else if (entry.wrapper) {
+                        entry.wrapper.remove();
+                    }
+                    stickyMap.delete(stickId);
+                }
             }
         });
     };
@@ -424,37 +454,18 @@ function createCloneBehind(el) {
 
     const rect = el.getBoundingClientRect();
     const computed = getComputedStyle(el);
+    let clone = el.cloneNode(true);
 
-    let clone;
+    clone.style.fontSize = computed.fontSize;
+    clone.style.fontFamily = computed.fontFamily;
+    clone.style.fontWeight = computed.fontWeight;
+    clone.style.lineHeight = computed.lineHeight;
+    clone.style.whiteSpace = "pre-wrap";
 
-    if (el.tagName === "IMG" || el.tagName === "VIDEO") {
-        clone = el.cloneNode(true);
-
-        // For video, remove autoplay/muted/controls on clone so browser won't block
-        if (el.tagName === "VIDEO") {
-            clone.removeAttribute("autoplay");
-            clone.removeAttribute("controls");
-            clone.muted = true;
-            clone.pause();
-        }
-
-        clone.style.width = Math.round(rect.width) + "px";
-        clone.style.height = Math.round(rect.height) + "px";
-        clone.style.display = "block";
-        clone.style.objectFit = "contain";
-    } else {
-        clone = el.cloneNode(true);
-        clone.style.fontSize = computed.fontSize;
-        clone.style.fontFamily = computed.fontFamily;
-        clone.style.fontWeight = computed.fontWeight;
-        clone.style.lineHeight = computed.lineHeight;
-        clone.style.whiteSpace = "pre-wrap";
-
-        const isInline = ["inline", "inline-block"].includes(computed.display);
-        clone.style.display = isInline ? "inline-block" : "block";
-        clone.style.width = isInline ? Math.round(rect.width) + "px" : "fit-content";
-        clone.style.height = Math.round(rect.height) + "px";
-    }
+    const isInline = ["inline", "inline-block"].includes(computed.display);
+    clone.style.display = isInline ? "inline-block" : "block";
+    if (isInline) clone.style.width = Math.round(rect.width) + "px";
+    clone.style.height = Math.round(rect.height) + "px";
 
     clone.style.pointerEvents = "none";
     clone.style.margin = "0";
@@ -464,7 +475,8 @@ function createCloneBehind(el) {
     wrapper.style.position = "fixed";
     wrapper.style.top = "0px";
     wrapper.style.left = Math.round(rect.left) + "px";
-    wrapper.style.zIndex = String(10 + (++cloneStackCounter));
+    cloneStackCounter += 1;
+    wrapper.style.zIndex = String(10 + cloneStackCounter);
 
     return wrapper;
 }
