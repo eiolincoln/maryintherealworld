@@ -206,6 +206,7 @@ const posts = [
     }
 ];
 
+
 // --------------------------
 // PAGINATION CONFIG
 // --------------------------
@@ -222,7 +223,7 @@ function nextStickId() { return "stick-" + (stickIdCounter++); }
 // --------------------------
 // GLOBAL STICKY STATE
 // --------------------------
-let stickyMap = new Map();        // stickId -> { wrapper, originalStyles }
+let stickyMap = new Map();        // stickId -> { wrapper, clone, frozenWidth, frozenHeight }
 let stickyScrollHandler = null;
 let cloneStackCounter = 0;
 
@@ -240,6 +241,7 @@ function renderPosts() {
     stickyMap.clear();
     cloneStackCounter = 0;
 
+    // remove previous listeners (if any)
     if (stickyScrollHandler) {
         window.removeEventListener('scroll', stickyScrollHandler);
         window.removeEventListener('resize', stickyScrollHandler);
@@ -253,23 +255,23 @@ function renderPosts() {
         const wrap = document.createElement("div");
         wrap.className = "post-container";
 
-        // Title
+        // Title (force display:block so date sits below)
         const title = document.createElement("h2");
         title.innerHTML = post.title || "";
         title.className = "stickable stick-title";
         title.dataset.stickId = nextStickId();
         title.dataset.stickType = "title";
-        title.style.display = "block";
+        title.style.display = "block";       // ensure it's a block so date appears under it
         wrap.appendChild(title);
 
-        // Date
+        // Date (below title)
         if (post.date) {
             const date = document.createElement("p");
             date.className = "datetime stickable stick-date";
             date.textContent = post.date;
             date.dataset.stickId = nextStickId();
             date.dataset.stickType = "date";
-            date.style.display = "block";
+            date.style.display = "block";   // ensure block
             wrap.appendChild(date);
         }
 
@@ -287,6 +289,7 @@ function renderPosts() {
                 el.className = "stickable stick-text";
                 el.dataset.stickId = stickId;
                 el.dataset.stickType = "text";
+                // text should be inline so highlight hugs text — but for layout we keep it block internally
                 el.style.display = "inline-block";
             }
 
@@ -297,6 +300,7 @@ function renderPosts() {
                 el.className = "stickable stick-image post-image";
                 el.dataset.stickId = stickId;
                 el.dataset.stickType = "image";
+                // make sure object-fit doesn't change aspect when cloned
                 el.style.display = "block";
                 el.style.maxWidth = "100%";
                 el.style.height = "auto";
@@ -309,7 +313,7 @@ function renderPosts() {
                 el.controls = true;
                 el.loop = true;
                 el.autoplay = true;
-                el.muted = false; // allow sound
+                el.muted = true;
                 el.playsInline = true;
                 if (block.width) el.style.width = block.width;
                 el.className = "stickable stick-video post-video";
@@ -371,6 +375,9 @@ function renderPagination() {
 
 // --------------------------
 // STICKY ENGINE
+// - create clone when element's top <= 0
+// - remove clone when element's top > 0
+// - freeze original element size while cloned to avoid layout jumps
 // --------------------------
 function initStickyEngine() {
     const stack = document.getElementById("sticky-stack");
@@ -386,67 +393,53 @@ function initStickyEngine() {
             const rect = el.getBoundingClientRect();
             const entry = stickyMap.get(stickId);
 
+            // should be stuck when its top is at or above viewport top
             if (rect.top <= vpTop) {
                 if (!entry) {
-                    if (el.tagName === "VIDEO") {
-                        // Stick original video directly
-                        const origStyles = {
-                            position: el.style.position || "",
-                            top: el.style.top || "",
-                            left: el.style.left || "",
-                            width: el.style.width || "",
-                            height: el.style.height || "",
-                            zIndex: el.style.zIndex || ""
-                        };
+                    // freeze original's computed size to prevent it collapsing/scaling
+                    const freezeRect = el.getBoundingClientRect();
+                    el.style.minWidth = freezeRect.width + "px";
+                    el.style.minHeight = freezeRect.height + "px";
+                    el.style.boxSizing = "border-box";
 
-                        const width = Math.round(rect.width);
-                        const height = Math.round(rect.height);
+                    const wrapper = createCloneBehind(el);
+                    // hide original AFTER we froze its size
+                    el.style.visibility = "hidden";
 
-                        el.style.position = "fixed";
-                        el.style.top = "0px";
-                        el.style.left = Math.round(rect.left) + "px";
-                        el.style.width = width + "px";
-                        el.style.height = height + "px";
-                        el.style.zIndex = 1000;
-
-                        stickyMap.set(stickId, { originalStyles: origStyles });
-                    } else {
-                        // Clone for text/images/audio
-                        const wrapper = createCloneBehind(el);
-                        stack.appendChild(wrapper);
-                        stickyMap.set(stickId, { wrapper });
-                    }
-                } else if (entry.wrapper) {
-                    // update left for clones
-                    entry.wrapper.style.left = Math.round(rect.left) + "px";
+                    stickyMap.set(stickId, { wrapper, frozenWidth: freezeRect.width, frozenHeight: freezeRect.height });
+                    stack.appendChild(wrapper);
+                } else {
+                    // update wrapper left to follow layout shifts
+                    const left = el.getBoundingClientRect().left;
+                    entry.wrapper.style.left = Math.round(left) + "px";
                 }
             } else {
+                // unstick
                 if (entry) {
-                    if (el.tagName === "VIDEO") {
-                        // restore original video
-                        const s = entry.originalStyles;
-                        el.style.position = s.position;
-                        el.style.top = s.top;
-                        el.style.left = s.left;
-                        el.style.width = s.width;
-                        el.style.height = s.height;
-                        el.style.zIndex = s.zIndex;
-                    } else if (entry.wrapper) {
-                        entry.wrapper.remove();
-                    }
+                    entry.wrapper.remove();
                     stickyMap.delete(stickId);
+                    // restore original
+                    el.style.visibility = "visible";
+                    el.style.minWidth = "";
+                    el.style.minHeight = "";
+                    el.style.boxSizing = "";
                 }
             }
         });
     };
 
+    // run once immediately to create any stickies already past top
     stickyScrollHandler();
+
     window.addEventListener('scroll', stickyScrollHandler, { passive: true });
     window.addEventListener('resize', stickyScrollHandler);
 }
 
 // --------------------------
-// CREATE CLONE BEHIND
+// CREATE CLONE BEHIND (pixel-accurate)
+// - clone is sized in pixels to match original exactly
+// - for images/videos we copy pixel width/height and preserve aspect using objectFit
+// - for videos we force muted/paused/non-interactive clone
 // --------------------------
 function createCloneBehind(el) {
     const wrapper = document.createElement("div");
@@ -454,27 +447,86 @@ function createCloneBehind(el) {
 
     const rect = el.getBoundingClientRect();
     const computed = getComputedStyle(el);
-    let clone = el.cloneNode(true);
 
-    clone.style.fontSize = computed.fontSize;
-    clone.style.fontFamily = computed.fontFamily;
-    clone.style.fontWeight = computed.fontWeight;
-    clone.style.lineHeight = computed.lineHeight;
-    clone.style.whiteSpace = "pre-wrap";
+    // Build a pixel-perfect clone depending on tag
+    let clone;
 
-    const isInline = ["inline", "inline-block"].includes(computed.display);
-    clone.style.display = isInline ? "inline-block" : "block";
-    if (isInline) clone.style.width = Math.round(rect.width) + "px";
-    clone.style.height = Math.round(rect.height) + "px";
+    if (el.tagName === "IMG") {
+        clone = document.createElement("img");
+        clone.src = el.src;
+        // set pixel width/height to match rendered size
+        clone.style.width = Math.round(rect.width) + "px";
+        clone.style.height = Math.round(rect.height) + "px";
+        clone.style.display = "block";
+        clone.style.objectFit = "contain";
+        clone.style.background = "transparent";
+    } else if (el.tagName === "VIDEO") {
+        clone = document.createElement("video");
+        clone.src = el.currentSrc || el.src;
+        // force-muted, paused, non-interactive
+        clone.muted = true;
+        clone.volume = 0;
+        clone.pause();
+        clone.removeAttribute("controls");
+        clone.setAttribute("playsinline", "");
+        clone.style.pointerEvents = "none";
 
+        clone.style.width = Math.round(rect.width) + "px";
+        clone.style.height = Math.round(rect.height) + "px";
+        clone.style.display = "block";
+        clone.style.objectFit = "contain";
+        clone.style.background = "transparent";
+    } else {
+        clone = el.cloneNode(true);
+    
+        // Copy text styling
+        clone.style.fontSize = computed.fontSize;
+        clone.style.fontFamily = computed.fontFamily;
+        clone.style.fontWeight = computed.fontWeight;
+        clone.style.lineHeight = computed.lineHeight;
+        clone.style.whiteSpace = "pre-wrap";
+    
+        // --- FIX START ---
+        // If original element is inline or inline-block → hug text
+        const isInline = ["inline", "inline-block"].includes(computed.display);
+    
+        if (isInline) {
+            clone.style.display = "inline-block";
+            clone.style.width = Math.round(rect.width) + "px";
+        } else {
+            // Block elements (titles, dates) = no forced width
+            clone.style.display = "block";
+            clone.style.width = "fit-content";   // Hug the text
+        }
+    
+        // Height should always match original height
+        clone.style.height = Math.round(rect.height) + "px";
+        // --- FIX END ---
+    }
+
+
+    // Make sure clone can't capture pointer events or reflow unexpectedly
     clone.style.pointerEvents = "none";
     clone.style.margin = "0";
     clone.style.opacity = "1";
 
+    // Add class for CSS fallbacks
+    if (["text", "title", "date"].includes(el.dataset.stickType)) {
+        clone.classList.add("cloned-text");
+    } else {
+        clone.classList.add("cloned-media");
+    }
+
     wrapper.appendChild(clone);
+
+    // Position wrapper fixed at top of viewport to give "stuck to top" illusion,
+    // and set left to the element's current left so it lines up exactly.
+    // Use rect.left (viewport-relative) for fixed positioning.
     wrapper.style.position = "fixed";
     wrapper.style.top = "0px";
     wrapper.style.left = Math.round(rect.left) + "px";
+
+    // ensure wrapper sits behind page content (but in your CSS #main has z-index 200)
     cloneStackCounter += 1;
     wrapper.style.zIndex = String(10 + cloneStackCounter);
 
