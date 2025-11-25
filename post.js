@@ -1,5 +1,17 @@
 const posts = [
     {
+        title: "",
+        date: "11/25/2025 6:58pm",
+        content: [
+            {
+                type: "video",
+                value: "videos/tayvioncole.mp4",
+                width: "20%"
+            },
+            { type: "text", value: "11/21/2025 3:19pm anonymous", size: "1em" }
+        ]
+    },
+    {
         title: "Weight of Two Crimes I Only Dreamed",
         date: "11/21/2025 7:16pm",
         content: [
@@ -113,7 +125,7 @@ const posts = [
             {
                 type: "video",
                 value: "videos/sparkleinjamen.mp4",
-                width: "50%"
+                width: "30%"
             },
             { type: "text", value: "11/21/2025 3:19pm anonymous", size: "1em" }
         ]
