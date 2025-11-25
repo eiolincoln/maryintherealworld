@@ -8,7 +8,6 @@ const posts = [
                 value: "videos/tayvioncole.mp4",
                 width: "20%"
             },
-            { type: "text", value: "11/21/2025 3:19pm anonymous", size: "1em" }
         ]
     },
     {
