@@ -15,9 +15,9 @@ const posts = [
         date: "25/11/2025 6:58pm",
         content: [
             {
-                type: "video",
-                value: "videos/tayvioncole.mp4",
-                width: "20%"
+                type: "text",
+                value: "Sorry i forgot about this lol",
+                size: "1em"
             },
         ]
     },
