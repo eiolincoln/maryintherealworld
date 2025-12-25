@@ -1,7 +1,18 @@
 const posts = [
     {
+        title: "Hi Guys",
+        date: "26/12/2025 6:58pm",
+        content: [
+            {
+                type: "video",
+                value: "videos/tayvioncole.mp4",
+                width: "20%"
+            },
+        ]
+    },
+    {
         title: "",
-        date: "11/25/2025 6:58pm",
+        date: "25/11/2025 6:58pm",
         content: [
             {
                 type: "video",
@@ -12,7 +23,7 @@ const posts = [
     },
     {
         title: "Weight of Two Crimes I Only Dreamed",
-        date: "11/21/2025 7:16pm",
+        date: "21/11/2025 7:16pm",
         content: [
             {
                 type: "text",
@@ -28,7 +39,7 @@ const posts = [
     },
     {
         title: "",
-        date: "11/21/2025 9:52pm",
+        date: "21/11/2025 9:52pm",
         content: [
             {
                 type: "image",
@@ -39,7 +50,7 @@ const posts = [
     },
     {
         title: "THIS IS A SIGN",
-        date: "11/25/2025 9:11pm",
+        date: "25/11/2025 9:11pm",
         content: [
             {
                 type: "image",
@@ -56,7 +67,7 @@ const posts = [
     },
     {
         title: "good channel",
-        date: "11/24/2025 1:57am",
+        date: "24/11/2025 1:57am",
         content: [
             {
                 type: "image",
@@ -68,7 +79,7 @@ const posts = [
     },
     {
         title: "ideal artist for the happiness of society",
-        date: "11/24/2025 1:57am",
+        date: "24/11/2025 1:57am",
         content: [{ type: "text", value: "", size: "1em" }]
     },
     {
@@ -78,7 +89,7 @@ const posts = [
     },
     {
         title: "<u>This House Has People in It</u>",
-        date: "11/22/2025 12:18am",
+        date: "22/11/2025 12:18am",
         content: [
             {
                 type: "image",
@@ -94,14 +105,14 @@ const posts = [
     },
     {
         title: "",
-        date: "11/21/2025 11:39pm",
+        date: "21/11/2025 11:39pm",
         content: [
             { type: "text", value: "this album sucks. i’m preparing for war.", size: "1em" }
         ]
     },
     {
         title: "<u><b>got that water in my еye eye еye</b></u>",
-        date: "11/21/2025 10:43pm",
+        date: "21/11/2025 10:43pm",
         content: [
             { type: "image", value: "images/Beauty.png", width: "10%" },
             { type: "text", value: "not mine, looks like my grandfathers, but his is green", size: "1em" }
@@ -109,17 +120,17 @@ const posts = [
     },
     {
         title: "21 Photos",
-        date: "11/21/2025 8:21pm",
+        date: "21/11/2025 8:21pm",
         content: [{ type: "image", value: "images/Screenshot1.png", width: "25%" }]
     },
     {
         title: "20 Photos",
-        date: "11/21/2025 7:16pm",
+        date: "21/11/2025 7:16pm",
         content: [{ type: "text", value: "<i>77</i>", size: "1em" }]
     },
     {
         title: "video test on website",
-        date: "11/21/2025 3:19pm",
+        date: "21/11/2025 3:19pm",
         content: [
             {
                 type: "video",
