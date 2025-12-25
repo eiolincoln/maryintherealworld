@@ -1,7 +1,7 @@
 const posts = [
     {
         title: "Hi Guys",
-        date: "26/12/2025 6:58pm",
+        date: "26/12/2025 1:52am",
         content: [
             {
                 type: "video",
