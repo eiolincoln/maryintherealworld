@@ -1,5 +1,16 @@
 const posts = [
     {
+        title: "birthday ended / listening to this song",
+        date: "14/3/2026 1:29am",
+        content: [
+            {
+                type: "image",
+                value: "https://raw.githubusercontent.com/eiolincoln/maryintherealworld/main/images/blackandblue.png",
+                width: "40%"
+            }
+        ]
+    },
+    {
         title: "Hi Guys",
         date: "26/12/2025 1:52am",
         content: [
